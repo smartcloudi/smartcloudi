@@ -1,0 +1,935 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <!-- Tell the browser to be responsive to screen width -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <!-- Favicon icon -->
+    <link rel="icon" type="image/ico" sizes="16x16" href="../images/favicon.ico">
+    <title>Smart Cloudi - Cloud Analytics</title>
+    <!-- Custom CSS -->
+    <link href="css/style.min.css" rel="stylesheet">
+    <link href="../css/stylish-tooltip.css" rel="stylesheet">
+    <link href="../css/switchery.css" rel="stylesheet" />
+    <link href="../css/jquery-ui.min.css" rel="stylesheet" />
+    <link href="../css/jquery.toast.min.css" rel="stylesheet">
+    <link href="../css/perfect-scrollbar.css">
+    <!-- page css -->
+    <link href="css/inbox.css" rel="stylesheet">
+</head>
+
+<body class="skin-blue fixed-layout">
+    <!-- ============================================================== -->
+    <!-- Preloader - style you can find in spinners.css -->
+    <!-- ============================================================== -->
+    <div class="preloader">
+        <div class="loader">
+            <div class="loader__figure"></div>
+            <p class="loader__label">Smart Cloudi</p>
+        </div>
+    </div>
+    <!-- ============================================================== -->
+    <!-- Main wrapper - style you can find in pages.scss -->
+    <!-- ============================================================== -->
+    <div id="main-wrapper">
+        <div id="topbar"></div>
+        <div id="leftsidebar"></div>
+        <!-- ============================================================== -->
+        <!-- Page wrapper  -->
+        <!-- ============================================================== -->
+        <div class="page-wrapper">
+            <!-- ============================================================== -->
+            <!-- Container fluid  -->
+            <!-- ============================================================== -->
+            <div class="container-fluid">
+                <!-- ============================================================== -->
+                <!-- Bread crumb and right sidebar toggle -->
+                <!-- ============================================================== -->
+                <div class="row page-titles">
+                    <div class="col-md-5 align-self-center">
+                        <h4 class="text-themecolor">PureCloud Analytics</h4>
+                    </div>
+                    <div class="col-md-7 align-self-center text-right">
+                        <div class="d-flex justify-content-end align-items-center">
+                            <ol class="breadcrumb">
+                                <li class="breadcrumb-item"><a href="index.html">Home</a></li>
+                                <li class="breadcrumb-item active">PureCloud Analytics</li>
+                            </ol>
+                            <button type="button" data-toggle="modal" data-target="#settings" class="btn btn-info d-none d-lg-block m-l-15"><i class="fa fa-plus-circle"></i> Create New</button>
+                        </div>
+                    </div>
+                </div>
+                <!-- ============================================================== -->
+                <!-- End Bread crumb and right sidebar toggle -->
+                <!-- ============================================================== -->
+                <!-- ============================================================== -->
+                <!-- Start Page Content -->
+                <!-- ============================================================== -->
+                <!-- Settings Modal -->
+                <div id="settings" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="settingsLabel" aria-hidden="true" style="display: none;">
+                    <div class="modal-dialog modal-lg">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h4 class="modal-title" id="title"></h4>
+                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                            </div>
+                            <div class="modal-body">
+                                <form>
+                                    <div>
+                                        <div class="form-group">
+                                            <label for="name">Name</label>
+                                            <input type="text" class="form-control" id="name" placeholder="Enter a name for your request">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="clientId">Client Id</label>
+                                            <input type="text" class="form-control" id="clientId" placeholder="PureCloud OAuth Client Id" />
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="clientSecret">Client Secret</label>
+                                            <input type="password" class="form-control" id="clientSecret" autocomplete="client-secret" placeholder="PureCloud OAuth Client Secret" />
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="control-label">Environment</label>
+                                            <small class="form-control-feedback m-l-10 text-muted">(Select your PureCloud Organization Environment)</small>
+                                            <select class="form-control custom-select" id="environment">
+                                                <option value="mypurecloud.com">mypurecloud.com</option>
+                                                <option value="mypurecloud.com.au">mypurecloud.com.au</option>
+                                                <option value="mypurecloud.de">mypurecloud.de</option>
+                                                <option value="mypurecloud.ie" selected>mypurecloud.ie</option>
+                                                <option value="mypurecloud.jp">mypurecloud.jp</option>
+                                            </select>
+                                        </div>
+                                        <hr>
+                                        <div class="form-group row">
+                                            <div class="col-6">
+                                                <label>Statistics</label>
+                                                <div class="input-group">
+                                                    <input type="checkbox" class="check" id="conversationDetail">
+                                                    <span class="mytooltip tooltip-effect-5">
+                                                        <label for="conversationDetail" class="tooltip-item">Conversations Detail</label>
+                                                        <span class="tooltip-content">
+                                                            <span class="tooltip-text p-t-10">PureCloud Conversation Details (participants, sessions, segments, etc.)</span>
+                                                        </span>
+                                                    </span>
+                                                </div>
+                                                <div class="input-group">
+                                                    <input type="checkbox" class="check" id="conversationAggregate">
+                                                    <span class="mytooltip tooltip-effect-5">
+                                                        <label for="conversationAggregate" class="tooltip-item">Conversation Aggregate</label>
+                                                        <span class="tooltip-content">
+                                                            <span class="tooltip-text p-t-10">PureCloud Conversation Aggregates (abandoned, answered, etc.)
+                                                            </span>
+                                                        </span>
+                                                    </span>
+                                                </div>
+                                                <div class="input-group">
+                                                    <input type="checkbox" class="check" id="userStatusAggregate">
+                                                    <span class="mytooltip tooltip-effect-5">
+                                                        <label for="userStatusAggregate" class="tooltip-item">User Status Aggregate</label>
+                                                        <span class="tooltip-content">
+                                                            <span class="tooltip-text p-t-10">PureCloud User Aggregates (answered, on hold time, etc.)
+                                                            </span>
+                                                        </span>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                            <div class="col-6">
+                                                <!-- Not supported yet -->
+                                                <!-- <div class="form-group">
+                                                    <label class="control-label">Output Format</label>
+                                                    <select class="form-control custom-select" id="format">
+                                                        <option value="csv" selected>CSV</option>
+                                                    </select>
+                                                </div> -->
+                                            </div>
+                                        </div>
+                                        <hr>
+                                        <div class="form-group">
+                                            <div class="input-group">
+                                                <input type="checkbox" class="check" id="recurrence">
+                                                <span class="mytooltip tooltip-effect-5">
+                                                    <label for="recurrence" class="tooltip-item">Recurrence</label>
+                                                    <span class="tooltip-content">
+                                                        <span class="tooltip-text p-t-10">Repeat every every day/week/month
+                                                        </span>
+                                                    </span>
+                                                </span>
+                                            </div>
+                                            <div id="cronuidiv">
+                                                Every <span id="cronui"></span>
+                                                (Please use server time. Current time: <span id="currentTime"></span>)
+                                            </div>
+                                            <div id="perioddiv" class="form-group mt-3">
+                                                <label class="control-label">Period</label>
+                                                <select class="form-control custom-select" id="timespan">
+                                                    <option value="day" selected>Previous Day</option>
+                                                    <option value="week">Previous Week</option>
+                                                    <option value="month">Previous Month</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                                <button type="button" class="btn btn-info" id="testconnection">Test Connection</button>
+                                <button type="button" disabled id="close" class="btn btn-primary waves-effect"></button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- End Settings Modal -->
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="card">
+                        <div class="row">
+                            <div class="col-lg-3 col-md-4">
+                                <div class="card-body inbox-panel">
+                                    <ul class="list-group list-group-full">
+                                        <li class="list-group-item active"> <a href="javascript:void(0)" id="showAll"><i class="fas fa-folder"></i> All </a></li>
+                                    </ul>
+                                    <ul class="list-group list-group-full pl-4">
+                                        <li class="list-group-item" id="showJobs">
+                                            <a href="javascript:void(0)"><i class="far fa-clock"></i> One-time requests </a>
+                                        <li class="list-group-item">
+                                            <a href="javascript:void(0)" id="showCronJobs"><i class="fas fa-redo"></i> Recurring requests </a>
+                                        </li>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="col-lg-9 col-md-8 bg-light border-left">
+                                <div class="card-body">
+                                    <button type="button" id="refresh" class="btn btn-secondary mr-2 shadow-sm"><i class="fas fa-sync-alt"></i></button>
+                                    <span class="label label-default text-dark shadow-sm">Not Started</span>
+                                    <span class="label label-warning text-dark shadow-sm">In Progress</span>
+                                    <span class="label label-success shadow`-sm">Completed</span>
+                                    <span class="label label-danger shadow-sm">Error</span>
+                                </div>
+
+                                <div class="container">
+                                    <div id="accordion">
+                                        <!-- This is where requests will be added dynamically -->
+                                    </div>
+                                </div>
+
+                                <div class="card-body p-t-0">
+                                    <div class="card b-all shadow-none">
+                                        <div class="inbox-center table-responsive">
+                                            <table class="table table-hover no-wrap">
+                                                <tbody id="requests">
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- ============================================================== -->
+            <!-- End Page Content -->
+            <!-- ============================================================== -->
+            <!-- ============================================================== -->
+            <!-- Right sidebar -->
+            <!-- ============================================================== -->
+            <div id="rightsidebar"></div>
+            <!-- ============================================================== -->
+            <!-- End Right sidebar -->
+            <!-- ============================================================== -->
+        </div>
+        <!-- ============================================================== -->
+        <!-- End Container fluid  -->
+        <!-- ============================================================== -->
+    </div>
+    <!-- ============================================================== -->
+    <!-- End Page wrapper  -->
+    <!-- ============================================================== -->
+    <div id="footer"></div>
+    </div>
+    <!-- ============================================================== -->
+    <!-- End Wrapper -->
+    <!-- ============================================================== -->
+    <!-- ============================================================== -->
+    <!-- All Jquery -->
+    <!-- ============================================================== -->
+    <script src="../js/jquery-3.3.1.min.js"></script>
+    <script src="../js/popper.min.js"></script>
+    <script src="../js/bootstrap.min.js"></script>
+
+    <script src="../js/perfect-scrollbar.min.js"></script>
+    <script src="../js/perfect-scrollbar.jquery.js"></script>
+
+    <script src="../js/jquery-ui.min.js"></script>
+
+    <script src="../js/waves.js"></script>
+    <script src="../js/sidebarmenu.js"></script>
+
+    <script src="../js/jquery.magnific-popup.min.js"></script>
+    <script src="../js/jquery.nav.js"></script>
+
+    <script src="../js/jquery.toast.min.js"></script>
+    <script src="../js/sweetalert.min.js"></script>
+
+    <script src="../js/moment.min.js"></script>
+    <script src="../js/later.min.js"></script>
+    <script src="../js/prettycron.js"></script>
+    <script src="../js/cron-ui.min.js"></script>
+
+    <!-- Page scripts -->
+    <script src="../js/custom.min.js"></script>
+    <script src="js/notifications.js"></script>
+    <script src="js/cookies.js"></script>
+
+    <script src="js/aws-sdk.min.js"></script>
+    <script src="js/amazon-cognito-auth.min.js"></script>
+    <script src="js/amazon-cognito-identity.min.js"></script>
+
+    <script>
+
+        // Import Bars
+        $("#topbar").load("topbar.html");
+        $("#leftsidebar").load("leftsidebar.html");
+        $("#rightsidebar").load("rightsidebar.html");
+        $("#footer").load("footer.html");
+
+        // Is user authenticated?
+        var data = {
+            UserPoolId: "eu-west-1_8d92gzCo4",
+            ClientId: "7sn1nlqferjdvjl0ufurg0dga4"
+        };
+        var userPool = new AmazonCognitoIdentity.CognitoUserPool(data);
+        var cognitoUser = userPool.getCurrentUser();
+
+        if (cognitoUser != null) {
+            cognitoUser.getSession(function (err, session) {
+                if (err) {
+                    alert(err);
+                    return;
+                }
+
+                if (!session.isValid()) {
+                    $(location).attr("href", "/portal/login.html");
+                    return;
+                }
+
+                AWS.config.credentials = new AWS.CognitoIdentityCredentials({
+                    IdentityPoolId: "eu-west-1:72f9916c-eb9a-4ff2-9c0a-9c0fe19e6745",
+                    Logins: {
+                        "cognito-idp.eu-west-1.amazonaws.com/eu-west-1_8d92gzCo4": session.getIdToken().getJwtToken()
+                    }
+                });
+
+                console.log("User session is valid");
+
+            });
+        } else {
+            $(location).attr("href", "/portal/login.html");
+        }
+
+        var apiPath = apiPathCloudAnalyticsJobs;
+
+        //#region Cron UI
+
+        // Initialize cronui
+        var cron_ui = new CronUI("#cronui", {
+            initial: "0 2 * * *",
+            changeEvent: function (cronString) {
+                console.log(cronString);
+            }
+        });
+
+        // Enable/disable cronui when recurrence checkbox is checked
+        $("#recurrence").change(() => {
+            if ($("#recurrence").prop("checked")) {
+                $("#cronuidiv").fadeTo("slow", 1);
+                $("#perioddiv").fadeTo("slow", 1);
+                $("#cronuidiv").css("pointer-events", "auto");
+            } else {
+                $("#cronuidiv").fadeTo("slow", 0.4);
+                $("#perioddiv").fadeTo("slow", 0.4);
+                $("#cronuidiv").css("pointer-events", "none");
+            }
+        });
+
+        //#endregion Cron UI
+
+        //#region Modals
+
+        function resetModal() {
+            apiPath = apiPathCloudAnalyticsJobs;
+            $("#settings #title").html("New Request");
+            $("#settings #name").val("");
+            $("#settings #clientId").val("a3f41e28-da17-4f23-aff7-140ced056039"); //TODO FOR TESTS ONLY!
+            $("#settings #clientSecret").val("SJ3oDumdnrBzvDgZ-dbthJSC9WDh0ZvXGB-UQtevGe4"); //TODO FOR TESTS ONLY!
+            $("#settings #environment").val("mypurecloud.ie");
+            $("#settings #conversationDetail").prop("checked", false);
+            $("#settings #conversationAggregate").prop("checked", false);
+            $("#settings #userStatusAggregate").prop("checked", false);
+            $("#settings #recurrence").prop("checked", false);
+            $("#settings #timespan").val("day");
+            $("#settings #cronuidiv").fadeTo("slow", 0.4);
+            $("#settings #perioddiv").fadeTo("slow", 0.4);
+            $("#settings #cronuidiv").css("pointer-events", "none");
+            $("#settings #close").text('Create');
+            $("#settings #close").unbind().click(function () {
+                console.log('Submitting request...');
+
+                var data = {
+                    "name": $("#settings #name").val(),
+                    "image": "compliance/purecloud-analytics-downloader",
+                    "input": [
+                        {
+                            "name": "clientId",
+                            "value": $("#settings #clientId").val()
+                        },
+                        {
+                            "name": "clientSecret",
+                            "value": $("#settings #clientSecret").val()
+                        },
+                        {
+                            "name": "environment",
+                            "value": $("#settings #environment").val()
+                        },
+                        {
+                            "name": "doConversationDetail",
+                            "value": $("#settings #conversationDetail").is(":checked") ? "1" : "0"
+                        },
+                        {
+                            "name": "doConversationAggregate",
+                            "value": $("#settings #conversationAggregate").is(":checked") ? "1" : "0"
+                        },
+                        {
+                            "name": "doUserStatusAggregate",
+                            "value": $("#settings #userStatusAggregate").is(":checked") ? "1" : "0"
+                        },
+                        {
+                            "name": "analyticsIntervalStart",
+                            "value": calculateAnalyticsIntervals().analyticsIntervalStart
+                        },
+                        {
+                            "name": "analyticsIntervalStop",
+                            "value": calculateAnalyticsIntervals().analyticsIntervalStop
+                        }
+                    ]
+                };
+
+                console.log(data);
+
+                if ($("#settings #recurrence").prop("checked")) {
+                    apiPath = apiPathCloudAnalyticsCronJobs;
+                    data.period = $("#settings #timespan").val();
+                    data.schedule = cron_ui.currentValue; //TODO Convert to UTC
+                } else {
+                    apiPath = apiPathCloudAnalyticsJobs;
+                }
+
+                $.ajax({
+                    url: apiPath,
+                    dataType: "json",
+                    method: "POST",
+                    beforeSend: setRequiredHeaders,
+                    data: data
+                }).done((data, textStatus, jqXHR) => {
+                    switch (jqXHR.status) {
+                        case 201:
+                            console.log('Request submitted', data);
+                            $("#settings").modal('toggle');
+                            publishMessage("Web", "purecloudAnalyticsCreated", data.id);
+                            showMessage(`'${data.name}' submitted`);
+                            loadRequests(showJobs, showCronJobs);
+                            break;
+                        default:
+                            break;
+                    }
+                }).fail(handleQueryError)
+            });
+        }
+
+        // Clear modal when hidden
+        $("#settings").on("hidden.bs.modal", function () {
+            resetModal();
+        });
+
+        setInterval(() => {
+            $("#currentTime").text(moment.utc().format("HH:mm:ss"))
+        }, 1000);
+
+        $("#testconnection").on("click", () => {
+            // Call API to test PureCloud connection
+            $.ajax({
+                url: `${apiPathPureCloudConnector}/login`,
+                dataType: "json",
+                method: "POST",
+                beforeSend: function (xhr) {
+                    xhr.setRequestHeader("Authorization", getCookie("Authorization"));
+                    xhr.setRequestHeader("comply-username", getCookie("comply-username"));
+                    xhr.setRequestHeader("comply-groups", getCookie("comply-groups"));
+                    xhr.setRequestHeader("comply-organization", getCookie("comply-organization"));
+                    xhr.setRequestHeader("comply-orgId", getCookie("comply-orgId"));
+                },
+                data: {
+                    "clientId": $("#settings #clientId").val(),
+                    "clientSecret": $("#settings #clientSecret").val(),
+                    "env": $("#settings #environment").val(),
+                }
+            }).done((data, textStatus, jqXHR) => {
+                switch (jqXHR.status) {
+                    case 200:
+                        if (data.token) {
+                            showMessage("Connection Succeeded!");
+                            $("#close").prop('disabled', false);
+                        } else {
+                            showMessage("Connection failed", true);
+                            $("#close").prop('disabled', true);
+                        }
+                        break;
+                    default:
+                        showMessage("Connection failed", true);
+                        $("#close").prop('disabled', true);
+                        break;
+                }
+            }).fail(handleQueryError)
+        });
+
+        //#endregion Modals
+
+        // Refresh button
+        $("#refresh").on("click", () => {
+            loadRequests(showJobs, showCronJobs);
+        });
+
+        //#region Left pane buttons
+
+        var showJobs = true;
+        var showCronJobs = true;
+
+        $("#showAll").on("click", () => {
+            showJobs = true;
+            showCronJobs = true;
+            loadRequests(showJobs, showCronJobs)
+        });
+        $("#showJobs").on("click", () => {
+            showJobs = true;
+            showCronJobs = false;
+            loadRequests(showJobs, showCronJobs)
+        });
+        $("#showCronJobs").on("click", () => {
+            showJobs = false;
+            showCronJobs = true;
+            loadRequests(showJobs, showCronJobs)
+        });
+
+        //#endregion
+
+        // Create a new request
+        function createRequest(id, inProgress, recurrence, name, image, cronJob, schedule, clientId, clientSecret, environment, doConversationDetail, doConversationAggregate, doUserStatusAggregate, analyticsIntervalStart, analyticsIntervalStop, results, updatedAt = "05:30 AM") {
+
+            // Add card to accordion
+            var cardDiv = $("<div />", { class: "card border shadow" });
+
+            //#region Border color
+
+            if (inProgress) {
+                cardDiv.addClass("border-warning");
+            } else if (results.length > 0) {
+                // Last result is successful?
+                if (results[results.length - 1].result) {
+                    cardDiv.addClass("border-success");
+                }
+            } else {
+                cardDiv.addClass("border-default");
+            }
+
+            //#endregion
+
+            //#region Header
+
+            var cardHeader = $("<div />", { class: "card-header" }).appendTo(cardDiv);
+
+            var headerContent = $("<a />", { class: "card-link", "data-toggle": "collapse", href: "#collapse_" + id }).appendTo(cardHeader);
+
+            //#region Job icon
+
+            var iconSection;
+            if (recurrence) {
+                iconSection = $("<i />", { class: "fas fa-redo" }).appendTo(headerContent);
+            } else {
+                iconSection = $("<i />", { class: "far fa-clock" }).appendTo(headerContent);
+            }
+
+            // Set color
+            if (inProgress) {
+                iconSection.addClass("text-warning");
+            } else if (results.length > 0) {
+                // Last result is successful?
+                if (results[results.length - 1].result) {
+                    iconSection.addClass("text-success");
+                }
+            } else {
+                iconSection.addClass("text-default");
+            }
+
+            //#endregion
+
+            //#region Job name
+
+            var jobNameSpan = $("<span />", { class: "text-dark" }).html("&nbsp; &nbsp;" + name).appendTo(headerContent);
+
+            //#endregion
+
+            //#region Tags
+
+            var tagsSpan = $("<span />", { class: "ml-2" }).appendTo(headerContent);
+
+            if (doConversationDetail == "1") {
+                tagsSpan.append($("<span />", { class: "label label-info m-r-10" }).html("Conversation Detail"));
+            }
+            if (doConversationAggregate == "1") {
+                tagsSpan.append($("<span />", { class: "label label-info m-r-10" }).html("Conversation Aggregates"));
+            }
+            if (doUserStatusAggregate == "1") {
+                tagsSpan.append($("<span />", { class: "label label-info m-r-10" }).html("User Aggregates"));
+            }
+
+            //#endregion
+
+            //#region Delete Icon
+
+            var deleteIcon = $("<i />", { class: "far fa-lg fa-trash-alt text-danger float-right ml-2 pt-1" }).appendTo(headerContent);
+            deleteIcon.on("click", function () {
+                swal({
+                    title: "Are you sure?",
+                    text: "You will not be able to recover this request! All associated files will also be deleted",
+                    icon: "warning",
+                    buttons: {
+                        cancel: true,
+                        confirm: {
+                            visible: true,
+                            text: "Yes, delete it!",
+                            closeModal: true
+                        }
+                    },
+                    dangerMode: true
+                }).then((willDelete) => {
+                    if (willDelete) {
+                        $.ajax({
+                            url: `${apiPath}/${encodeURI(id)}`,
+                            dataType: "json",
+                            method: "DELETE",
+                            beforeSend: setRequiredHeaders
+                        }).done((data, textStatus, jqXHR) => {
+                            if (jqXHR.status == 204) {
+                                console.log('Request deleted');
+                                publishMessage("Web", "purecloudAnalyticsDeleted", id);
+                                showMessage(`'${name}' deleted`);
+                                loadRequests();
+                                return;
+                            }
+                        }).fail(handleQueryError);
+                    }
+                });
+            });
+
+            //#endregion
+
+            //#region Edit Icon
+
+            var editIcon = $("<i />", { class: "fas fa-lg fa-edit text-dark float-right ml-2 pt-1", "data-toggle": "modal", "data-target": "#settings", style: "cursor:pointer" }).appendTo(headerContent);
+            editIcon.on("click", function (e) {
+                //TODO Prevent accordion from showing body?
+                console.log("Editing request...");
+                $("#settings #title").html(name);
+                $("#settings #name").val(name);
+                $("#settings #clientId").val(clientId);
+                $("#settings #clientSecret").val(clientSecret);
+                $("#settings #environment").val(environment);
+                $("#settings #conversationDetail").prop("checked", doConversationDetail == "1");
+                $("#settings #conversationAggregate").prop("checked", doConversationAggregate == "1");
+                $("#settings #userStatusAggregate").prop("checked", doUserStatusAggregate == "1");
+                $("#settings #recurrence").prop("checked", recurrence);
+                $("#settings #timespan").val(timespan);
+                $("#settings #cronui").val(schedule);
+                $("#settings #close").text('Save');
+                $("#settings #close").unbind().click(function () {
+                    console.log('Saving request...');
+                    var data = {
+                        "name": $("#settings #name").val(),
+                        "image": "compliance/pcsd-cloud",
+                        "cronJob": $("#settings #recurrence").prop("checked"),
+                        "period": $("#settings #timespan").val(),
+                        "input": [
+                            {
+                                "name": "clientId",
+                                "value": $("#settings #clientId").val()
+                            },
+                            {
+                                "name": "clientSecret",
+                                "value": $("#settings #clientSecret").val()
+                            },
+                            {
+                                "name": "environment",
+                                "value": $("#settings #environment").val()
+                            },
+                            {
+                                "name": "doConversationDetail",
+                                "value": $("#settings #conversationDetail").is(":checked") ? "1" : "0"
+                            },
+                            {
+                                "name": "doConversationAggregate",
+                                "value": $("#settings #conversationAggregate").is(":checked") ? "1" : "0"
+                            },
+                            {
+                                "name": "doUserStatusAggregate",
+                                "value": $("#settings #userStatusAggregate").is(":checked") ? "1" : "0"
+                            },
+                            {
+                                "name": "analyticsIntervalStart",
+                                "value": calculateAnalyticsIntervals().analyticsIntervalStart
+                            },
+                            {
+                                "name": "analyticsIntervalStop",
+                                "value": calculateAnalyticsIntervals().analyticsIntervalStop
+                            }
+                        ]
+                    };
+
+                    if ($("#settings #recurrence").prop("checked")) {
+                        apiPath = apiPathCloudAnalyticsCronJobs;
+                        data.schedule = cron_ui.currentValue;
+                    } else {
+
+                        apiPath = apiPathCloudAnalyticsJobs;
+                    }
+
+                    $.ajax({
+                        url: apiPath + "/" + id,
+                        dataType: "json",
+                        method: "PATCH",
+                        beforeSend: setRequiredHeaders,
+                        data: data
+                    }).done((data, textStatus, jqXHR) => {
+                        if (jqXHR.status == 200) {
+                            console.log(`Request ${data.id} saved`);
+                            $("#settings").modal('toggle');
+                            publishMessage("Web", "purecloudAnalyticsUpdated", id);
+                            showMessage(`'${data.name}' saved`);
+                            loadRequests();
+                            return;
+                        }
+                    }).fail(handleQueryError);
+                });
+            });
+
+            //#endregion
+
+            //#region Last Updated
+
+            var lastUpdatedDiv = $("<div />", { class: "float-right text-dark ml-2" }).appendTo(headerContent);
+            var updatedSection = $("<i />", { class: "fas fa-calendar-alt" }).appendTo(lastUpdatedDiv);
+            lastUpdatedDiv.append(` ${moment(updatedAt).fromNow()}`);
+
+            //#endregion
+
+            //#region Schedule
+
+            if (schedule) {
+                var scheduleDiv = $("<div />", { class: "float-right text-dark" }).appendTo(headerContent);
+                var scheduleSection = $("<i />", { class: "fas fa-clock" }).appendTo(scheduleDiv);
+                scheduleDiv.append(` ${prettyCron.toString(schedule)}`);
+            }
+
+            //#endregion
+
+            //#endregion Header
+
+            //#region Body
+
+            if (results && results.length > 0) {
+                $.each(results, (i, result) => {
+                    if (result.result) {
+                        var collapseBody = $("<div />", { id: "collapse_" + id, class: "collapse", "data-parent": "#accordion" }).appendTo(cardDiv);
+                        var cardBodyDiv = $("<div />", { class: "card-body" }).appendTo(collapseBody);
+                        var subCardBodyDiv = $("<div />", { class: "card b-all shadow-none" }).appendTo(cardBodyDiv)
+                        var inboxDiv = $("<div />", { class: "inbox-center table-responsive" }).appendTo(subCardBodyDiv);
+                        var table = $("<table />", { class: "table table-hover no-wrap" }).appendTo(inboxDiv);
+                        var tableBody = $("<tbody />").appendTo(table);
+
+                        var tableRow = $("<tr />", { class: "unread" }).appendTo(tableBody);
+
+                        // Download section
+                        var downloadTd = $("<td />", { class: "hidden-xs-down", style: "cursor:pointer" }).appendTo(tableRow);
+                        downloadTd.append($("<i />", { class: "fas fa-download" }));
+                        downloadTd.append(" Download");
+                        downloadTd.on("click", () => {
+                            pushFile(id, results[0].outputPath);
+                            publishMessage("Web", "purecloudAnalyticsDownloaded", id);
+                        });
+
+                        // Id (for troubleshooting)
+                        var idTd = $("<td />", { class: "hidden-xs-down" }).appendTo(tableRow);
+                        idTd.append($("<small />", { class: "text-muted" }).text(`(${result.outputPath})`));
+
+                        // Time section
+                        var timeSection = $("<td />", { class: "hidden-xs-down" }).appendTo(tableRow);
+                        timeSection.append($("<i />", { class: "fas fa-calendar-alt" }));
+                        timeSection.append(` ${moment(result.timestamp).fromNow()}`);
+                        // Set color
+                        if (results[results.length - 1].result) {
+                            timeSection.addClass("text-success");
+                        }
+                    }
+                });
+            }
+
+            //#endregion
+
+            return cardDiv;
+        }
+
+        // Load requests via API call
+        function loadRequests(showJobs = true, showCronjobs = true) {
+
+            // Remove any existing cards
+            $("#accordion").empty();
+
+            apiPath = apiPathCloudAnalyticsJobs;
+
+            // Call API
+            $.ajax({
+                url: apiPath,
+                dataType: "json",
+                beforeSend: setRequiredHeaders
+            }).done((data, textStatus, jqXHR) => {
+                switch (jqXHR.status) {
+                    case 200:
+                        let requests = data;
+                        console.log('requests:', requests);
+                        requests.forEach(currentRequest => {
+
+                            if ((currentRequest.cronJob && showCronjobs) || (!currentRequest.cronJob && showJobs)) {
+
+                                let clientId = searchByName(currentRequest.input, "name", "clientId")
+                                let clientIdValue = clientId ? clientId.value : "";
+
+                                let clientSecret = searchByName(currentRequest.input, "name", "clientSecret")
+                                let clientSecretValue = clientSecret ? clientSecret.value : "";
+
+                                let environment = searchByName(currentRequest.input, "name", "environment")
+                                let environmentValue = environment ? environment.value : "";
+
+                                let doConversationDetail = searchByName(currentRequest.input, "name", "doConversationDetail")
+                                let doConversationDetailValue = doConversationDetail ? doConversationDetail.value : "0";
+
+                                let doConversationAggregate = searchByName(currentRequest.input, "name", "doConversationAggregate")
+                                let doConversationAggregateValue = doConversationAggregate ? doConversationAggregate.value : "0";
+
+                                let doUserStatusAggregate = searchByName(currentRequest.input, "name", "doUserStatusAggregate")
+                                let doUserStatusAggregateValue = doUserStatusAggregate ? doUserStatusAggregate.value : "0";
+
+                                let analyticsIntervalStart = searchByName(currentRequest.input, "name", "analyticsIntervalStart")
+                                let analyticsIntervalStartValue = analyticsIntervalStart ? analyticsIntervalStart.value : "";
+
+                                let analyticsIntervalStop = searchByName(currentRequest.input, "name", "analyticsIntervalStop")
+                                let analyticsIntervalStopValue = analyticsIntervalStop ? analyticsIntervalStop.value : "";
+
+                                // Add item
+                                $("#accordion").append(createRequest(
+                                    currentRequest.id,
+                                    currentRequest.inProgress,
+                                    currentRequest.cronJob,
+                                    currentRequest.name,
+                                    currentRequest.image,
+                                    currentRequest.cronJob,
+                                    currentRequest.schedule,
+                                    clientIdValue,
+                                    clientSecretValue,
+                                    environmentValue,
+                                    doConversationDetailValue,
+                                    doConversationAggregateValue,
+                                    doUserStatusAggregateValue,
+                                    analyticsIntervalStartValue,
+                                    analyticsIntervalStopValue,
+                                    currentRequest.results,
+                                    currentRequest.updatedAt
+                                )
+                                );
+                            }
+                        });
+                        break;
+                    default:
+                        console.error("Unknown status code: " + jqXHR.status);
+                        break;
+                }
+            }).fail(handleQueryError);
+        }
+
+        function searchByName(array, keyName, searchCriteria) {
+            return array.find((element) => { return element[keyName] == searchCriteria; });
+        }
+
+        function pushFile(jobId, filename) {
+            var req = new XMLHttpRequest();
+            req.open("GET", `${apiPath}/${jobId}/download/${filename}`, true);
+            req.responseType = "blob";
+            req.setRequestHeader("Authorization", getCookie("Authorization"));
+            req.setRequestHeader("comply-username", getCookie("comply-username"));
+            req.setRequestHeader("comply-groups", getCookie("comply-groups"));
+            req.setRequestHeader("comply-organization", getCookie("comply-organization"));
+            req.setRequestHeader("comply-orgId", getCookie("comply-orgId"));
+            req.onload = ((event) => {
+                // Creating a fake anchor and click it
+                var blob = req.response;
+                var link = document.createElement("a");
+                link.download = filename;
+                link.href = window.URL.createObjectURL(blob);
+                link.click();
+            });
+            req.send(); // Download
+        }
+
+        function calculateAnalyticsIntervals() {
+
+            var analyticsIntervalStart, analyticsIntervalStop;
+
+            switch ($("#settings #timespan").val()) {
+                case "day":
+                    analyticsIntervalStart = moment().subtract(1, "days").format("YYYY-MM-DD");
+                    analyticsIntervalStop = moment().subtract(1, "days").format("YYYY-MM-DD");
+                    break;
+                case "week":
+                    analyticsIntervalStart = moment().subtract(1, "weeks").startOf("isoWeek").format("YYYY-MM-DD");
+                    analyticsIntervalStop = moment().subtract(1, "weeks").endOf("isoWeek").format("YYYY-MM-DD");
+                    break;
+                case "month":
+                    analyticsIntervalStart = moment().subtract(1, 'months').date(1).format("YYYY-MM-DD");
+                    analyticsIntervalStop = moment().subtract(1, 'months').endOf("month").format("YYYY-MM-DD");
+                    break;
+                default:
+                    break;
+            }
+
+            console.log("Analytics Interval Start:", analyticsIntervalStart);
+            console.log("Analytics Interval Stop:", analyticsIntervalStop);
+
+
+            return {
+                "analyticsIntervalStart": analyticsIntervalStart,
+                "analyticsIntervalStop": analyticsIntervalStop
+            }
+        }
+
+        loadRequests();
+        resetModal();
+
+    </script>
+</body>
+
+</html>

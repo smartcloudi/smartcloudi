@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <!-- Tell the browser to be responsive to screen width -->
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="">
+  <meta name="author" content="">
+  <!-- Favicon icon -->
+  <link rel="icon" type="image/ico" sizes="16x16" href="../images/favicon.ico">
+  <title>Smart Cloudi - DSR PureCloud</title>
+
+  <link href="css/style.min.css" rel="stylesheet">
+  <link href="../css/jquery.toast.min.css" rel="stylesheet">
+  <link href="css/dsrpurecloud-index.css" rel="stylesheet">
+</head>
+
+<body style="width: 480px;">
+  <noscript>You need to enable JavaScript to run this app.</noscript>
+
+  <!--#region Navbar -->
+
+  <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div>
+      <button type="button" id="refresh" class="btn btn-info"><i class="fas fa-sync-alt"></i> Refresh</button>
+      <button type="button" id="newrequest" class="btn btn-primary"><i class="fas fa-plus"></i> New Request</button>
+    </div>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav mr-auto">
+        <li class="nav-item active">
+          <a class="nav-link" href="/">Current Requests</a>
+        </li>
+      </ul>
+    </div>
+  </nav>
+
+  <!--#endregion -->
+
+  <!--#region Current Requests -->
+
+  <div class="container mt-2">
+    <div>
+      <h6 id="currentRequests" class="text-center">Current Requests</h6>
+      <hr />
+    </div>
+
+    <div id="cards"></div>
+
+  </div>
+
+  <!--#endregion -->
+
+  <!--#region required scripts -->
+
+  <!-- Load scripts at the end for lazy loading -->
+  <script src="../js/jquery-3.3.1.min.js"></script>
+  <script src="../js/popper.min.js"></script>
+  <script src="../js/bootstrap.min.js"></script>
+  <script src="../js/moment.min.js"></script>
+  <script src="https://sdk-cdn.mypurecloud.com/javascript/41.0.0/purecloud-platform-client-v2.min.js"></script>
+  <script src="../js/jquery.toast.min.js"></script>
+  <script src="js/notifications.js"></script>
+  <script src="js/purecloud.js"></script>
+
+  <!--#endregion -->
+
+  <!-- Our scripts -->
+  <script>
+
+    // Refresh button
+    $("#refresh").click(() => {
+      loadCards();
+    });
+
+    // New request button
+    $("#newrequest").click(() => {
+      $(location).attr('href', '/portal/pages-dsr-purecloud-newrequest.html');
+    });
+
+    loadCards();
+
+    function loadCards() {
+
+      getGDPRRequests().then(async (requests) => {
+        if (!requests || !requests.entities) {
+          console.log("No requests found");
+          return;
+        }
+        for (let i = 0; i < requests.entities.length; i++) {
+          $("#cards").empty();
+          const request = requests.entities[i];
+
+          $("#currentRequests").text(`Current Requests (${requests.entities ? requests.entities.length : null})`);
+
+          identifyCreatedByUserId(request).then((createdBy) => {
+            // Temporarily remove Eric's XSS attack
+            // if (createdBy == "Eric Cohen") {
+            //   return true;
+            // }
+
+            var userId = request.subject ? request.subject.userId ? request.subject.userId : "" : "";
+            identifyUserId(request).then((username) => {
+              const type = request.requestType;
+              const status = request.status;
+              const phoneNumber = request.subject ? request.subject.phoneNumbers ? request.subject.phoneNumbers[0] : "" : "";
+              const address = request.subject ? request.subject.addresses ? request.subject.addresses[0] : "" : "";
+              const emailAddress = request.subject ? request.subject.emailAddresses ? request.subject.emailAddresses[0] : "" : "";
+              const externalContactId = request.subject ? request.subject.externalContactId ? request.subject.externalContactId : "" : "";
+              const dialerContactId = request.subject ? request.subject.dialerContactId ? request.subject.dialerContactId.id : "" : "";
+              const createdDate = moment(request.createdDate).fromNow();
+              const replacementTerms = request.replacementTerms ? request.replacementTerms : "";
+              var resultsUrl;
+
+              // Add resultsUrl if this is a GDPR_EXPORT COMPLETED request
+              if (type == "GDPR_EXPORT" && status == "COMPLETED") {
+                getGDPRRequest(request.id).then((data) => {
+                  $("#cards").append(createCard(request.id, type, status, username, phoneNumber, address, emailAddress, createdBy, createdDate, userId, externalContactId, dialerContactId, data.resultsUrl, replacementTerms));
+                  return;
+                }).catch((error) => {
+                  console.error(error);
+                });
+              }
+
+              $("#cards").append(createCard(request.id, type, status, username, phoneNumber, address, emailAddress, createdBy, createdDate, userId, externalContactId, dialerContactId, resultsUrl, replacementTerms));
+
+            }).catch((error) => {
+              console.error(error);
+            });
+          }).catch((error) => {
+            console.error(error);
+          });
+        }
+      }).catch((error) => {
+        console.error(error);
+      });
+    }
+
+    function identifyCreatedByUserId(request) {
+      var promise = new Promise(function (resolve, reject) {
+        getUser(request.createdBy.id).then((user) => {
+          // Use the created by user's name
+          resolve(user.name);
+        }).catch((error) => {
+          // Error (user probably does not exist). Use the created by user id
+          resolve(request.createdBy.id);
+        });
+      });
+      return promise;
+    }
+
+    function identifyUserId(request) {
+      var promise = new Promise(function (resolve, reject) {
+        var userId = request.subject ? request.subject.userId ? request.subject.userId : "" : "";
+        if (!userId) {
+          // No user id present. Any other fields present?
+          if (request.subject.name) {
+            resolve(encodeURI(request.subject.name));
+          } else {
+            resolve("");
+          }
+        } else {
+          // We have a user id
+          getUser(userId).then((user) => {
+            // Use the user's name
+            resolve(user.name);
+          }).catch((error) => {
+            // Use the user id
+            resolve(userId);
+          });
+        }
+      });
+      return promise;
+    }
+
+    function createCard(requestId, type, status, name, phoneNumber, address, email, createdBy, createdDate, userId, externalContactId, dialerContactId, resultsUrl, replacementTerms) {
+      var cardDiv = document.createElement("div")
+      cardDiv.className = "card shadow mt-2";
+
+      //#region Header
+
+      var $headerDiv = $("<h6/>", { class: "card-header small" }).appendTo(cardDiv);
+
+      // Status
+      switch (status) {
+        case "COMPLETED":
+          $headerDiv.addClass("bg-success text-light");
+          break;
+        case "INITIATED":
+        case "DELETING":
+        case "FINALIZING":
+        case "SEARCHING":
+        case "UPDATING":
+          $headerDiv.addClass("bg-warning text-dark");
+          break;
+        case "ERROR":
+          $headerDiv.addClass("bg-danger text-light");
+          break;
+        default:
+          console.error(`Unknown status: ${status}`);
+          break;
+      }
+
+      // Type
+      switch (type) {
+        case "GDPR_EXPORT":
+          $headerDiv.append(`<i class="fas fa-file-export" data-toggle="tooltip" data-placement="top" title="Export"></i> `);
+          break;
+        case "GDPR_DELETE":
+          $headerDiv.append(`<i class="fas fa-trash" data-toggle="tooltip" data-placement="top" title="Delete"></i> `);
+          break;
+        case "GDPR_UPDATE":
+          $headerDiv.append(`<i class="fas fa-refresh" data-toggle="tooltip" data-placement="top" title="Update"></i> `);
+          break;
+        default:
+          console.error(`Unknown type: ${type}`);
+          break;
+      }
+
+      // Download button
+      // var downloadButton = document.createElement("button");
+      // downloadButton.setAttribute("id", `button-${requestId}`);
+      // downloadButton.innerHTML = '<i class="fas fa-download"></i> Download';
+      // downloadButton.className = "btn btn-sm btn-warning";
+
+      if (name) {
+        $headerDiv.append(`${name ? name : ""} <div class="float-right">${status}</div>`);
+      } else if (address) {
+        $headerDiv.append(`${address ? address : ""} <div class="float-right">${status}</div>`);
+      } else if (phoneNumber) {
+        $headerDiv.append(`${phoneNumber ? phoneNumber : ""} <div class="float-right">${status}</div>`);
+      } else if (email) {
+        $headerDiv.append(`${email ? email : ""} <div class="float-right">${status}</div>`);
+      }
+
+      if (status == "COMPLETED" && type == "GDPR_EXPORT") {
+        if (resultsUrl) {
+          console.log(resultsUrl);
+          if (!resultsUrl.startsWith("https://")) {
+            //This is due to an issue in PureCloud which provides links like "https:/app.my" instead of "https://apps.my" (missing a forward slash)
+            resultsUrl = resultsUrl.replace("https:/", "https://");
+          }
+          // $headerDiv.append(downloadButton);
+          // $(document).on("click", `#button-${requestId}`, function () {
+          //   console.log('clicked');
+          //   window.location.href = resultsUrl;
+          // });
+          $("<a/>", { href: resultsUrl }).html('<button>download</button>').appendTo($headerDiv);
+          //'<i class="fas fa-download fa-2x text-warning" data-toggle="tooltip" data-placement="top" title="Download"></i>'
+          //$download.setAttribute("href", resultsUrl);
+          //$downloadLink.innerHTML = `<a href="${resultsUrl}"><i class="fas fa-download fa-2x text-warning" data-toggle="tooltip" data-placement="top" title="Download"></i></a> `;
+          //$headerDiv.append(downloadLink);
+        } else {
+          $headerDiv.append("(No results)");
+        }
+      }
+
+      //#endregion
+
+      //#region Body
+
+      var body = document.createElement("div");
+      body.className = "card-body bg-light";
+
+      var rowDiv = document.createElement("div");
+      rowDiv.className = "row";
+
+      // Name
+      if (name) {
+        var nameSection = document.createElement("h6");
+        nameSection.className = "card-text small mr-1 ml-1";
+        if (type == "GDPR_UPDATE") {
+          for (let i = 0; i < replacementTerms.length; i++) {
+            const replacementTerm = replacementTerms[i];
+            if (replacementTerm.type == "NAME") {
+              nameSection.innerHTML = `<i class="fas fa-user-circle"></i> ${replacementTerm.existingValue} <i class="far fa-arrow-alt-circle-right text-danger"></i> ${replacementTerm.updatedValue}`;
+            }
+          }
+        } else {
+          nameSection.innerHTML = `<i class="fas fa-user-circle"></i> ${encodeURI(name)}`;
+        }
+        nameSection.setAttribute("data-toggle", "tooltip");
+        nameSection.setAttribute("data-placement", "top");
+        nameSection.setAttribute("title", "Name");
+        rowDiv.append(nameSection);
+      }
+
+      // Address
+      if (address) {
+        var addressSection = document.createElement("h6");
+        addressSection.className = "card-text small mr-1 ml-1";
+        if (type == "GDPR_UPDATE") {
+          for (let i = 0; i < replacementTerms.length; i++) {
+            const replacementTerm = replacementTerms[i];
+            if (replacementTerm.type == "ADDRESS") {
+              addressSection.innerHTML = `<i class="fas fa-user-circle"></i> ${replacementTerm.existingValue} <i class="far fa-arrow-alt-circle-right text-danger"></i> ${replacementTerm.updatedValue}`;
+            }
+          }
+        } else {
+          addressSection.innerHTML = `<i class="fas fa-address-card"></i> ${address}`;
+        }
+        addressSection.setAttribute("data-toggle", "tooltip");
+        addressSection.setAttribute("data-placement", "top");
+        addressSection.setAttribute("title", "Address");
+        rowDiv.append(addressSection);
+      }
+
+      // Phone Number
+      if (phoneNumber) {
+        var phoneNumberSection = document.createElement("h6");
+        phoneNumberSection.className = "card-text small mr-1 ml-1";
+        if (type == "GDPR_UPDATE") {
+          for (let i = 0; i < replacementTerms.length; i++) {
+            const replacementTerm = replacementTerms[i];
+            if (replacementTerm.type == "PHONE") {
+              phoneNumberSection.innerHTML = `<i class="fas fa-user-circle"></i> ${replacementTerm.existingValue} <i class="far fa-arrow-alt-circle-right text-danger"></i> ${replacementTerm.updatedValue}`;
+            }
+          }
+        } else {
+          phoneNumberSection.innerHTML = `<i class="fas fa-phone"></i> ${phoneNumber}`;
+        }
+        phoneNumberSection.setAttribute("data-toggle", "tooltip");
+        phoneNumberSection.setAttribute("data-placement", "top");
+        phoneNumberSection.setAttribute("title", "Phone Number");
+        rowDiv.append(phoneNumberSection);
+      }
+
+      // Email
+      if (email) {
+        var emailSection = document.createElement("h6");
+        emailSection.className = "card-text small mr-1 ml-1";
+        if (type == "GDPR_UPDATE") {
+          for (let i = 0; i < replacementTerms.length; i++) {
+            const replacementTerm = replacementTerms[i];
+            if (replacementTerm.type == "EMAIL") {
+              emailSection.innerHTML = `<i class="fas fa-user-circle"></i> ${replacementTerm.existingValue} <i class="far fa-arrow-alt-circle-right text-danger"></i> ${replacementTerm.updatedValue}`;
+            }
+          }
+        } else {
+          emailSection.innerHTML = `<i class="fas fa-envelope"></i> ${email}`;
+        }
+        emailSection.setAttribute("data-toggle", "tooltip");
+        emailSection.setAttribute("data-placement", "top");
+        emailSection.setAttribute("title", "Email Address");
+        rowDiv.append(emailSection);
+      }
+
+      body.append(rowDiv);
+
+      cardDiv.append(body);
+
+      //#endregion
+
+      //#region Footer
+
+      var footer = document.createElement("div");
+      footer.className = "row no-gutters bg-light";
+
+      var col = document.createElement("div");
+      col.className = "col";
+
+      var leftPart = document.createElement("div");
+      leftPart.className = "float-left text-secondary small ml-1";
+
+      // User Id
+      if (userId) {
+        var userIdSection = document.createElement("small");
+        userIdSection.setAttribute("id", "userId");
+        userIdSection.setAttribute("data-toggle", "tooltip");
+        userIdSection.setAttribute("data-placement", "top");
+        userIdSection.setAttribute("title", "User Id");
+        userIdSection.innerHTML = `<i class="fas fa-id-card"></i> ${userId}`;
+        leftPart.append(userIdSection);
+      }
+
+      // External Contact Id
+      if (externalContactId) {
+        var externalContactIdSection = document.createElement("small");
+        externalContactIdSection.className = "ml-1";
+        externalContactIdSection.setAttribute("id", "externalContactId");
+        externalContactIdSection.setAttribute("data-toggle", "tooltip");
+        externalContactIdSection.setAttribute("data-placement", "top");
+        externalContactIdSection.setAttribute("title", "External Contact Id");
+        externalContactIdSection.innerHTML = `<i class="fas fa-external-link-alt"></i> ${externalContactId}`;
+        leftPart.append(externalContactIdSection);
+      }
+
+      if (dialerContactId) {
+        // New Line
+        var newLine = document.createElement("br");
+        leftPart.append(newLine);
+
+        // Dialer Contact Id
+        var dialerContactIdSection = document.createElement("small");
+        dialerContactIdSection.className = "ml-1";
+        dialerContactIdSection.setAttribute("id", "dialerContactId");
+        dialerContactIdSection.setAttribute("data-toggle", "tooltip");
+        dialerContactIdSection.setAttribute("data-placement", "top");
+        dialerContactIdSection.setAttribute("title", "Dialer Contact Id");
+        dialerContactIdSection.innerHTML = `<i class="fas fa-sign-out-alt"></i> ${dialerContactId}`;
+        leftPart.append(dialerContactIdSection);
+      }
+
+      col.append(leftPart);
+
+      // Created By
+      var rightPart = document.createElement("div");
+      rightPart.className = "float-right text-secondary small";
+
+      var createdBySection = document.createElement("h6");
+      createdBySection.className = "small mr-2";
+      createdBySection.innerHTML = `Created by ${createdBy} (${createdDate})`;
+
+      rightPart.append(createdBySection);
+
+      col.append(rightPart);
+
+      footer.append(col);
+      cardDiv.append(footer);
+
+      //#endregion
+
+      // Activate bootstrap tooltips
+      $("[data-toggle='tooltip']").tooltip();
+
+      return cardDiv;
+    }
+
+  </script>
+</body>
+
+</html>

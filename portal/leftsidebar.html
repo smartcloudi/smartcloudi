@@ -1,0 +1,47 @@
+<!-- ============================================================== -->
+<!-- Left Sidebar - style you can find in sidebar.scss  -->
+<!-- ============================================================== -->
+<aside class="left-sidebar">
+  <!-- Sidebar scroll-->
+  <div class="scroll-sidebar ps">
+    <!-- Sidebar navigation-->
+    <nav class="sidebar-nav">
+      <ul id="sidebarnav">
+        <div>
+          <li class="text-center">
+            <a href="/portal/pages-cloud-analytics-purecloud.html" id="cloud-analytics-purecloud-link" class="waves-effect waves-dark" href="" aria-expanded="false">
+              <i class="fas fa-3x fa-chart-bar"></i>
+              <div>Cloud Analytics</div>
+            </a>
+          </li>
+          <!-- <li class="text-center">
+            <a href="/portal/pages-uc-automation-purecloud.html" id="uc-automation-purecloud-link" class="waves-effect waves-dark" href="" aria-expanded="false">
+              <i class="fas fa-3x fa-magic"></i>
+              <div class="hide-menu">Use Case Automation</div>
+            </a>
+          </li>
+          <li class="text-center">
+            <a href="/portal/pages-dsr-purecloud.html" id="dsr-purecloud-link" target="_blank" class="waves-effect waves-dark" href="" aria-expanded="false">
+              <i class="fas fa-3x fa-users"></i>
+              <div class="hide-menu">DSR Requests</div>
+            </a>
+          </li> -->
+        </div>
+      </ul>
+    </nav>
+    <!-- End Sidebar navigation -->
+  </div>
+  <!-- End Sidebar scroll-->
+  <script>
+    if (window.location.pathname.endsWith("pages-cloud-analytics-purecloud.html")) {
+      $("#cloud-analytics-purecloud-link").addClass("active");
+    } else if (window.location.pathname.endsWith("pages-uc-automation-purecloud.html")) {
+      $("#uc-automation-purecloud-link").addClass("active");
+    } else if (window.location.pathname.endsWith("pages-dsr-purecloud.html")) {
+      $("#dsr-purecloud-link").addClass("active");
+    }
+  </script>
+</aside>
+<!-- ============================================================== -->
+<!-- End Left Sidebar - style you can find in sidebar.scss  -->
+<!-- ============================================================== -->

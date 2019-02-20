@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <!-- Tell the browser to be responsive to screen width -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <!-- Favicon icon -->
+    <link rel="icon" type="image/png" sizes="16x16" href="../images/favicon.ico">
+    <title>Smart Cloudi</title>
+    <!-- This page CSS -->
+    <link href="css/style.min.css" rel="stylesheet">
+    <link href="../css/style-magnific-popup.css" rel="stylesheet">
+    <link href="../css/jquery.toast.min.css" rel="stylesheet">
+    <!-- Dashboard Page CSS -->
+    <link href="css/dashboard1.css" rel="stylesheet">
+</head>
+
+<body class="skin-purple-dark fixed-layout">
+    <!-- ============================================================== -->
+    <!-- Preloader - style you can find in spinners.css -->
+    <!-- ============================================================== -->
+    <div class="preloader">
+        <div class="loader">
+            <div class="loader__figure"></div>
+            <p class="loader__label">Smart Cloudi</p>
+        </div>
+    </div>
+    <!-- ============================================================== -->
+    <!-- Main wrapper - style you can find in pages.scss -->
+    <!-- ============================================================== -->
+    <div id="main-wrapper">
+        <div id="topbar"></div>
+        <div id="leftsidebar"></div>
+        <!-- ============================================================== -->
+        <!-- Page wrapper  -->
+        <!-- ============================================================== -->
+        <div class="page-wrapper">
+            <!-- ============================================================== -->
+            <!-- Container fluid  -->
+            <!-- ============================================================== -->
+            <div class="container-fluid">
+                <!-- ============================================================== -->
+                <!-- Bread crumb -->
+                <!-- ============================================================== -->
+                <div class="row page-titles">
+                    <div class="col-md-5 align-self-center">
+                        <h4 class="text-themecolor">Dashboard</h4>
+                    </div>
+                    <div class="col-md-7 align-self-center text-right">
+                        <div class="d-flex justify-content-end align-items-center">
+                            <ol class="breadcrumb">
+                                <li class="breadcrumb-item">
+                                    <a href="javascript:void(0)">Home</a>
+                                </li>
+                                <li class="breadcrumb-item active">Dashboard</li>
+                            </ol>
+                        </div>
+                    </div>
+                </div>
+                <!-- ============================================================== -->
+                <!-- End Bread crumb -->
+                <!-- ============================================================== -->
+                <!-- ============================================================== -->
+                <!-- End Page Content -->
+                <!-- ============================================================== -->
+                <!-- ============================================================== -->
+                <!-- Right sidebar -->
+                <!-- ============================================================== -->
+                <div id="rightsidebar"></div>
+                <!-- ============================================================== -->
+                <!-- End Right sidebar -->
+                <!-- ============================================================== -->
+            </div>
+            <!-- ============================================================== -->
+            <!-- End Container fluid  -->
+            <!-- ============================================================== -->
+        </div>
+        <!-- ============================================================== -->
+        <!-- End Page wrapper  -->
+        <!-- ============================================================== -->
+        <div id="footer"></div>
+    </div>
+    <!-- ============================================================== -->
+    <!-- End Wrapper -->
+    <!-- ============================================================== -->
+    <!-- ============================================================== -->
+    <!-- All Jquery -->
+    <!-- ============================================================== -->
+    <script src="../js/jquery-3.3.1.min.js"></script>
+    <script src="../js/popper.min.js"></script>
+    <script src="../js/bootstrap.min.js"></script>
+
+    <script src="../js/perfect-scrollbar.min.js"></script>
+    <script src="../js/perfect-scrollbar.jquery.js"></script>
+
+    <script src="../js/waves.js"></script>
+    <script src="../js/sidebarmenu.js"></script>
+
+    <script src="../js/jquery.magnific-popup.min.js"></script>
+    <script src="../js/jquery.nav.js"></script>
+
+    <!-- Page scripts -->
+    <script src="../js/custom.min.js"></script>
+    <script src="js/notifications.js"></script>
+    <script src="js/cookies.js"></script>
+
+    <script src="js/aws-sdk.min.js"></script>
+    <script src="js/amazon-cognito-auth.min.js"></script>
+    <script src="js/amazon-cognito-identity.min.js"></script>
+
+    <script>
+
+        // Import Bars
+        $("#topbar").load("topbar.html");
+        $("#leftsidebar").load("leftsidebar.html");
+        $("#rightsidebar").load("rightsidebar.html");
+        $("#footer").load("footer.html");
+
+        // Is user authenticated?
+        var data = {
+            UserPoolId: "eu-west-1_8d92gzCo4",
+            ClientId: "7sn1nlqferjdvjl0ufurg0dga4"
+        };
+        var userPool = new AmazonCognitoIdentity.CognitoUserPool(data);
+        var cognitoUser = userPool.getCurrentUser();
+
+        if (cognitoUser != null) {
+            cognitoUser.getSession(function (err, session) {
+                if (err) {
+                    alert(err);
+                    return;
+                }
+
+                if (!session.isValid()) {
+                    $(location).attr("href", "/portal/login.html");
+                    return;
+                }
+
+                AWS.config.credentials = new AWS.CognitoIdentityCredentials({
+                    IdentityPoolId: "eu-west-1:72f9916c-eb9a-4ff2-9c0a-9c0fe19e6745",
+                    Logins: {
+                        "cognito-idp.eu-west-1.amazonaws.com/eu-west-1_8d92gzCo4": session.getIdToken().getJwtToken()
+                    }
+                });
+
+                console.log("User session is valid");
+
+            });
+        } else {
+            $(location).attr("href", "/portal/login.html");
+        }
+    </script>
+</body>
+
+</html>

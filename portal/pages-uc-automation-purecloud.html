@@ -1,0 +1,1357 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <!-- Tell the browser to be responsive to screen width -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <!-- Favicon icon -->
+    <link rel="icon" type="image/ico" sizes="16x16" href="../images/favicon.ico">
+    <title>Smart Cloudi - Cloud Analytics</title>
+    <!-- Custom CSS -->
+    <link href="css/style.min.css" rel="stylesheet">
+    <link href="../css/stylish-tooltip.css" rel="stylesheet">
+    <link href="../css/switchery.css" rel="stylesheet" />
+    <link href="../css/jquery-ui.min.css" rel="stylesheet" />
+    <link href="../css/jquery.toast.min.css" rel="stylesheet">
+    <link href="../css/perfect-scrollbar.css" rel="stylesheet">
+    <link href="../css/dropify.min.css" rel="stylesheet">
+    <link href="css/progressbar-page.css" rel="stylesheet">
+    <link href="css/smart_wizard.min.css" rel="stylesheet">
+    <link href="css/smart_wizard_theme_arrows.min.css" rel="stylesheet">
+    <link href="css/uc-automation-purecloud.css" rel="stylesheet">
+</head>
+
+<body class="skin-blue fixed-layout">
+    <!-- ============================================================== -->
+    <!-- Preloader - style you can find in spinners.css -->
+    <!-- ============================================================== -->
+    <div class="preloader">
+        <div class="loader">
+            <div class="loader__figure"></div>
+            <p class="loader__label">Smart Cloudi</p>
+        </div>
+    </div>
+    <!-- ============================================================== -->
+    <!-- Main wrapper - style you can find in pages.scss -->
+    <!-- ============================================================== -->
+    <div id="main-wrapper">
+        <div id="topbar"></div>
+        <div id="leftsidebar"></div>
+        <!-- ============================================================== -->
+        <!-- Page wrapper  -->
+        <!-- ============================================================== -->
+        <div class="page-wrapper">
+            <!-- ============================================================== -->
+            <!-- Container fluid  -->
+            <!-- ============================================================== -->
+            <div class="container-fluid">
+                <!-- ============================================================== -->
+                <!-- Bread crumb and right sidebar toggle -->
+                <!-- ============================================================== -->
+                <div class="row page-titles">
+                    <div class="col-md-5 align-self-center">
+                        <h4 class="text-themecolor">Use Case Automation - PureCloud</h4>
+                    </div>
+                    <div class="col-md-7 align-self-center text-right">
+                        <div class="d-flex justify-content-end align-items-center">
+                            <ol class="breadcrumb">
+                                <li class="breadcrumb-item"><a href="javascript:void(0)">Home</a></li>
+                                <li class="breadcrumb-item active">UC Automation - PureCloud</li>
+                            </ol>
+                        </div>
+                    </div>
+                </div>
+                <!-- ============================================================== -->
+                <!-- End Bread crumb and right sidebar toggle -->
+                <!-- ============================================================== -->
+                <!-- ============================================================== -->
+                <!-- Start Page Content -->
+                <!-- ============================================================== -->
+
+                <!-- Wizard -->
+                <div id="smartwizard">
+                    <ul>
+                        <li><a href="#step-1">Connection<br /><small>PureCloud Credentials</small></a></li>
+                        <li><a href="#step-2">System Configuration<br /><small>Edges, Trunks, Phones, ...</small></a></li>
+                        <li><a href="#step-3">Configuration<br /><small>Users, Skills, Queues, ...</small></a></li>
+                        <li><a href="#step-4">Use Cases<br /><small>IVR, Recording, Integrations, ...</small></a></li>
+                    </ul>
+
+                    <div>
+                        <div id="step-1" class="">
+                            <div class="col-lg-12">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <form action="#" class="form-horizontal p-t-20">
+                                            <div class="form-group row">
+                                                <a href="https://help.mypurecloud.com" target="_blank"> How do I get these credentials?</a>
+                                            </div>
+                                            <div class="form-group row">
+                                                <label for="environment" class="col-sm-3 control-label">Environment</label>
+                                                <div class="col-md-9">
+                                                    <div class="input-group">
+                                                        <div class="input-group-prepend"><span class="input-group-text"><i class="ti-location-arrow"></i></span></div>
+                                                        <select class="form-control" id="environment">
+                                                            <optgroup label="AMERICAS">
+                                                                <option value="mypurecloud.com">North America (.com)</option>
+                                                            </optgroup>
+                                                            <optgroup label="ASIA">
+                                                                <option value="mypurecloud.jp">Tokyo, Japan (.jp)</option>
+                                                            </optgroup>
+                                                            <optgroup label="EMEA">
+                                                                <option value="mypurecloud.ie" selected>Dublin, Ireland (.ie)</option>
+                                                                <option value="mypurecloud.de">Frankfurt, Germany (.de)</option>
+                                                            </optgroup>
+                                                            <optgroup label="OCEANIA">
+                                                                <option value="mypurecloud.com.au">Australia/New Zealand (.com.au)</option>
+                                                            </optgroup>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="form-group row">
+                                                <label for="clientid" class="col-sm-3 control-label">Client Id</label>
+                                                <div class="col-sm-9">
+                                                    <div class="input-group">
+                                                        <div class="input-group-prepend"><span class="input-group-text"><i class="ti-id-badge"></i></span></div>
+                                                        <input type="text" class="form-control" id="clientId" placeholder="Enter your Client Id" value="489d03cb-e7c5-4f62-8fdb-b391d9b70ce6">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="form-group row">
+                                                <label for="clientsecret" class="col-sm-3 control-label">Client Secret</label>
+                                                <div class="col-sm-9">
+                                                    <div class="input-group">
+                                                        <div class="input-group-prepend"><span class="input-group-text"><i class="ti-lock"></i></span></div>
+                                                        <input type="password" class="form-control" id="clientSecret" placeholder="Enter your Client Secret" value="cvlV1EAkNZGTM6WavqIRhCOKMowmyGp6qEZciW0bTcs">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="form-group row m-b-0">
+                                                <div class="offset-sm-3 col-sm-9 row">
+                                                    <button type="button" id="testconnection" class="btn btn-info waves-effect waves-light">Connect</button>
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="step-2" class="">
+                            <!-- PureCloud System Configuration -->
+                            <div id="sysconfiguration" class="col-lg-12">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <form action="#" class="form-horizontal p-t-20">
+                                            <div class="form-group row">
+                                                No edges found. <a class="btn btn-info" href="https://apps.mypurecloud.ie/directory/#/engage/telephonyAdmin/edges" target="_blank">Create an Edge</a>
+                                            </div>
+                                            <div class="form-group row">
+                                                No trunks found. <a class="btn btn-info" href="https://apps.mypurecloud.ie/directory/#/engage/telephonyAdmin/edges" target="_blank" disabled>Create a Trunk</a>
+                                            </div>
+                                            <div class="form-group row">
+                                                No phones found. <a class="btn btn-info" href="https://apps.mypurecloud.ie/directory/#/engage/telephonyAdmin/edges" target="_blank" disabled>Create a Phone</a>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- /PureCloud System Configuration -->
+                        </div>
+                        <div id="step-3" class="">
+                            <!-- PureCloud Configuration -->
+                            <div id="configuration" class="col-lg-12">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <form action="#" class="form-horizontal p-t-20">
+                                            <div class="form-group row">
+                                                <label class="col-sm-3 control-label">Import Options</label>
+                                                <div class="col-md-9">
+                                                    <div class="radio-list" id="importOptions">
+                                                        <div class="custom-control custom-radio">
+                                                            <input type="radio" id="importFromCSV" name="customRadio" class="custom-control-input" checked="checked">
+                                                            <label class="custom-control-label" for="importFromCSV">Import from csv</label>
+                                                        </div>
+                                                        <div class="custom-control custom-radio">
+                                                            <input type="radio" id="importFromForm" name="customRadio" class="custom-control-input">
+                                                            <label class="custom-control-label" for="importFromForm">Use a form</label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!-- Import CSV -->
+                                            <div id="importCSVDiv">
+                                                <div class="form-group row">
+                                                    <label for="csvUpload" class="col-sm-3 control-label">CSV File (<a href="sample.csv">sample csv</a>)</label>
+                                                    <div class="col-md-9">
+                                                        <input type="file" id="csvUpload" class="dropify" />
+                                                    </div>
+                                                </div>
+                                                <div class="form-group row m-b-0">
+                                                    <div class="offset-sm-3 col-sm-9 ">
+                                                        <button type="button" id="analyzeCSV" class="btn btn-info waves-effect waves-light">Analyze</button>
+                                                        <h6 id="csventriesfound" class="card-subtitle m-t-5"></h6>
+                                                    </div>
+                                                </div>
+                                                <div id="importDiv" class="form-group row m-b-0">
+                                                    <div class="offset-sm-3 col-sm-9 ">
+                                                        <button type="button" id="importEntries" class="btn btn-info waves-effect waves-light">Import</button>
+                                                        <div id="importProgress" class="progress-bar bg-warning active progress-bar-striped m-t-5" style="width: 0%; height:14px;" role="progressbar"></div>
+                                                        <h6 id="importedQueues" class="card-subtitle m-t-5"></h6>
+                                                        <h6 id="importedSkills" class="card-subtitle m-t-5"></h6>
+                                                        <h6 id="importedUsers" class="card-subtitle m-t-5"></h6>
+                                                        <h6 id="importedErrors" class="text-danger card-subtitle m-t-5"></h6>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!-- /Import CSV -->
+                                            <!-- Form -->
+                                            <div id="importFormDiv">
+                                                <div id="importFormDivQueues">
+                                                    <hr>
+                                                    <button type="button" id="addQueue" class="btn btn-large btn-info waves-effect waves-light m-b-10"><i class="fa fa-plus-circle"></i> Add Queue</button>
+                                                    <div class="col-lg-12">
+                                                        <div class="card col-3 bg-warning">
+                                                            <div class="card-body text-dark">
+                                                                <span>Queue Name</span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <hr>
+                                                <div id="importFormDivSkills">
+                                                    <button type="button" id="addSkill" class="btn btn-large btn-info waves-effect waves-light m-b-10"><i class="fa fa-plus-circle"></i> Add Skill</button>
+                                                    <div class="col-lg-12">
+                                                        <div class="card col-3 bg-warning">
+                                                            <div class="card-body text-dark">
+                                                                <span>Skill Name</span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <hr>
+                                                <div id="importFormDivUsers">
+                                                    <button type="button" id="addUser" class="btn btn-large btn-info waves-effect waves-light m-b-10"><i class="fa fa-plus-circle"></i> Add User</button>
+                                                    <div class="col-lg-12">
+                                                        <div class="card col-3 bg-warning">
+                                                            <div class="card-body text-dark">
+                                                                <span>User Name</span>
+                                                                <span>Skill(s)</span>
+                                                                <span>Queue(s)</span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <hr>
+                                                <div class="offset-sm-3 col-sm-9 ">
+                                                    <button type="button" id="importFormEntries" class="btn btn-info waves-effect waves-light">Import</button>
+                                                    <div id="importProgress" class="progress-bar bg-warning active progress-bar-striped m-t-5" style="width: 0%; height:14px;" role="progressbar"></div>
+                                                    <h6 id="importedQueues" class="card-subtitle m-t-5"></h6>
+                                                    <h6 id="importedSkills" class="card-subtitle m-t-5"></h6>
+                                                    <h6 id="importedUsers" class="card-subtitle m-t-5"></h6>
+                                                    <h6 id="importedErrors" class="text-danger card-subtitle m-t-5"></h6>
+                                                </div>
+                                            </div>
+                                            <!-- /Form -->
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- /PureCloud Configuration -->
+                        </div>
+                        <div id="step-4" class="">
+                            <div id="flowsDiv" class="col-lg-12">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <div class="form-group row">
+                                            <label class="control-label text-right col-md-3">Select a Use Case</label>
+                                            <div class="col-md-9">
+                                                <div class="radio-list" id="flows">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- /Wizard -->
+
+                <!-- Modals -->
+                <div id="flowSettings" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="flowSettings" aria-hidden="true" style="display: none;">
+                    <div class="modal-dialog modal-lg">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h4 class="modal-title" id="title"></h4>
+                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                            </div>
+                            <div class="modal-body">
+                                <!-- Form -->
+                                <div class="form-group">
+                                    <label for="name" class="control-label">Name</label><br>
+                                    <input type="text" class="form-control" id="name" placeholder="Enter a name for this flow">
+                                </div>
+                                <div class="form-group">
+                                    <label for="description" class="control-label">Description</label><br>
+                                    <small>Enter the description for this flow</small>
+                                    <textarea class="form-control" id="description">
+                                    </textarea>
+                                </div>
+                                <div class="row">
+                                    <div class="form-group col-6">
+                                        <label class="control-label">Queue #1</label>
+                                        <select class="form-control custom-select queues" id="queue1">
+                                        </select>
+                                        <small class="form-control-feedback m-l-10 text-muted"> Select a queue </small>
+                                    </div>
+                                    <div class="form-group col-6">
+                                        <label class="control-label">Queue #2</label>
+                                        <select class="form-control custom-select queues" id="queue2">
+                                        </select>
+                                        <small class="form-control-feedback m-l-10 text-muted"> Select a queue </small>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="form-group col-6">
+                                        <label class="control-label">Skill #1</label>
+                                        <select class="form-control custom-select skills" id="skill1">
+                                        </select>
+                                        <small class="form-control-feedback m-l-10 text-muted"> Select a skill </small>
+                                    </div>
+                                    <div class="form-group col-6">
+                                        <label class="control-label">Skill #2</label>
+                                        <select class="form-control custom-select skills" id="skill2">
+                                        </select>
+                                        <small class="form-control-feedback m-l-10 text-muted"> Select a skill </small>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="form-group col-6">
+                                        <label class="control-label">Welcome Prompt</label>
+                                        <button class="btn btn-sm btn-info" type="button" id="welcomeUpload"><i class="fas fa-upload"></i> Upload</button>
+                                        <select class="form-control custom-select prompts" id="welcomeprompt">
+                                        </select>
+                                        <small class="form-control-feedback m-l-10 text-muted"> Select a welcome prompt </small>
+                                    </div>
+                                    <div class="form-group col-6">
+                                        <label class="control-label">Main Menu Prompt</label>
+                                        <button class="btn btn-sm btn-info" type="button" id="mainMenuUpload"><i class="fas fa-upload"></i> Upload</button>
+                                        <select class="form-control custom-select prompts" id="mainmenuprompt">
+                                        </select>
+                                        <small class="form-control-feedback m-l-10 text-muted"> Select a main menu prompt </small>
+                                    </div>
+                                </div>
+                                <input type="hidden" id="flowContentsOriginal" />
+                                <input type="hidden" id="flowContentsTemp" />
+                                <!-- End Form -->
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                                <button type="button" id="preview" data-toggle="modal" data-target="#previewModal" class="btn btn-info waves-effect">Preview</button>
+                                <button type="button" id="close" class="btn btn-primary waves-effect"></button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="previewModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="previewModal" aria-hidden="true" style="display: none;">
+                    <div class="modal-dialog modal-lg">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h4 class="modal-title" id="title">Preview</h4>
+                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                            </div>
+                            <div class="modal-body">
+                                <pre id="jsonPreview"></pre>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" id="close" class="btn btn-primary waves-effect" data-dismiss="modal">Close</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- /Modals -->
+
+                <!-- ============================================================== -->
+                <!-- End Page Content -->
+                <!-- ============================================================== -->
+                <!-- ============================================================== -->
+                <!-- Right sidebar -->
+                <!-- ============================================================== -->
+                <!-- .right-sidebar -->
+                <div class="rightsidebar"></div>
+                <!-- ============================================================== -->
+                <!-- End Right sidebar -->
+                <!-- ============================================================== -->
+            </div>
+            <!-- ============================================================== -->
+            <!-- End Container fluid  -->
+            <!-- ============================================================== -->
+        </div>
+        <!-- ============================================================== -->
+        <!-- End Page wrapper  -->
+        <!-- ============================================================== -->
+        <!-- ============================================================== -->
+        <!-- footer -->
+        <!-- ============================================================== -->
+        <footer class="footer">
+            © 2018 Eliteadmin by themedesigner.in
+        </footer>
+        <!-- ============================================================== -->
+        <!-- End footer -->
+        <!-- ============================================================== -->
+    </div>
+    <!-- ============================================================== -->
+    <!-- End Wrapper -->
+    <!-- ============================================================== -->
+    <!-- ============================================================== -->
+    <!-- All Jquery -->
+    <!-- ============================================================== -->
+    <script src="../js/jquery-3.3.1.min.js"></script>
+    <script src="../js/popper.min.js"></script>
+    <script src="../js/bootstrap.min.js"></script>
+
+    <script src="../js/perfect-scrollbar.min.js"></script>
+    <script src="../js/perfect-scrollbar.jquery.js"></script>
+
+    <script src="../js/waves.js"></script>
+    <script src="../js/sidebarmenu.js"></script>
+
+    <script src="../js/jquery.toast.min.js"></script>
+    <script src="../js/sweetalert.min.js"></script>
+    <script src="../js/dropify.min.js"></script>
+
+    <!-- Page scripts -->
+    <script src="../js/custom.min.js"></script>
+    <script src="js/notifications.js"></script>
+    <script src="js/cookies.js"></script>
+
+    <script src="js/aws-sdk.min.js"></script>
+    <script src="js/amazon-cognito-auth.min.js"></script>
+    <script src="js/amazon-cognito-identity.min.js"></script>
+
+    <script src="js/papaparse.min.js"></script>
+    <script src="js/jquery.smartWizard.min.js"></script>
+
+    <script>
+
+        // Import Bars
+        $("#topbar").load("topbar.html");
+        $("#leftsidebar").load("leftsidebar.html");
+        $("#rightsidebar").load("rightsidebar.html");
+        $("#footer").load("footer.html");
+
+        // Is user authenticated?
+        var data = {
+            UserPoolId: "eu-west-1_8d92gzCo4",
+            ClientId: "7sn1nlqferjdvjl0ufurg0dga4"
+        };
+        var userPool = new AmazonCognitoIdentity.CognitoUserPool(data);
+        var cognitoUser = userPool.getCurrentUser();
+
+        if (cognitoUser != null) {
+            cognitoUser.getSession(function (err, session) {
+                if (err) {
+                    alert(err);
+                    return;
+                }
+
+                if (!session.isValid()) {
+                    $(location).attr("href", "/portal/login.html");
+                    return;
+                }
+
+                AWS.config.credentials = new AWS.CognitoIdentityCredentials({
+                    IdentityPoolId: "eu-west-1:72f9916c-eb9a-4ff2-9c0a-9c0fe19e6745",
+                    Logins: {
+                        "cognito-idp.eu-west-1.amazonaws.com/eu-west-1_8d92gzCo4": session.getIdToken().getJwtToken()
+                    }
+                });
+
+                console.log("User session is valid");
+
+            });
+        } else {
+            $(location).attr("href", "/portal/login.html");
+        }
+
+        // Initi csv upload and smartWizard
+
+        $(document).ready(function () {
+            // Basic
+            $('#csvUpload').dropify({
+                allowedFileExtensions: "csv",
+                height: 100
+            });
+
+            // Used events
+            var drEvent = $('#input-file-events').dropify();
+
+            drEvent.on('dropify.beforeClear', function (event, element) {
+                return confirm("Do you really want to delete \"" + element.file.name + "\" ?");
+            });
+
+            drEvent.on('dropify.afterClear', function (event, element) {
+                alert('File deleted');
+            });
+
+            drEvent.on('dropify.errors', function (event, element) {
+                console.log('Has Errors');
+            });
+
+            // Get file: $("#input-file-now").val() (e.g. C:\fakepath\people_import_example_no_division.csv)
+            // or $("#input-file-now").dropify()[0].files[0].name (e.g. people_import_example_no_division.csv)
+
+            $('#smartwizard').smartWizard({
+                contentCache: false,
+                theme: "arrows",
+                transitionEffect: "fade",
+                toolbarSettings: {
+                    toolbarButtonPosition: "left"
+                }
+            });
+
+            // Initialize the leaveStep event
+            $("#smartwizard").on("leaveStep", function (e, anchorObject, stepNumber, stepDirection) {
+                console.debug(`Leaving step #${stepNumber}`);
+            });
+
+            // Initialize the showStep event
+            $("#smartwizard").on("showStep", function (e, anchorObject, stepNumber, stepDirection) {
+                console.debug(`On step #${stepNumber} now`);
+            });
+
+        });
+
+        var apiPath = "https://blooming-woodland-18540.herokuapp.com/api/v1/connector-purecloud";
+        var token, users;
+        var queuesCreated = 0, queuesExisted = 0, skillsCreated = 0, skillsExisted = 0, usersCreated = 0, usersExisted = 0;
+
+        //$("#configuration").hide();
+        //$("#flowsDiv").hide();
+        $("#importDiv").hide();
+        $("#importFormDiv").hide();
+        resetFlowModal();
+
+        //#region PureCloud Connection
+
+        $("#testconnection").on("click", () => {
+            // Call API to test PureCloud connection
+            $.ajax({
+                url: `${apiPath}/login`,
+                dataType: "json",
+                method: "POST",
+                // beforeSend: setRequiredHeaders,
+                data: {
+                    "clientId": $("#clientId").val(),
+                    "clientSecret": $("#clientSecret").val(),
+                    "env": $("#environment").val(),
+                }
+            }).done((data, textStatus, jqXHR) => {
+                try {
+                    switch (jqXHR.status) {
+                        case 200:
+                            if (data.token) {
+                                token = data.token;
+                                showMessage("Connection Succeeded!");
+                                $('#smartwizard').smartWizard("next");
+                                // $("#configuration").show("slow");
+                                // $("#flowsDiv").show("slow");
+                                // $("#connectionHeaderDiv").addClass("bg-success");
+                                // $("#connectionHeaderDiv").removeClass("bg-info");
+                                $("#testconnection").addClass("btn-success");
+                                $("#testconnection").removeClass("btn-info");
+                                loadFlows();
+
+                                //Scroll to configuration
+                                $([document.documentElement, document.body]).animate({
+                                    scrollTop: $("#configuration").offset().top
+                                }, 2000);
+                            } else {
+                                throw new Error();
+                            }
+                            break;
+                        default:
+                            throw new Error();
+                            break;
+                    }
+                } catch (error) {
+                    showMessage("Connection failed", true);
+                    //$("#configuration").hide("slow");
+                    //$("#flowsDiv").hide("slow");
+                    //$("#connectionHeaderDiv").removeClass("bg-success");
+                    //$("#connectionHeaderDiv").addClass("bg-info");
+                    $("#testconnection").removeClass("btn-success");
+                    $("#testconnection").addClass("btn-info");
+                }
+            })
+                .fail((jqXHR, textStatus, errorThrown) => {
+                    showMessage("Connection failed", true);
+                    //$("#configuration").hide("slow");
+                    //$("#flowsDiv").hide("slow");
+                    //$("#connectionHeaderDiv").removeClass("bg-success");
+                    //$("#connectionHeaderDiv").addClass("bg-info");
+                    $("#testconnection").removeClass("btn-success");
+                    $("#testconnection").addClass("btn-info");
+                });
+        });
+
+        //#endregion
+
+        //#region CSV Import
+
+        $("#importOptions #importFromCSV").change(() => {
+            console.log("importFromCSV selected");
+            $("#importCSVDiv").show();
+            $("#importFormDiv").hide();
+        });
+
+        // Analyze selected csv file
+        $("#analyzeCSV").on("click", () => {
+            var file = $("#csvUpload").dropify()[0].files[0];
+            if (!file) {
+                showMessage("Please upload a .csv file first", true);
+                return;
+            }
+            const reader = new FileReader();
+            reader.onload = e => {
+                const csvContents = e.target.result;
+                // Parse csv and convert to an object
+                Papa.parse(csvContents, {
+                    header: true,
+                    dynamicTyping: true,
+                    skipEmptyLinkes: true,
+                    complete: (results) => {
+                        console.debug("Analyze results:", results);
+                        users = results.data;
+                        if (users && users.length > 0) {
+                            console.log(users);
+                            $("#csventriesfound").text(`${users.length} entries found`);
+                            $("#importDiv").show();
+                            $("#csvimport").addClass("btn-success");
+                            $("#csvimport").removeClass("btn-info");
+                        } else {
+                            $("#csventriesfound").text("0 entries found");
+                            $("#importDiv").hide();
+                            $("#csvimport").addClass("btn-info");
+                            $("#csvimport").removeClass("btn-success");
+                        }
+                    }
+                });
+            }
+            reader.onerror = error => console.error(error);
+            reader.readAsText(file); //TODO: Need to do it async
+        });
+
+        // Import csv file
+        $("#importEntries").on("click", () => {
+
+            queuesCreated = 0;
+            queuesExisted = 0;
+            skillsCreated = 0;
+            skillsExisted = 0;
+            usersCreated = 0;
+            usersExisted = 0;
+
+            $("#importProgress").addClass("bg-warning");
+            $("#importProgress").removeClass("bg-success");
+
+            const progressStart = 10;
+            // Set progress bar to 10% (starting)
+            setProgressBarValue($("#importProgress"), progressStart);
+
+            console.log("Importing users:", users);
+
+            // Go through each user entry
+            $.each(users, (i, user) => {
+                console.log("Importing user:", user);
+
+                // Create queues
+                console.log("creating queue", user.queues); //TODO: There could be more than 1 queue
+                createQueue(user.queues)
+                    .then((queueInfo) => {
+                        console.log(`${user.queues} id is ${queueInfo.queueId}, new? ${queueInfo.new}`);
+                        if (queueInfo.new) {
+                            queuesCreated++;
+                        } else {
+                            queuesExisted++;
+                        }
+                        var currentRequest = {
+                            queueId: queueInfo.queueId
+                        };
+                        return currentRequest;
+                    })
+                    .then((currentRequest) => {
+                        // Create skills
+                        console.log("creating skill(s)", user.skills);
+                        return createSkill(user.skills)
+                            .then((skillInfo) => {
+                                if (skillInfo.new) {
+                                    skillsCreated++;
+                                } else {
+                                    skillsExisted++;
+                                }
+                                currentRequest.skillId = skillInfo.skillId;
+                                return currentRequest;
+                            });
+                    })
+                    .then((currentRequest) => {
+                        // Create user
+                        console.log("creating user", user.name);
+                        return createUser(user.name, user.department, user.title, user.email)
+                            .then((userInfo) => {
+                                if (userInfo.new) {
+                                    usersCreated++;
+                                } else {
+                                    usersExisted++;
+                                }
+                                currentRequest.userId = userInfo.userId;
+                                return currentRequest;
+                            }).catch((error) => {
+                                console.error(`Failed to create ${user.name}: ${error.responseText}`);
+                                $("#importedErrors").append(`Failed to create ${user.name}: ${error.responseText.replace(/\\/g, '')};<br>`);
+                                return currentRequest;
+                            });
+                    })
+                    .then((currentRequest) => {
+                        console.log("Assign user to queue", currentRequest);
+                        return assignUserToQueue(currentRequest.userId, currentRequest.queueId)
+                            .then(() => {
+                                console.log("User has been assigned to queue");
+                                return currentRequest;
+                            }).catch((error) => {
+                                console.error(`Failed to assign user ${currentRequest.userId} to queue ${currentRequest.queueId}`);
+                                $("#importedErrors").append(`Failed to assign user ${user.name} to queue ${user.queues}: ${error.responseText.replace(/\\/g, '')};<br>`);
+                                return currentRequest;
+                            });
+                    })
+                    .then((currentRequest) => {
+                        console.log("Assign user to skill", currentRequest);
+                        return assignUserToSkill(currentRequest.userId, currentRequest.skillId)
+                            .then(() => {
+                                console.log("User has been assigned to skill");
+                                return currentRequest;
+                            }).catch((error) => {
+                                console.error(`Failed to assign user ${currentRequest.userId} to skill ${currentRequest.skillId}`);
+                                $("#importedErrors").append(`Failed to assign user ${user.name} to skill ${user.skillId}: ${error.responseText.replace(/\\/g, '')};<br>`);
+                                return currentRequest;
+                            });
+                    })
+                    .then((currentRequest) => {
+                        console.log("Finally...", currentRequest);
+                        // Update progress bar
+                        setProgressBarValue($("#importProgress"), progressStart + (100 - progressStart) * (i + 1) / users.length);
+
+                        // Show imported entries
+                        $("#importedQueues").text(`${queuesCreated} queue(s) created/${queuesExisted} queue(s) already exist`);
+                        $("#importedSkills").text(`${skillsCreated} skill(s) created/${skillsExisted} skill(s) already exist`);
+                        $("#importedUsers").text(`${usersCreated} user(s) created/${usersExisted} user(s) already exist`);
+
+                        console.log("Done importing entry:", user);
+
+                        //Scroll to flows
+                        $([document.documentElement, document.body]).animate({
+                            scrollTop: $("#flowsDiv").offset().top
+                        }, 2000);
+
+                    });
+                //TODO: Assign user to queue and skill
+
+            });
+            // Set progress bar to 100% (finished)
+            setProgressBarValue($("#importProgress", 100));
+
+            $("#importEntries").removeClass("btn-info");
+            $("#importEntries").addClass("btn-success");
+
+            $("#importProgress").removeClass("bg-warning");
+            $("#importProgress").addClass("bg-success");
+
+            $("#configurationHeaderDiv").removeClass("bg-info");
+            $("#configurationHeaderDiv").addClass("bg-success");
+        });
+
+        //#endregion CSV Import
+
+        //#region Form Import
+
+        $("#importOptions #importFromForm").change(() => {
+            console.log("importFromForm selected");
+            $("#importCSVDiv").hide();
+            $("#importFormDiv").show();
+        });
+
+        //#endregion Form Import
+
+        //#region Queues
+
+        function getQueues() {
+            return new Promise((resolve, reject) => {
+                var env = $("#environment").val();
+                console.log(`Getting queues...`);
+                $.ajax({
+                    url: `${apiPath}/queues/environment/${env}/token/${token}`,
+                    dataType: "json",
+                    method: "GET",
+                    // beforeSend: setRequiredHeaders
+                })
+                    .done((data, textStatus, jqXHR) => {
+                        switch (jqXHR.status) {
+                            case 200:
+                                resolve(data);
+                                break;
+                            default:
+                                reject(jqXHR.status);
+                                break;
+                        }
+                    })
+                    .fail((error) => {
+                        reject(error);
+                    });
+            });
+        }
+
+        function getQueue(name) {
+            return new Promise((resolve, reject) => {
+                var env = $("#environment").val();
+                console.log(`Get queue ${name} with env ${env} and token ${token}`);
+                $.ajax({
+                    url: `${apiPath}/queues/${name}/environment/${env}/token/${token}`,
+                    dataType: "json",
+                    method: "GET",
+                    // beforeSend: setRequiredHeaders
+                })
+                    .done((data, textStatus, jqXHR) => {
+                        switch (jqXHR.status) {
+                            case 200:
+                                resolve(data);
+                                break;
+                            default:
+                                reject(jqXHR.status);
+                                break;
+                        }
+                    })
+                    .fail((error) => {
+                        reject(error);
+                    });
+            });
+        }
+
+        function createQueue(name) {
+            return new Promise((resolve, reject) => {
+
+                if (!name) {
+                    console.log(`Queue ${name} is invalid. Not returning a queue id`);
+                    reject();
+                    return;
+                }
+
+                console.log(`Creating queue ${name} with env ${$("#environment").val()} and token ${token}`);
+
+                getQueue(name).then((queueId) => {
+                    console.log(`Queue ${name} exists already. Returning ${queueId}`);
+                    resolve({ queueId: queueId, new: false });
+                    return;
+                }).catch((error) => {
+                    console.log(`Queue ${name} does not exist. Need to create it.`);
+                    $.ajax({
+                        url: `${apiPath}/queues`,
+                        dataType: "json",
+                        method: "POST",
+                        // beforeSend: setRequiredHeaders,
+                        data: {
+                            "env": $("#environment").val(),
+                            "token": token,
+                            "name": name
+                        }
+                    }).done((data, textStatus, jqXHR) => {
+                        switch (jqXHR.status) {
+                            case 200:
+                                console.log(`Queue ${name} has been created. Returning ${data.id}`);
+                                resolve({ queueId: data.id, new: true });
+                                return;
+                                break;
+                            default:
+                                reject(jqXHR.status);
+                                return;
+                                break;
+                        }
+                    }).fail((error) => {
+                        reject(error);
+                        return;
+                    });
+                });
+            });
+        }
+
+        function assignUserToQueue(userId, queueId) {
+            return new Promise((resolve, reject) => {
+
+                if (!userId || !queueId) {
+                    console.log(`Either queue ${queueId} or userId ${userId} is invalid. Cannot continue.`);
+                    reject();
+                    return;
+                }
+
+                console.log(`Assigning user id ${userId} to queue id ${queueId} with env ${$("#environment").val()} and token ${token}`);
+
+                $.ajax({
+                    url: `${apiPath}/queues/users`,
+                    dataType: "json",
+                    method: "POST",
+                    // beforeSend: setRequiredHeaders,
+                    data: {
+                        "env": $("#environment").val(),
+                        "token": token,
+                        "queueId": queueId,
+                        "userId": userId
+                    }
+                }).done((data, textStatus, jqXHR) => {
+                    switch (jqXHR.status) {
+                        case 200:
+                            console.log(`User ${userId} has been assigned to queue ${queueId}. Returning success.`);
+                            resolve();
+                            return;
+                            break;
+                        default:
+                            reject(jqXHR.status);
+                            return;
+                            break;
+                    }
+                }).fail((error) => {
+                    reject(error);
+                    return;
+                });
+            });
+        }
+
+        //#endregion Queues
+
+        //#region Skills
+
+        function getSkills() {
+            return new Promise((resolve, reject) => {
+                var env = $("#environment").val();
+                console.log(`Getting skills...`);
+                $.ajax({
+                    url: `${apiPath}/skills/environment/${env}/token/${token}`,
+                    dataType: "json",
+                    method: "GET",
+                    // beforeSend: setRequiredHeaders
+                })
+                    .done((data, textStatus, jqXHR) => {
+                        switch (jqXHR.status) {
+                            case 200:
+                                resolve(data);
+                                break;
+                            default:
+                                reject(jqXHR.status);
+                                break;
+                        }
+                    })
+                    .fail((error) => {
+                        reject(error);
+                    });
+            });
+        }
+
+        function getSkill(name) {
+            return new Promise((resolve, reject) => {
+                var env = $("#environment").val();
+                console.log(`Get skill ${name} with env ${env} and token ${token}`);
+                $.ajax({
+                    url: `${apiPath}/skills/${name}/environment/${env}/token/${token}`,
+                    dataType: "json",
+                    method: "GET",
+                    // beforeSend: setRequiredHeaders
+                })
+                    .done((data, textStatus, jqXHR) => {
+                        switch (jqXHR.status) {
+                            case 200:
+                                resolve(data);
+                                break;
+                            default:
+                                reject(jqXHR.status);
+                                break;
+                        }
+                    })
+                    .fail((error) => {
+                        reject(error);
+                    });
+            });
+        }
+
+        function createSkill(name) {
+            return new Promise((resolve, reject) => {
+
+                if (!name) {
+                    console.log(`Skill ${name} is invalid. Not returning a skill id`);
+                    resolve();
+                    return;
+                }
+
+                console.log(`Creating skill ${name} with env ${$("#environment").val()} and token ${token}`);
+
+                getSkill(name).then((skillId) => {
+                    console.log(`Skill ${name} exists already. Returning ${skillId}`);
+                    resolve({ skillId: skillId, new: false });
+                    return;
+                }).catch((error) => {
+                    console.log(`Skill ${name} does not exist. Need to create it.`);
+                    $.ajax({
+                        url: `${apiPath}/skills`,
+                        dataType: "json",
+                        method: "POST",
+                        // beforeSend: setRequiredHeaders,
+                        data: {
+                            "env": $("#environment").val(),
+                            "token": token,
+                            "name": name
+                        }
+                    }).done((data, textStatus, jqXHR) => {
+                        switch (jqXHR.status) {
+                            case 200:
+                                console.log(`Skill ${name} has been created. Returning ${data.id}`);
+                                resolve({ skillId: data.id, new: true });
+                                return;
+                                break;
+                            default:
+                                reject(jqXHR.status);
+                                return;
+                                break;
+                        }
+                    }).fail((error) => {
+                        reject(error);
+                        return;
+                    });
+                });
+            });
+        }
+
+        function assignUserToSkill(userId, skillId) {
+            return new Promise((resolve, reject) => {
+
+                if (!userId || !skillId) {
+                    console.log(`Either skill ${skillId} or userId ${userId} is invalid. Cannot continue.`);
+                    reject();
+                    return;
+                }
+
+                console.log(`Assigning user id ${userId} to skill id ${skillId} with env ${$("#environment").val()} and token ${token}`);
+
+                $.ajax({
+                    url: `${apiPath}/skills/users`,
+                    dataType: "json",
+                    method: "POST",
+                    // beforeSend: setRequiredHeaders,
+                    data: {
+                        "env": $("#environment").val(),
+                        "token": token,
+                        "skillId": skillId,
+                        "userId": userId
+                    }
+                }).done((data, textStatus, jqXHR) => {
+                    switch (jqXHR.status) {
+                        case 200:
+                            console.log(`User ${userId} has been assigned to skill ${skillId}. Returning success.`);
+                            resolve();
+                            return;
+                            break;
+                        default:
+                            reject(jqXHR.status);
+                            return;
+                            break;
+                    }
+                }).fail((error) => {
+                    reject(error);
+                    return;
+                });
+            });
+        }
+
+        //#endregion Skills
+
+        //#region Users
+
+        function getUser(name) {
+            return new Promise((resolve, reject) => {
+                var env = $("#environment").val();
+                console.log(`Get user ${name} with env ${env} and token ${token}`);
+                $.ajax({
+                    url: `${apiPath}/users/${name}/environment/${env}/token/${token}`,
+                    dataType: "json",
+                    method: "GET",
+                    // beforeSend: setRequiredHeaders
+                })
+                    .done((data, textStatus, jqXHR) => {
+                        switch (jqXHR.status) {
+                            case 200:
+                                resolve(data);
+                                break;
+                            default:
+                                reject(jqXHR.status);
+                                break;
+                        }
+                    })
+                    .fail((error) => {
+                        reject(error);
+                    });
+            });
+        }
+
+        function createUser(name, department, title, email) {
+            return new Promise((resolve, reject) => {
+
+                if (!name) {
+                    console.log(`User ${name} is invalid. Not returning a user id`);
+                    resolve();
+                    return;
+                }
+
+                console.log(`Creating user ${name} with department ${department}, email ${email}, title ${title}, env ${$("#environment").val()} and token ${token}`);
+
+                getUser(name)
+                    .then((userId) => {
+                        console.log(`User ${name} exists already. Returning ${userId}`);
+                        resolve({ userId: userId, new: false });
+                        return;
+                    }).catch((error) => {
+                        console.log(`User ${name} does not exist. Need to create it.`);
+                        $.ajax({
+                            url: `${apiPath}/users`,
+                            dataType: "json",
+                            method: "POST",
+                            // beforeSend: setRequiredHeaders,
+                            data: {
+                                "env": $("#environment").val(),
+                                "token": token,
+                                "name": name,
+                                "department": department,
+                                "title": title,
+                                "email": email
+                            }
+                        }).done((data, textStatus, jqXHR) => {
+                            console.log(data);
+                            switch (jqXHR.status) {
+                                case 200:
+                                    console.log(`User ${name} has been created. Returning ${data.id}`);
+                                    resolve({ userId: data.id, new: true });
+                                    break;
+                                default:
+                                    reject(jqXHR.status);
+                                    break;
+                            }
+                        }).fail((error) => {
+                            reject(error);
+                            return;
+                        });
+                    });
+            });
+        }
+
+        //#endregion Users
+
+        //#region Flows
+
+        function resetFlowModal() {
+            $("#flowSettings #title").html("New Flow");
+            $("#flowSettings #name").val("");
+            $("#flowSettings #description").val("");
+            $("#flowSettings #close").text('Save Configuration');
+            $("#flowSettings #close").unbind().click(() => {
+                console.log("Saving flow...");
+                var flow = JSON.parse(generateFlowJSON());
+                console.log("Publishing flow:", flow);
+                publishFlow(flow)
+                    .then((data) => {
+                        $("#flowSettings").modal('toggle');
+                        showMessage(`'${data.name}' created & published`);
+                    }).catch((error) => {
+                        console.error(error);
+                    });
+            });
+        }
+
+        function publishFlow(flow) {
+            return new Promise((resolve, reject) => {
+
+                if (!flow) {
+                    console.log(`Can't publish empty flow. Returning error.`);
+                    reject();
+                    return;
+                }
+
+                console.log(`Creating flow ${flow.name}, env ${$("#environment").val()} and token ${token}`);
+
+                $.ajax({
+                    url: `${apiPath}/flows`,
+                    dataType: "json",
+                    method: "POST",
+                    // beforeSend: setRequiredHeaders,
+                    data: {
+                        "env": $("#environment").val(),
+                        "token": token,
+                        "flow": flow
+                    }
+                }).done((data, textStatus, jqXHR) => {
+                    switch (jqXHR.status) {
+                        case 200:
+                            console.log(`Flow ${flow.name} has been created & published. Returning ${JSON.stringify(data)}`);
+                            resolve(data);
+                            return;
+                            break;
+                        default:
+                            reject(jqXHR.status);
+                            return;
+                            break;
+                    }
+                }).fail((error) => {
+                    reject(error);
+                    return;
+                });
+            });
+        }
+
+        function loadFlows() {
+            getFlowTemplates()
+                .then((flows) => {
+                    $.each(flows, (i, flow) => {
+                        var flowDiv = $("<div />", { class: "custom-control custom-radio" }).appendTo("#flows");
+                        $("<input>", { type: "radio", id: flow.id, class: "custom-control-input", checked: "checked" }).appendTo(flowDiv);
+                        $("<label />", { class: "custom-control-label", for: flow.id }).text(flow.name).appendTo(flowDiv);
+                        var configureButton = $("<button />", { type: "button", "data-toggle": "modal", "data-target": "#flowSettings", id: flow.id + "_configure", class: "m-l-5 btn btn-sm btn-outline-secondary waves waves-effect", text: "Configure" });
+                        configureButton.on("click", () => {
+                            $("#flowSettings #title").text(flow.name);
+                            // Populate queues select
+                            getQueues().then((queues) => {
+                                $.each(queues, (i, queue) => {
+                                    $("#flowSettings .queues").append($("<option />", { value: queue.id, text: queue.name }));
+                                });
+                            });
+                            // Populate skills select
+                            getSkills().then((skills) => {
+                                $.each(skills, (i, skill) => {
+                                    $("#flowSettings .skills").append($("<option />", { value: skill.id, text: skill.name }));
+                                });
+                            });
+                            // Populate prompts select
+                            getPrompts().then((prompts) => {
+                                $.each(prompts, (i, prompt) => {
+                                    $("#flowSettings .prompts").append($("<option />", { value: prompt.id, text: prompt.name }));
+                                });
+                            });
+                            // Add flow json
+                            $("#flowSettings #flowContentsOriginal").val(JSON.stringify(flow.flow, undefined, 2));
+                        });
+                        configureButton.appendTo(flowDiv);
+                        $("#flowSettings #preview").unbind().click(() => {
+                            $("#previewModal #jsonPreview").empty();
+                            $("#previewModal #jsonPreview").append(generateFlowJSON());
+                        });
+                    });
+                }).catch((error) => {
+                    console.error(error);
+                });
+        }
+
+        function generateFlowJSON() {
+            // Copy original JSON to temp
+            $("#flowSettings #flowContentsTemp").val($("#flowSettings #flowContentsOriginal").val());
+
+            // Replace values with selected values from the flowSettings modal
+            var tempFlowContents = $("#flowSettings #flowContentsTemp").val();
+
+            // Name & Description
+            tempFlowContents = tempFlowContents.replace(/<%flow-name%>/g, $("#flowSettings #name").val());
+            tempFlowContents = tempFlowContents.replace(/<%flow-description%>/g, $("#flowSettings #description").val());
+
+            // Queues
+            tempFlowContents = tempFlowContents.replace(/<%queue1-name%>/g, $("#flowSettings #queue1 option:selected").text());
+            tempFlowContents = tempFlowContents.replace(/<%queue1-id%>/g, $("#flowSettings #queue1 option:selected").val());
+            tempFlowContents = tempFlowContents.replace(/<%queue2-name%>/g, $("#flowSettings #queue2 option:selected").text());
+            tempFlowContents = tempFlowContents.replace(/<%queue2-id%>/g, $("#flowSettings #queue2 option:selected").val());
+
+            // Skills
+            tempFlowContents = tempFlowContents.replace(/<%skill1-name%>/g, $("#flowSettings #skill1 option:selected").text());
+            tempFlowContents = tempFlowContents.replace(/<%skill1-id%>/g, $("#flowSettings #skill1 option:selected").val());
+            tempFlowContents = tempFlowContents.replace(/<%skill2-name%>/g, $("#flowSettings #skill2 option:selected").text());
+            tempFlowContents = tempFlowContents.replace(/<%skill2-id%>/g, $("#flowSettings #skill2 option:selected").val());
+
+            // Prompts
+            tempFlowContents = tempFlowContents.replace(/<%prompt-mainmenu-name%>/g, $("#flowSettings #mainmenuprompt option:selected").text());
+            tempFlowContents = tempFlowContents.replace(/<%prompt-mainmenu-id%>/g, $("#flowSettings #mainmenuprompt option:selected").val());
+            tempFlowContents = tempFlowContents.replace(/<%prompt-welcome-name%>/g, $("#flowSettings #welcomeprompt option:selected").text());
+            tempFlowContents = tempFlowContents.replace(/<%prompt-welcome-id%>/g, $("#flowSettings #welcomeprompt option:selected").val());
+
+            return tempFlowContents;
+        }
+
+        function getFlowTemplates() {
+            return new Promise((resolve, reject) => {
+                $.ajax({
+                    url: `${apiPath}/flowTemplates`,
+                    dataType: "json",
+                    method: "GET",
+                    // beforeSend: setRequiredHeaders
+                })
+                    .done((data, textStatus, jqXHR) => {
+                        switch (jqXHR.status) {
+                            case 200:
+                                resolve(data);
+                                break;
+                            default:
+                                reject(jqXHR.status);
+                                break;
+                        }
+                    })
+                    .fail((error) => {
+                        reject(error);
+                    });
+            });
+        }
+
+        //#endregion Flows
+
+        //#region Prompts
+
+        function getPrompts() {
+            return new Promise((resolve, reject) => {
+                var env = $("#environment").val();
+                console.log(`Getting prompts...`);
+                $.ajax({
+                    url: `${apiPath}/prompts/environment/${env}/token/${token}`,
+                    dataType: "json",
+                    method: "GET",
+                    // beforeSend: setRequiredHeaders
+                })
+                    .done((data, textStatus, jqXHR) => {
+                        switch (jqXHR.status) {
+                            case 200:
+                                resolve(data);
+                                break;
+                            default:
+                                reject(jqXHR.status);
+                                break;
+                        }
+                    })
+                    .fail((error) => {
+                        reject(error);
+                    });
+            });
+        }
+
+        //#endregion Prompts
+
+        function setProgressBarValue(progressBar, value) {
+            progressBar.css("width", value + "%");
+        }
+
+    </script>
+</body>
+
+</html>
