@@ -147,24 +147,11 @@
               <!--end success message -->
 
               <!--begin register form -->
-              <form id="register-form" class="register-form register" action="php/register.php" method="post">
+              <form id="register-form" class="register-form register">
 
+                <input class="register-input white-input" required="" name="register_email" id="register_email" placeholder="Email Adress*" type="email">
 
-                <input class="register-input white-input" required="" name="register_names" placeholder="Full Name*" type="text">
-
-                <input class="register-input white-input" required="" name="register_email" placeholder="Email Adress*" type="email">
-
-                <input class="register-input white-input" required="" name="register_phone" placeholder="Phone Number*" type="text">
-
-                <select class="register-input white-input" required="" name="register_ticket">
-
-                  <option value="">Account Type*</option>
-
-                  <option value="Individual">Individual</option>
-
-                  <option value="Professional">Professional</option>
-
-                </select>
+                <input class="register-input white-input" required="" name="register_phone" id="register_phone" placeholder="Phone Number*" type="text">
 
                 <input value="Go to Portal" class="register-submit" type="submit">
 
@@ -735,27 +722,27 @@
         <!--begin col-md-12 -->
         <div class="col-md-12 text-center">
 
-          <h2 class="section-title">The Team Behind Essentials</h2>
+          <h2 class="section-title">Who's Behind SmartCloudi</h2>
 
-          <p class="section-subtitle">There are many variations of passages of Lorem Ipsum available, but the majority<br>have suffered alteration, by injected humour, or new randomised words.</p>
+          <p class="section-subtitle"></p>
 
         </div>
         <!--end col-md-12 -->
 
         <!--begin team-item -->
-        <div class="col-sm-12 col-md-4">
-
+        <!-- <div class="col-sm-12 col-md-4"> -->
+        <div class="col-sm-12 col-md-4" style="margin: auto;">
           <div class="team-item">
 
-            <img src="images/team1.jpg" class="team-img" alt="pic">
+            <img src="images/daniel.jpg" class="team-img" alt="pic">
 
-            <h3>CHRISTINA HAWKINS</h3>
+            <h3>DANIEL SZLASKI</h3>
 
             <div class="team-info">
-              <p>Head of SEO</p>
+              <p>Developer</p>
             </div>
 
-            <p>Johnathan is our co-founder and has developed search strategies for a variety of clients for over 5 years.</p>
+            <p>Daniel has developed the backend for SmartCloudi and continues to provide new services during his leasure time.</p>
 
             <ul class="team-icon">
 
@@ -775,7 +762,7 @@
         <!--end team-item -->
 
         <!--begin team-item -->
-        <div class="col-sm-12 col-md-4">
+        <!-- <div class="col-sm-12 col-md-4">
 
           <div class="team-item">
 
@@ -803,11 +790,11 @@
 
           </div>
 
-        </div>
+        </div> -->
         <!--end team-item -->
 
         <!--begin team-item -->
-        <div class="col-sm-12 col-md-4">
+        <!-- <div class="col-sm-12 col-md-4">
 
           <div class="team-item">
 
@@ -835,7 +822,7 @@
 
           </div>
 
-        </div>
+        </div> -->
         <!--end team-item -->
 
       </div>
@@ -1583,6 +1570,36 @@
   <script src="js/plugins.js"></script>
   <script src="js/custom.js"></script>
 
+  <script src="js/aws-sdk.min.js"></script>
+  <script src="js/amazon-cognito-auth.min.js"></script>
+  <script src="js/amazon-cognito-identity.min.js"></script>
+
+  <script>
+
+    $("#register-form").on("submit", function (e) {
+      e.preventDefault();
+
+      // Registration Information
+      var attribute = {
+        Name: "email",
+        Value: $("#register_email").val()
+      }
+
+      var attributeEmail = new AmazonCognitoIdentity.CognitoUserAttribute(attribute);
+      var attributeList = [];
+
+      attributeList.push(attributeEmail);
+
+      // User Pool
+      var data = {
+        UserPoolId: "eu-west-1_8d92gzCo4",
+        ClientId: "7sn1nlqferjdvjl0ufurg0dga4"
+      };
+      var userPool = new AmazonCognitoIdentity.CognitoUserPool(data);
+
+    });
+
+  </script>
 
 </body>
 
