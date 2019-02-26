@@ -131,21 +131,15 @@
         if (cognitoUser != null) {
             cognitoUser.getSession(function (err, session) {
                 if (err) {
-                    alert(err);
+                    showMessage(err.message, true);
                     return;
                 }
 
+                console.log("Session:", session);
                 if (!session.isValid()) {
                     $(location).attr("href", "/portal/login.html");
                     return;
                 }
-
-                AWS.config.credentials = new AWS.CognitoIdentityCredentials({
-                    IdentityPoolId: "eu-west-1:72f9916c-eb9a-4ff2-9c0a-9c0fe19e6745",
-                    Logins: {
-                        "cognito-idp.eu-west-1.amazonaws.com/eu-west-1_8d92gzCo4": session.getIdToken().getJwtToken()
-                    }
-                });
 
                 console.log("User session is valid");
 

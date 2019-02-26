@@ -166,9 +166,9 @@
                                             <div id="perioddiv" class="form-group mt-3">
                                                 <label class="control-label">Period</label>
                                                 <select class="form-control custom-select" id="timespan">
-                                                    <option value="day" selected>Previous Day</option>
-                                                    <option value="week">Previous Week</option>
-                                                    <option value="month">Previous Month</option>
+                                                    <option value="days" selected>Previous Day</option>
+                                                    <option value="weeks">Previous Week</option>
+                                                    <option value="months">Previous Month</option>
                                                 </select>
                                             </div>
                                         </div>
@@ -288,9 +288,9 @@
     <script src="js/notifications.js"></script>
     <script src="js/cookies.js"></script>
 
-    <script src="js/aws-sdk.min.js"></script>
+    <!-- <script src="js/aws-sdk.min.js"></script>
     <script src="js/amazon-cognito-auth.min.js"></script>
-    <script src="js/amazon-cognito-identity.min.js"></script>
+    <script src="js/amazon-cognito-identity.min.js"></script> -->
 
     <script>
 
@@ -300,41 +300,43 @@
         $("#rightsidebar").load("rightsidebar.html");
         $("#footer").load("footer.html");
 
-        // Is user authenticated?
-        var data = {
-            UserPoolId: "eu-west-1_8d92gzCo4",
-            ClientId: "7sn1nlqferjdvjl0ufurg0dga4"
-        };
-        var userPool = new AmazonCognitoIdentity.CognitoUserPool(data);
-        var cognitoUser = userPool.getCurrentUser();
+        // // Is user authenticated?
+        // var data = {
+        //     UserPoolId: "eu-west-1_8d92gzCo4",
+        //     ClientId: "7sn1nlqferjdvjl0ufurg0dga4"
+        // };
+        // var userPool = new AmazonCognitoIdentity.CognitoUserPool(data);
+        // var cognitoUser = userPool.getCurrentUser();
 
-        if (cognitoUser != null) {
-            cognitoUser.getSession(function (err, session) {
-                if (err) {
-                    alert(err);
-                    return;
-                }
+        // if (cognitoUser != null) {
+        //     cognitoUser.getSession(function (err, session) {
+        //         if (err) {
+        //             alert(err);
+        //             return;
+        //         }
 
-                if (!session.isValid()) {
-                    $(location).attr("href", "/portal/login.html");
-                    return;
-                }
+        //         if (!session.isValid()) {
+        //             $(location).attr("href", "/portal/login.html");
+        //             return;
+        //         }
 
-                AWS.config.credentials = new AWS.CognitoIdentityCredentials({
-                    IdentityPoolId: "eu-west-1:72f9916c-eb9a-4ff2-9c0a-9c0fe19e6745",
-                    Logins: {
-                        "cognito-idp.eu-west-1.amazonaws.com/eu-west-1_8d92gzCo4": session.getIdToken().getJwtToken()
-                    }
-                });
+        //         AWS.config.credentials = new AWS.CognitoIdentityCredentials({
+        //             IdentityPoolId: "eu-west-1:72f9916c-eb9a-4ff2-9c0a-9c0fe19e6745",
+        //             Logins: {
+        //                 "cognito-idp.eu-west-1.amazonaws.com/eu-west-1_8d92gzCo4": session.getIdToken().getJwtToken()
+        //             }
+        //         });
 
-                console.log("User session is valid");
+        //         console.log("User session is valid");
 
-            });
-        } else {
-            $(location).attr("href", "/portal/login.html");
-        }
+        //     });
+        // } else {
+        //     $(location).attr("href", "/portal/login.html");
+        // }
 
-        var apiPath = apiPathCloudAnalyticsJobs;
+        var apiPathCloudAnalyticsJobs = "https://cloud-analytics.herokuapp.com/api/v1/organizations/5c0d7524fabbe2468c7c9129/jobs";
+        var apiPathCloudAnalyticsCronJobs = "https://cloud-analytics.herokuapp.com/api/v1/organizations/5c0d7524fabbe2468c7c9129/cronjobs";
+        var apiPathPureCloudConnector = "https://cloud-analytics.herokuapp.com/api/v1/purecloud";
 
         //#region Cron UI
 
@@ -364,7 +366,6 @@
         //#region Modals
 
         function resetModal() {
-            apiPath = apiPathCloudAnalyticsJobs;
             $("#settings #title").html("New Request");
             $("#settings #name").val("");
             $("#settings #clientId").val("a3f41e28-da17-4f23-aff7-140ced056039"); //TODO FOR TESTS ONLY!
@@ -435,21 +436,21 @@
                     url: apiPath,
                     dataType: "json",
                     method: "POST",
-                    beforeSend: setRequiredHeaders,
                     data: data
                 }).done((data, textStatus, jqXHR) => {
                     switch (jqXHR.status) {
                         case 201:
                             console.log('Request submitted', data);
                             $("#settings").modal('toggle');
-                            publishMessage("Web", "purecloudAnalyticsCreated", data.id);
                             showMessage(`'${data.name}' submitted`);
                             loadRequests(showJobs, showCronJobs);
                             break;
                         default:
                             break;
                     }
-                }).fail(handleQueryError)
+                }).fail((error) => {
+                    console.error(error);
+                });
             });
         }
 
@@ -496,7 +497,9 @@
                         $("#close").prop('disabled', true);
                         break;
                 }
-            }).fail(handleQueryError)
+            }).fail((error) => {
+                console.error(error);
+            });
         });
 
         //#endregion Modals
@@ -530,7 +533,7 @@
         //#endregion
 
         // Create a new request
-        function createRequest(id, inProgress, recurrence, name, image, cronJob, schedule, clientId, clientSecret, environment, doConversationDetail, doConversationAggregate, doUserStatusAggregate, analyticsIntervalStart, analyticsIntervalStop, results, updatedAt = "05:30 AM") {
+        function createRequest(id, inProgress, recurrence, name, image, cronJob, timespan, schedule, clientId, clientSecret, environment, doConversationDetail, doConversationAggregate, doUserStatusAggregate, analyticsIntervalStart, analyticsIntervalStop, results, updatedAt = "05:30 AM") {
 
             // Add card to accordion
             var cardDiv = $("<div />", { class: "card border shadow" });
@@ -624,11 +627,9 @@
                             url: `${apiPath}/${encodeURI(id)}`,
                             dataType: "json",
                             method: "DELETE",
-                            beforeSend: setRequiredHeaders
                         }).done((data, textStatus, jqXHR) => {
                             if (jqXHR.status == 204) {
                                 console.log('Request deleted');
-                                publishMessage("Web", "purecloudAnalyticsDeleted", id);
                                 showMessage(`'${name}' deleted`);
                                 loadRequests();
                                 return;
@@ -655,8 +656,14 @@
                 $("#settings #conversationAggregate").prop("checked", doConversationAggregate == "1");
                 $("#settings #userStatusAggregate").prop("checked", doUserStatusAggregate == "1");
                 $("#settings #recurrence").prop("checked", recurrence);
+                if (recurrence) {
+                    // Enable cron divs
+                    $("#cronuidiv").fadeTo("slow", 1);
+                    $("#perioddiv").fadeTo("slow", 1);
+                    $("#cronuidiv").css("pointer-events", "auto");
+                }
                 $("#settings #timespan").val(timespan);
-                $("#settings #cronui").val(schedule);
+                cron_ui.setCronString(schedule);
                 $("#settings #close").text('Save');
                 $("#settings #close").unbind().click(function () {
                     console.log('Saving request...');
@@ -713,13 +720,11 @@
                         url: apiPath + "/" + id,
                         dataType: "json",
                         method: "PATCH",
-                        beforeSend: setRequiredHeaders,
                         data: data
                     }).done((data, textStatus, jqXHR) => {
                         if (jqXHR.status == 200) {
                             console.log(`Request ${data.id} saved`);
                             $("#settings").modal('toggle');
-                            publishMessage("Web", "purecloudAnalyticsUpdated", id);
                             showMessage(`'${data.name}' saved`);
                             loadRequests();
                             return;
@@ -754,37 +759,34 @@
 
             if (results && results.length > 0) {
                 $.each(results, (i, result) => {
-                    if (result.result) {
-                        var collapseBody = $("<div />", { id: "collapse_" + id, class: "collapse", "data-parent": "#accordion" }).appendTo(cardDiv);
-                        var cardBodyDiv = $("<div />", { class: "card-body" }).appendTo(collapseBody);
-                        var subCardBodyDiv = $("<div />", { class: "card b-all shadow-none" }).appendTo(cardBodyDiv)
-                        var inboxDiv = $("<div />", { class: "inbox-center table-responsive" }).appendTo(subCardBodyDiv);
-                        var table = $("<table />", { class: "table table-hover no-wrap" }).appendTo(inboxDiv);
-                        var tableBody = $("<tbody />").appendTo(table);
+                    var collapseBody = $("<div />", { id: "collapse_" + id, class: "collapse", "data-parent": "#accordion" }).appendTo(cardDiv);
+                    var cardBodyDiv = $("<div />", { class: "card-body" }).appendTo(collapseBody);
+                    var subCardBodyDiv = $("<div />", { class: "card b-all shadow-none" }).appendTo(cardBodyDiv)
+                    var inboxDiv = $("<div />", { class: "inbox-center table-responsive" }).appendTo(subCardBodyDiv);
+                    var table = $("<table />", { class: "table table-hover no-wrap" }).appendTo(inboxDiv);
+                    var tableBody = $("<tbody />").appendTo(table);
 
-                        var tableRow = $("<tr />", { class: "unread" }).appendTo(tableBody);
+                    var tableRow = $("<tr />", { class: "unread" }).appendTo(tableBody);
 
-                        // Download section
-                        var downloadTd = $("<td />", { class: "hidden-xs-down", style: "cursor:pointer" }).appendTo(tableRow);
-                        downloadTd.append($("<i />", { class: "fas fa-download" }));
-                        downloadTd.append(" Download");
-                        downloadTd.on("click", () => {
-                            pushFile(id, results[0].outputPath);
-                            publishMessage("Web", "purecloudAnalyticsDownloaded", id);
-                        });
+                    // Download section
+                    var downloadTd = $("<td />", { class: "hidden-xs-down", style: "cursor:pointer" }).appendTo(tableRow);
+                    downloadTd.append($("<i />", { class: "fas fa-download" }));
+                    downloadTd.append(" Download");
+                    downloadTd.on("click", () => {
+                        pushFile(id, result.outputPath);
+                    });
 
-                        // Id (for troubleshooting)
-                        var idTd = $("<td />", { class: "hidden-xs-down" }).appendTo(tableRow);
-                        idTd.append($("<small />", { class: "text-muted" }).text(`(${result.outputPath})`));
+                    // Id (for troubleshooting)
+                    var idTd = $("<td />", { class: "hidden-xs-down" }).appendTo(tableRow);
+                    idTd.append($("<small />", { class: "text-muted" }).text(`(${result.outputPath})`));
 
-                        // Time section
-                        var timeSection = $("<td />", { class: "hidden-xs-down" }).appendTo(tableRow);
-                        timeSection.append($("<i />", { class: "fas fa-calendar-alt" }));
-                        timeSection.append(` ${moment(result.timestamp).fromNow()}`);
-                        // Set color
-                        if (results[results.length - 1].result) {
-                            timeSection.addClass("text-success");
-                        }
+                    // Time section
+                    var timeSection = $("<td />", { class: "hidden-xs-down" }).appendTo(tableRow);
+                    timeSection.append($("<i />", { class: "fas fa-calendar-alt" }));
+                    timeSection.append(` ${moment(result.timestamp).fromNow()}`);
+                    // Set color
+                    if (result.outputPath.length > 0) {
+                        timeSection.addClass("text-success");
                     }
                 });
             }
@@ -800,13 +802,10 @@
             // Remove any existing cards
             $("#accordion").empty();
 
-            apiPath = apiPathCloudAnalyticsJobs;
-
             // Call API
             $.ajax({
-                url: apiPath,
+                url: apiPathCloudAnalyticsJobs,
                 dataType: "json",
-                beforeSend: setRequiredHeaders
             }).done((data, textStatus, jqXHR) => {
                 switch (jqXHR.status) {
                     case 200:
@@ -825,14 +824,14 @@
                                 let environment = searchByName(currentRequest.input, "name", "environment")
                                 let environmentValue = environment ? environment.value : "";
 
-                                let doConversationDetail = searchByName(currentRequest.input, "name", "doConversationDetail")
-                                let doConversationDetailValue = doConversationDetail ? doConversationDetail.value : "0";
+                                let doConversationDetails = searchByName(currentRequest.input, "name", "doConversationDetails")
+                                let doConversationDetailsValue = doConversationDetails ? doConversationDetails.value : "0";
 
-                                let doConversationAggregate = searchByName(currentRequest.input, "name", "doConversationAggregate")
-                                let doConversationAggregateValue = doConversationAggregate ? doConversationAggregate.value : "0";
+                                let doConversationAggregates = searchByName(currentRequest.input, "name", "doConversationAggregates")
+                                let doConversationAggregatesValue = doConversationAggregates ? doConversationAggregates.value : "0";
 
-                                let doUserStatusAggregate = searchByName(currentRequest.input, "name", "doUserStatusAggregate")
-                                let doUserStatusAggregateValue = doUserStatusAggregate ? doUserStatusAggregate.value : "0";
+                                let doUserStatusAggregates = searchByName(currentRequest.input, "name", "doUserStatusAggregates")
+                                let doUserStatusAggregatesValue = doUserStatusAggregates ? doUserStatusAggregates.value : "0";
 
                                 let analyticsIntervalStart = searchByName(currentRequest.input, "name", "analyticsIntervalStart")
                                 let analyticsIntervalStartValue = analyticsIntervalStart ? analyticsIntervalStart.value : "";
@@ -848,13 +847,14 @@
                                     currentRequest.name,
                                     currentRequest.image,
                                     currentRequest.cronJob,
+                                    currentRequest.period,
                                     currentRequest.schedule,
                                     clientIdValue,
                                     clientSecretValue,
                                     environmentValue,
-                                    doConversationDetailValue,
-                                    doConversationAggregateValue,
-                                    doUserStatusAggregateValue,
+                                    doConversationDetailsValue,
+                                    doConversationAggregatesValue,
+                                    doUserStatusAggregatesValue,
                                     analyticsIntervalStartValue,
                                     analyticsIntervalStopValue,
                                     currentRequest.results,
@@ -868,7 +868,9 @@
                         console.error("Unknown status code: " + jqXHR.status);
                         break;
                 }
-            }).fail(handleQueryError);
+            }).fail(function (error) {
+                console.error(error);
+            });
         }
 
         function searchByName(array, keyName, searchCriteria) {
@@ -877,18 +879,13 @@
 
         function pushFile(jobId, filename) {
             var req = new XMLHttpRequest();
-            req.open("GET", `${apiPath}/${jobId}/download/${filename}`, true);
+            req.open("GET", `${apiPathCloudAnalyticsJobs}/${jobId}/download/${filename}`, true);
             req.responseType = "blob";
-            req.setRequestHeader("Authorization", getCookie("Authorization"));
-            req.setRequestHeader("comply-username", getCookie("comply-username"));
-            req.setRequestHeader("comply-groups", getCookie("comply-groups"));
-            req.setRequestHeader("comply-organization", getCookie("comply-organization"));
-            req.setRequestHeader("comply-orgId", getCookie("comply-orgId"));
             req.onload = ((event) => {
                 // Creating a fake anchor and click it
                 var blob = req.response;
                 var link = document.createElement("a");
-                link.download = filename;
+                link.download = filename + ".zip";
                 link.href = window.URL.createObjectURL(blob);
                 link.click();
             });
@@ -900,15 +897,15 @@
             var analyticsIntervalStart, analyticsIntervalStop;
 
             switch ($("#settings #timespan").val()) {
-                case "day":
+                case "days":
                     analyticsIntervalStart = moment().subtract(1, "days").format("YYYY-MM-DD");
                     analyticsIntervalStop = moment().subtract(1, "days").format("YYYY-MM-DD");
                     break;
-                case "week":
+                case "weeks":
                     analyticsIntervalStart = moment().subtract(1, "weeks").startOf("isoWeek").format("YYYY-MM-DD");
                     analyticsIntervalStop = moment().subtract(1, "weeks").endOf("isoWeek").format("YYYY-MM-DD");
                     break;
-                case "month":
+                case "months":
                     analyticsIntervalStart = moment().subtract(1, 'months').date(1).format("YYYY-MM-DD");
                     analyticsIntervalStop = moment().subtract(1, 'months').endOf("month").format("YYYY-MM-DD");
                     break;

@@ -149,9 +149,15 @@
               <!--begin register form -->
               <form id="register-form" class="register-form register">
 
+                <input class="register-input white-input" required="" name="register_name" id="register_name" placeholder="Full Name*" type="text">
+
                 <input class="register-input white-input" required="" name="register_email" id="register_email" placeholder="Email Adress*" type="email">
 
-                <input class="register-input white-input" required="" name="register_phone" id="register_phone" placeholder="Phone Number*" type="text">
+                <input class="register-input white-input" required="" name="register_phone" id="register_phone" placeholder="Phone Number*" type="tel">
+
+                <input class="register-input white-input" required="" name="register_password" id="register_password" placeholder="Password*" type="password">
+
+                <input class="register-input white-input" required="" name="register_confirmpassword" id="register_confirmpassword" placeholder="Confirm Password*" type="password">
 
                 <input value="Go to Portal" class="register-submit" type="submit">
 
@@ -175,6 +181,36 @@
 
   </section>
   <!--end home section -->
+
+  <!--Modal: Code Verification -->
+  <div class="modal fade" id="modalCodeVerification" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog cascading-modal modal-dialog-centered modal-avatar modal-sm" role="document">
+      <!--Content-->
+      <div class="modal-content">
+
+        <!--Header-->
+        <div class="modal-header" style="margin:auto">
+          <h5 class="mt-1 mb-2">Code Verification</h5>
+        </div>
+        <!--Body-->
+        <div class="modal-body text-center mb-1">
+
+          <div class="md-form ml-0 mr-0">
+            <label data-error="wrong" data-success="right" for="verificationcode" class="ml-0">Please enter the code you have received by email</label>
+            <input type="text" id="verificationcode" class="form-control form-control-sm validate ml-0">
+          </div>
+
+          <div class="text-center mt-4">
+            <button class="btn btn-warning mt-1" id="resendcode">Resend Code <i class="fas fa-sign-in ml-1"></i></button>
+            <button class="btn btn-primary mt-1" id="verifycode">Verify Code <i class="fas fa-sign-in ml-1"></i></button>
+          </div>
+        </div>
+
+      </div>
+      <!--/.Content-->
+    </div>
+  </div>
+  <!--Modal: Code Verification -->
 
   <!--begin section-grey -->
   <section class="section-grey section-top-border" id="about">
@@ -1576,26 +1612,95 @@
 
   <script>
 
+    var userPoolId = "eu-west-1_8d92gzCo4";
+    var clientId = "7sn1nlqferjdvjl0ufurg0dga4";
+
     $("#register-form").on("submit", function (e) {
       e.preventDefault();
 
-      // Registration Information
-      var attribute = {
-        Name: "email",
-        Value: $("#register_email").val()
-      }
-
-      var attributeEmail = new AmazonCognitoIdentity.CognitoUserAttribute(attribute);
-      var attributeList = [];
-
-      attributeList.push(attributeEmail);
-
       // User Pool
       var data = {
-        UserPoolId: "eu-west-1_8d92gzCo4",
-        ClientId: "7sn1nlqferjdvjl0ufurg0dga4"
+        UserPoolId: userPoolId,
+        ClientId: clientId
       };
       var userPool = new AmazonCognitoIdentity.CognitoUserPool(data);
+
+      // Registration Information
+      var attributeList = [];
+
+      var dataName = {
+        Name: "name",
+        Value: $("#register_name").val()
+      };
+
+      var dataEmail = {
+        Name: "email",
+        Value: $("#register_email").val()
+      };
+
+      var dataPhone = {
+        Name: "phone_number",
+        Value: $("#register_phone").val()
+      };
+
+      var attributeName = new AmazonCognitoIdentity.CognitoUserAttribute(dataName);
+      var attributeEmail = new AmazonCognitoIdentity.CognitoUserAttribute(dataEmail);
+      var attributePhone = new AmazonCognitoIdentity.CognitoUserAttribute(dataPhone);
+
+      attributeList.push(attributeName);
+      attributeList.push(attributeEmail);
+      attributeList.push(attributePhone);
+
+      // Sign up
+      userPool.signUp($("#register_email").val(), $("#register_password").val(), attributeList, null, (err, result) => {
+        if (err) {
+          console.error(err, err.stack);
+          alert(err.message);
+          return;
+        }
+        var cognitoUser = result.user;
+        console.log("User name is " + cognitoUser.getUsername());
+
+        // Display code verification dialog
+        $("#modalCodeVerification").modal();
+
+        // Verify code
+        $("#verifycode").on("click", () => {
+          cognitoUser.confirmRegistration($("#verificationcode").val(), true, (err, result) => {
+            if (err) {
+              console.error(err, err.stack);
+              if (err.message.includes("Current status is CONFIRMED")) {
+                loginUser(cognitoUser, true);
+                return;
+              }
+              alert(err.message);
+              return;
+            }
+
+            console.log("Code verification result:", result);
+            if (result === "SUCCESS") {
+
+              // Login user
+              loginUser(cognitoUser, true);
+
+            } else {
+              alert("Code verification failed");
+            }
+          });
+        });
+
+      });
+
+      function loginUser(cognitoUser, redirect) {
+
+
+
+        if (redirect) {
+          $(location).attr("href", "/portal");
+        }
+
+      }
+
 
     });
 

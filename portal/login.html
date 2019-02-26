@@ -71,12 +71,13 @@
                             </div>
                         </div>
                         <div class="form-group text-center">
+                            <div id="loginerror" class="text-danger"></div>
                             <div class="col-xs-12 p-b-20">
                                 <button class="btn btn-block btn-lg btn-info btn-rounded" id="login" type="submit">Login</button>
                             </div>
                         </div>
                     </form>
-                    <form class="form-horizontal" id="recoverform" action="index.html">
+                    <form class="form-horizontal" id="recoverform">
                         <div class="form-group ">
                             <div class="col-xs-12">
                                 <h3>Recover Password</h3>
@@ -97,6 +98,33 @@
                             </div>
                         </div>
                     </form>
+                    <form class="form-horizontal" id="updatepasswordform">
+                        <div class="form-group ">
+                            <div class="col-xs-12">
+                                <h3>Update Password</h3>
+                                <p class="text-muted">This is your first sign-in so please update your password</p>
+                            </div>
+                        </div>
+                        <div class="form-group ">
+                            <div class="col-xs-12">
+                                <input class="form-control" type="password" id="newpassword" required="" placeholder="Your new password">
+                            </div>
+                            <br>
+                            <div class="col-xs-12">
+                                <input class="form-control" type="password" id="confirmnewpassword" required="" placeholder="Confirm your new password">
+                            </div>
+                            <br>
+                            <div class="col-xs-12">
+                                <input class="form-control" type="text" id="name" required="" placeholder="Full Name">
+                            </div>
+                        </div>
+                        <div class="form-group text-center m-t-20">
+                            <div id="updateerror"><span class="text-danger"></span></div>
+                            <div class="col-xs-12">
+                                <button class="btn btn-primary btn-lg btn-block text-uppercase waves-effect waves-light" type="submit">Update Password</button>
+                            </div>
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>
@@ -113,17 +141,20 @@
     <script src="../js/bootstrap.min.js"></script>
 
     <script src="../js/jquery.toast.min.js"></script>
+    <script src="../js/jquery.validate.min.js"></script>
+    <script src="../js/additional-methods.min.js"></script>
 
     <script src="js/notifications.js"></script>
     <script src="js/cookies.js"></script>
+    <script src="js/tools.js"></script>
 
-    <script src="js/aws-sdk.min.js"></script>
-    <script src="js/amazon-cognito-auth.min.js"></script>
-    <script src="js/amazon-cognito-identity.min.js"></script>
+    <script src="../js/aws-sdk.min.js"></script>
+    <script src="../js/amazon-cognito-auth.min.js"></script>
+    <script src="../js/amazon-cognito-identity.min.js"></script>
 
     <script type="text/javascript">
 
-        //TODO Use KONG to authenticate
+        $("#updatepasswordform").hide();
 
         $(function () {
             $(".preloader").fadeOut();
@@ -133,12 +164,20 @@
             $('[data-toggle="tooltip"]').tooltip()
         });
 
-        // Try to fill in username
-        var username = getCookie("username");
-        if (username) {
-            $("#username").val(username);
-            $("#password").focus();
-        }
+        $("#updatepasswordform").validate({
+            submitHandler: function (form) {
+                form.submit();
+            },
+            rules: {
+                newpassword: {
+                    required: true
+                },
+                confirmnewpassword: {
+                    required: true,
+                    equalTo: "#newpassword"
+                }
+            }
+        });
 
         //#region Login & Recover Password
 
@@ -162,6 +201,14 @@
 
         function signIn() {
 
+            console.log("signIn called");
+
+            $("#loginerror").html("");
+            $("#loginerror").hide();
+
+            $("#updateerror").html("");
+            $("#updateerror").hide();
+
             let authenticationData = {
                 Username: $("#username").val(),
                 Password: $("#password").val()
@@ -183,6 +230,7 @@
 
             let cognitoUser = new AmazonCognitoIdentity.CognitoUser(userData);
 
+            console.log("Authenticating user...");
             cognitoUser.authenticateUser(authenticationDetails, {
                 onSuccess: function (result) {
                     let accessToken = result.getAccessToken().getJwtToken();
@@ -199,15 +247,49 @@
                         if (error) {
                             console.error(error);
                         } else {
-                            // Instantiate aws sdk service objects now that the credentials have been updated.
-                            // example: var s3 = new AWS.S3();
                             console.log('Successfully logged!');
                             $(location).attr("href", "/portal");
                         }
                     });
                 },
                 onFailure: function (err) {
-                    alert(err.message || JSON.stringify(err));
+                    console.log(err);
+                    //alert(err.message || JSON.stringify(err));
+                    $("#loginerror").html(err.message);
+                    $("#loginerror").show();
+                },
+                newPasswordRequired: function (userAttributes, requiredAttributes) {
+                    $("#loginform").slideUp();
+                    $("#updatepasswordform").fadeIn();
+
+                    $("#updatepasswordform").on("submit", (e) => {
+                        e.preventDefault();
+
+                        if ($("#updatepasswordform").valid()) {
+                            console.log("User Attributes:", userAttributes);
+                            console.log("Required Attributes:", requiredAttributes);
+                            cognitoUser.completeNewPasswordChallenge($("#newpassword").val(), { "name": $("#name").val() }, {
+                                onSuccess: result => {
+                                    console.log("New Password Challenge: Success!");
+                                    AWS.config.credentials.refresh(err => {
+                                        if (err) {
+                                            showMessage(err, true);
+                                        } else {
+                                            showMessage("Password updated");
+                                            //$(location).attr("href", "/portal");
+                                        }
+                                    });
+                                },
+                                onFailure: function (err) {
+                                    console.error("New Password Challenge: Failure!");
+                                    console.error(err);
+                                    showMessage(err.message);
+                                    $("#updateerror").html(err.message);
+                                    $("#updateerror").show();
+                                }
+                            });
+                        }
+                    });
                 }
             });
         }
