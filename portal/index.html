@@ -108,9 +108,11 @@
     <script src="js/notifications.js"></script>
     <script src="js/cookies.js"></script>
 
-    <script src="js/aws-sdk.min.js"></script>
-    <script src="js/amazon-cognito-auth.min.js"></script>
-    <script src="js/amazon-cognito-identity.min.js"></script>
+    <script src="../js/aws-sdk.min.js"></script>
+    <script src="../js/amazon-cognito-auth.min.js"></script>
+    <script src="../js/amazon-cognito-identity.min.js"></script>
+
+    <script src="../js/auth.js"></script>
 
     <script>
 
@@ -120,33 +122,8 @@
         $("#rightsidebar").load("rightsidebar.html");
         $("#footer").load("footer.html");
 
-        // Is user authenticated?
-        var data = {
-            UserPoolId: "eu-west-1_8d92gzCo4",
-            ClientId: "7sn1nlqferjdvjl0ufurg0dga4"
-        };
-        var userPool = new AmazonCognitoIdentity.CognitoUserPool(data);
-        var cognitoUser = userPool.getCurrentUser();
+        isLoggedIn();
 
-        if (cognitoUser != null) {
-            cognitoUser.getSession(function (err, session) {
-                if (err) {
-                    showMessage(err.message, true);
-                    return;
-                }
-
-                console.log("Session:", session);
-                if (!session.isValid()) {
-                    $(location).attr("href", "/portal/login.html");
-                    return;
-                }
-
-                console.log("User session is valid");
-
-            });
-        } else {
-            $(location).attr("href", "/portal/login.html");
-        }
     </script>
 </body>
 

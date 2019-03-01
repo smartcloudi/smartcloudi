@@ -1610,98 +1610,23 @@
   <script src="js/amazon-cognito-auth.min.js"></script>
   <script src="js/amazon-cognito-identity.min.js"></script>
 
+  <script src="js/auth.js"></script>
+
   <script>
 
-    var userPoolId = "eu-west-1_8d92gzCo4";
-    var clientId = "7sn1nlqferjdvjl0ufurg0dga4";
-
+    // Sign up new user
     $("#register-form").on("submit", function (e) {
       e.preventDefault();
+      registerUser($("#register_name").val(), $("#register_email").val(), $("#register_phone").val(), $("#register_password").val());
+    });
 
-      // User Pool
-      var data = {
-        UserPoolId: userPoolId,
-        ClientId: clientId
-      };
-      var userPool = new AmazonCognitoIdentity.CognitoUserPool(data);
+    // Verify confirmation code
+    $("#verifycode").on("click", () => {
+      confirmUser($("#register_email").val(), $("#register_password").val(), $("#verificationcode").val());
+    });
 
-      // Registration Information
-      var attributeList = [];
-
-      var dataName = {
-        Name: "name",
-        Value: $("#register_name").val()
-      };
-
-      var dataEmail = {
-        Name: "email",
-        Value: $("#register_email").val()
-      };
-
-      var dataPhone = {
-        Name: "phone_number",
-        Value: $("#register_phone").val()
-      };
-
-      var attributeName = new AmazonCognitoIdentity.CognitoUserAttribute(dataName);
-      var attributeEmail = new AmazonCognitoIdentity.CognitoUserAttribute(dataEmail);
-      var attributePhone = new AmazonCognitoIdentity.CognitoUserAttribute(dataPhone);
-
-      attributeList.push(attributeName);
-      attributeList.push(attributeEmail);
-      attributeList.push(attributePhone);
-
-      // Sign up
-      userPool.signUp($("#register_email").val(), $("#register_password").val(), attributeList, null, (err, result) => {
-        if (err) {
-          console.error(err, err.stack);
-          alert(err.message);
-          return;
-        }
-        var cognitoUser = result.user;
-        console.log("User name is " + cognitoUser.getUsername());
-
-        // Display code verification dialog
-        $("#modalCodeVerification").modal();
-
-        // Verify code
-        $("#verifycode").on("click", () => {
-          cognitoUser.confirmRegistration($("#verificationcode").val(), true, (err, result) => {
-            if (err) {
-              console.error(err, err.stack);
-              if (err.message.includes("Current status is CONFIRMED")) {
-                loginUser(cognitoUser, true);
-                return;
-              }
-              alert(err.message);
-              return;
-            }
-
-            console.log("Code verification result:", result);
-            if (result === "SUCCESS") {
-
-              // Login user
-              loginUser(cognitoUser, true);
-
-            } else {
-              alert("Code verification failed");
-            }
-          });
-        });
-
-      });
-
-      function loginUser(cognitoUser, redirect) {
-
-
-
-        if (redirect) {
-          $(location).attr("href", "/portal");
-        }
-
-      }
-
-
+    $("#resendcode").on("click", () => {
+      resendCode($("#register_email").val());
     });
 
   </script>

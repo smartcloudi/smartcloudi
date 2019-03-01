@@ -152,6 +152,8 @@
     <script src="../js/amazon-cognito-auth.min.js"></script>
     <script src="../js/amazon-cognito-identity.min.js"></script>
 
+    <script src="../js/auth.js"></script>
+
     <script type="text/javascript">
 
         $("#updatepasswordform").hide();
@@ -196,103 +198,10 @@
         // Login on form submit
         $("#loginform").on('submit', function (e) {
             e.preventDefault(); // Prevent the default form submission behavior
-            signIn();
+            signIn($("#username").val(), $("#password").val());
         });
 
-        function signIn() {
 
-            console.log("signIn called");
-
-            $("#loginerror").html("");
-            $("#loginerror").hide();
-
-            $("#updateerror").html("");
-            $("#updateerror").hide();
-
-            let authenticationData = {
-                Username: $("#username").val(),
-                Password: $("#password").val()
-            };
-
-            let authenticationDetails = new AmazonCognitoIdentity.AuthenticationDetails(authenticationData);
-
-            let poolData = {
-                UserPoolId: "eu-west-1_8d92gzCo4",
-                ClientId: "7sn1nlqferjdvjl0ufurg0dga4"
-            };
-
-            let userPool = new AmazonCognitoIdentity.CognitoUserPool(poolData);
-
-            let userData = {
-                Username: $("#username").val(),
-                Pool: userPool
-            };
-
-            let cognitoUser = new AmazonCognitoIdentity.CognitoUser(userData);
-
-            console.log("Authenticating user...");
-            cognitoUser.authenticateUser(authenticationDetails, {
-                onSuccess: function (result) {
-                    let accessToken = result.getAccessToken().getJwtToken();
-                    AWS.config.region = "eu-west-1";
-                    AWS.config.credentials = new AWS.CognitoIdentityCredentials({
-                        IdentityPoolId: "eu-west-1:72f9916c-eb9a-4ff2-9c0a-9c0fe19e6745",
-                        Logins: {
-                            "cognito-idp.eu-west-1.amazonaws.com/eu-west-1_8d92gzCo4": result.getIdToken().getJwtToken()
-                        }
-                    });
-
-                    //refreshes credentials using AWS.CognitoIdentity.getCredentialsForIdentity()
-                    AWS.config.credentials.refresh((error) => {
-                        if (error) {
-                            console.error(error);
-                        } else {
-                            console.log('Successfully logged!');
-                            $(location).attr("href", "/portal");
-                        }
-                    });
-                },
-                onFailure: function (err) {
-                    console.log(err);
-                    //alert(err.message || JSON.stringify(err));
-                    $("#loginerror").html(err.message);
-                    $("#loginerror").show();
-                },
-                newPasswordRequired: function (userAttributes, requiredAttributes) {
-                    $("#loginform").slideUp();
-                    $("#updatepasswordform").fadeIn();
-
-                    $("#updatepasswordform").on("submit", (e) => {
-                        e.preventDefault();
-
-                        if ($("#updatepasswordform").valid()) {
-                            console.log("User Attributes:", userAttributes);
-                            console.log("Required Attributes:", requiredAttributes);
-                            cognitoUser.completeNewPasswordChallenge($("#newpassword").val(), { "name": $("#name").val() }, {
-                                onSuccess: result => {
-                                    console.log("New Password Challenge: Success!");
-                                    AWS.config.credentials.refresh(err => {
-                                        if (err) {
-                                            showMessage(err, true);
-                                        } else {
-                                            showMessage("Password updated");
-                                            //$(location).attr("href", "/portal");
-                                        }
-                                    });
-                                },
-                                onFailure: function (err) {
-                                    console.error("New Password Challenge: Failure!");
-                                    console.error(err);
-                                    showMessage(err.message);
-                                    $("#updateerror").html(err.message);
-                                    $("#updateerror").show();
-                                }
-                            });
-                        }
-                    });
-                }
-            });
-        }
 
     </script>
 </body>

@@ -288,9 +288,10 @@
     <script src="js/notifications.js"></script>
     <script src="js/cookies.js"></script>
 
-    <!-- <script src="js/aws-sdk.min.js"></script>
-    <script src="js/amazon-cognito-auth.min.js"></script>
-    <script src="js/amazon-cognito-identity.min.js"></script> -->
+    <script src="../js/aws-sdk.min.js"></script>
+    <script src="../js/amazon-cognito-auth.min.js"></script>
+    <script src="../js/amazon-cognito-identity.min.js"></script>
+    <script src="../js/auth.js"></script>
 
     <script>
 
@@ -300,39 +301,7 @@
         $("#rightsidebar").load("rightsidebar.html");
         $("#footer").load("footer.html");
 
-        // // Is user authenticated?
-        // var data = {
-        //     UserPoolId: "eu-west-1_8d92gzCo4",
-        //     ClientId: "7sn1nlqferjdvjl0ufurg0dga4"
-        // };
-        // var userPool = new AmazonCognitoIdentity.CognitoUserPool(data);
-        // var cognitoUser = userPool.getCurrentUser();
-
-        // if (cognitoUser != null) {
-        //     cognitoUser.getSession(function (err, session) {
-        //         if (err) {
-        //             alert(err);
-        //             return;
-        //         }
-
-        //         if (!session.isValid()) {
-        //             $(location).attr("href", "/portal/login.html");
-        //             return;
-        //         }
-
-        //         AWS.config.credentials = new AWS.CognitoIdentityCredentials({
-        //             IdentityPoolId: "eu-west-1:72f9916c-eb9a-4ff2-9c0a-9c0fe19e6745",
-        //             Logins: {
-        //                 "cognito-idp.eu-west-1.amazonaws.com/eu-west-1_8d92gzCo4": session.getIdToken().getJwtToken()
-        //             }
-        //         });
-
-        //         console.log("User session is valid");
-
-        //     });
-        // } else {
-        //     $(location).attr("href", "/portal/login.html");
-        // }
+        isLoggedIn();
 
         var apiPathCloudAnalyticsJobs = "https://cloud-analytics.herokuapp.com/api/v1/organizations/5c0d7524fabbe2468c7c9129/jobs";
         var apiPathCloudAnalyticsCronJobs = "https://cloud-analytics.herokuapp.com/api/v1/organizations/5c0d7524fabbe2468c7c9129/cronjobs";
