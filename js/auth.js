@@ -338,6 +338,7 @@ function getUser() {
   var userPool = new AmazonCognitoIdentity.CognitoUserPool(data);
   cognitoUser = userPool.getCurrentUser();
   console.log("cognito user:", cognitoUser);
+  return cognitoUser;
 }
 
 function logout() {
