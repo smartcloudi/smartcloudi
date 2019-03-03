@@ -303,8 +303,7 @@
 
         isLoggedIn();
 
-        var apiPathCloudAnalyticsJobs = "https://cloud-analytics.herokuapp.com/api/v1/organizations/5c0d7524fabbe2468c7c9129/jobs";
-        var apiPathCloudAnalyticsCronJobs = "https://cloud-analytics.herokuapp.com/api/v1/organizations/5c0d7524fabbe2468c7c9129/cronjobs";
+        var apiPathCloudAnalyticsJobs = `https://cloud-analytics.herokuapp.com/api/v1/user/${cognitoUser.username}/jobs`;
         var apiPathPureCloudConnector = "https://cloud-analytics.herokuapp.com/api/v1/purecloud";
 
         //#region Cron UI
@@ -357,6 +356,10 @@
                     "image": "compliance/purecloud-analytics-downloader",
                     "input": [
                         {
+                            "name": "environment",
+                            "value": $("#settings #environment").val()
+                        },
+                        {
                             "name": "clientId",
                             "value": $("#settings #clientId").val()
                         },
@@ -365,8 +368,12 @@
                             "value": $("#settings #clientSecret").val()
                         },
                         {
-                            "name": "environment",
-                            "value": $("#settings #environment").val()
+                            "name": "analyticsIntervalStart",
+                            "value": calculateAnalyticsIntervals().analyticsIntervalStart
+                        },
+                        {
+                            "name": "analyticsIntervalStop",
+                            "value": calculateAnalyticsIntervals().analyticsIntervalStop
                         },
                         {
                             "name": "doConversationDetail",
@@ -379,14 +386,6 @@
                         {
                             "name": "doUserStatusAggregate",
                             "value": $("#settings #userStatusAggregate").is(":checked") ? "1" : "0"
-                        },
-                        {
-                            "name": "analyticsIntervalStart",
-                            "value": calculateAnalyticsIntervals().analyticsIntervalStart
-                        },
-                        {
-                            "name": "analyticsIntervalStop",
-                            "value": calculateAnalyticsIntervals().analyticsIntervalStop
                         }
                     ]
                 };
@@ -394,7 +393,7 @@
                 console.log(data);
 
                 if ($("#settings #recurrence").prop("checked")) {
-                    apiPath = apiPathCloudAnalyticsCronJobs;
+                    apiPath = apiPathCloudAnalyticsJobs;
                     data.period = $("#settings #timespan").val();
                     data.schedule = cron_ui.currentValue; //TODO Convert to UTC
                 } else {
@@ -453,7 +452,7 @@
             }).done((data, textStatus, jqXHR) => {
                 switch (jqXHR.status) {
                     case 200:
-                        if (data.token) {
+                        if (data) {
                             showMessage("Connection Succeeded!");
                             $("#close").prop('disabled', false);
                         } else {
@@ -742,19 +741,21 @@
                     downloadTd.append($("<i />", { class: "fas fa-download" }));
                     downloadTd.append(" Download");
                     downloadTd.on("click", () => {
-                        pushFile(id, result.outputPath);
+                        if (result.outputPath) {
+                            pushFile(id, result.outputPath);
+                        }
                     });
 
                     // Id (for troubleshooting)
                     var idTd = $("<td />", { class: "hidden-xs-down" }).appendTo(tableRow);
-                    idTd.append($("<small />", { class: "text-muted" }).text(`(${result.outputPath})`));
+                    idTd.append($("<small />", { class: "text-muted" }).text(`(${result.outputPath ? result.outputPath : "No file"})`));
 
                     // Time section
                     var timeSection = $("<td />", { class: "hidden-xs-down" }).appendTo(tableRow);
                     timeSection.append($("<i />", { class: "fas fa-calendar-alt" }));
                     timeSection.append(` ${moment(result.timestamp).fromNow()}`);
                     // Set color
-                    if (result.outputPath.length > 0) {
+                    if (result.outputPath) {
                         timeSection.addClass("text-success");
                     }
                 });
