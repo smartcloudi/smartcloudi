@@ -22,7 +22,7 @@
     <link href="css/inbox.css" rel="stylesheet">
 </head>
 
-<body class="skin-blue fixed-layout">
+<body class="skin-purple-dark fixed-layout">
     <!-- ============================================================== -->
     <!-- Preloader - style you can find in spinners.css -->
     <!-- ============================================================== -->
@@ -176,8 +176,16 @@
                         </div>
                     </div>
                 </div>
+                <!-- End Settings Modal -->
             </div>
-            <!-- End Settings Modal -->
+            <!-- Alert -->
+            <div class="alert alert-info alert-dismissible fade show" role="alert">
+                Thank you for using our Cloud Analytics tool. Click on the <strong>Create New</strong> button on the top-right to get started.
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <!-- Page Content -->
             <div class="row">
                 <div class="col-lg-12">
                     <div class="card">
@@ -200,7 +208,7 @@
                             <div class="col-lg-9 col-md-8 bg-light border-left">
                                 <div class="card-body">
                                     <button type="button" id="refresh" class="btn btn-secondary mr-2 shadow-sm"><i class="fas fa-sync-alt"></i></button>
-                                    <span class="label label-default text-dark">Files are automatically deleted after 30 days</span>
+                                    <span class="label label-default text-dark">Files are automatically deleted after 30 days. Click on an item to view the available files</span>
                                 </div>
 
                                 <div class="container">
@@ -542,6 +550,7 @@
 
             var jobNameSpan = $("<span />", { class: "text-dark" }).html("&nbsp; &nbsp;" + name).appendTo(headerContent);
 
+            // Badge with number of files available
             var numberOfFilesString = "", numberOfFilesTextColor = "";
             if (results) {
                 if (results.length == 0) {
@@ -556,7 +565,7 @@
                     numberOfFilesClass = "label-success";
                 }
             }
-            var badgeNumberOfFiles = $("<span />", { class: `label ${numberOfFilesClass} ${numberOfFilesTextColor} shadow-sm ml-2` }).html(numberOfFilesString).appendTo(headerContent);
+            $("<span />", { class: `label ${numberOfFilesClass} ${numberOfFilesTextColor} shadow-sm ml-2` }).html(numberOfFilesString).appendTo(headerContent);
 
             //#endregion
 
@@ -617,7 +626,6 @@
 
             var editIcon = $("<i />", { class: "fas fa-lg fa-edit text-dark float-right ml-2 pt-1", "data-toggle": "modal", "data-target": "#settings", style: "cursor:pointer" }).appendTo(headerContent);
             editIcon.on("click", function (e) {
-                //TODO Prevent accordion from showing body?
                 console.log("Editing request...");
                 $("#settings #title").html(name);
                 $("#settings #name").val(name);
@@ -627,14 +635,16 @@
                 $("#settings #conversationDetail").prop("checked", doConversationDetail == "1");
                 $("#settings #conversationAggregate").prop("checked", doConversationAggregate == "1");
                 $("#settings #userStatusAggregate").prop("checked", doUserStatusAggregate == "1");
+                $("#settings #timespan").val(timespan || "days");
                 $("#settings #recurrence").prop("checked", recurrence);
                 if (recurrence) {
                     // Enable cron divs
                     $("#cronuidiv").fadeTo("slow", 1);
                     $("#cronuidiv").css("pointer-events", "auto");
                 }
-                $("#settings #timespan").val(timespan);
-                cron_ui.setCronString(schedule);
+                if (schedule) {
+                    cron_ui.setCronString(schedule);
+                }
                 $("#settings #close").text('Save');
                 $("#settings #close").unbind().click(function () {
                     console.log('Saving request...');
@@ -680,7 +690,7 @@
                     };
 
                     if ($("#settings #recurrence").prop("checked")) {
-                        apiPath = apiPathCloudAnalyticsCronJobs;
+                        apiPath = apiPathCloudAnalyticsJobs;
                         data.schedule = cron_ui.currentValue;
                     } else {
 
@@ -756,7 +766,8 @@
                     // Time section
                     var timeSection = $("<td />", { class: "hidden-xs-down" }).appendTo(tableRow);
                     timeSection.append($("<i />", { class: "fas fa-calendar-alt" }));
-                    timeSection.append(` ${moment(result.timestamp).fromNow()}`);
+                    timeSection.append(` ${moment.utc(result.timestamp).fromNow()}`);
+
                     // Set color
                     if (result.outputPath) {
                         timeSection.addClass("text-success");
@@ -797,13 +808,13 @@
                                 let environment = searchByName(currentRequest.input, "name", "environment")
                                 let environmentValue = environment ? environment.value : "";
 
-                                let doConversationDetails = searchByName(currentRequest.input, "name", "doConversationDetails")
+                                let doConversationDetails = searchByName(currentRequest.input, "name", "doConversationDetail")
                                 let doConversationDetailsValue = doConversationDetails ? doConversationDetails.value : "0";
 
-                                let doConversationAggregates = searchByName(currentRequest.input, "name", "doConversationAggregates")
+                                let doConversationAggregates = searchByName(currentRequest.input, "name", "doConversationAggregate")
                                 let doConversationAggregatesValue = doConversationAggregates ? doConversationAggregates.value : "0";
 
-                                let doUserStatusAggregates = searchByName(currentRequest.input, "name", "doUserStatusAggregates")
+                                let doUserStatusAggregates = searchByName(currentRequest.input, "name", "doUserStatusAggregate")
                                 let doUserStatusAggregatesValue = doUserStatusAggregates ? doUserStatusAggregates.value : "0";
 
                                 let analyticsIntervalStart = searchByName(currentRequest.input, "name", "analyticsIntervalStart")
