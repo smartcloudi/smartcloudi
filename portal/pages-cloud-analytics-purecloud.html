@@ -303,7 +303,7 @@
 
         isLoggedIn();
 
-        var apiPathCloudAnalyticsJobs = `https://cloud-analytics.herokuapp.com/api/v1/user/${cognitoUser.username}/jobs`;
+        var apiPathCloudAnalyticsJobs = `https://cloud-analytics.herokuapp.com/api/v1/users/${cognitoUser.username}/jobs`;
         var apiPathPureCloudConnector = "https://cloud-analytics.herokuapp.com/api/v1/purecloud";
 
         //#region Cron UI
@@ -592,7 +592,7 @@
                 }).then((willDelete) => {
                     if (willDelete) {
                         $.ajax({
-                            url: `${apiPath}/${encodeURI(id)}`,
+                            url: `${apiPathCloudAnalyticsJobs}/${encodeURI(id)}`,
                             dataType: "json",
                             method: "DELETE",
                         }).done((data, textStatus, jqXHR) => {
