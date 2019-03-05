@@ -865,14 +865,22 @@
             var req = new XMLHttpRequest();
             req.open("GET", `${apiPathCloudAnalyticsJobs}/${jobId}/download/${filename}`, true);
             req.responseType = "blob";
-            req.onload = ((event) => {
-                // Creating a fake anchor and click it
-                var blob = req.response;
-                var link = document.createElement("a");
-                link.download = filename + ".zip";
-                link.href = window.URL.createObjectURL(blob);
-                link.click();
-            });
+            req.onreadystatechange = function () {
+                if (req.readyState == 4) {
+                    if (req.status == 404) {
+                        console.log("file missing");
+                        showMessage("File does not exist", true);
+                    }
+                    else {
+                        // Wohoo, all is fine, push file by creating a fake link and clicking it
+                        var blob = req.response;
+                        var link = document.createElement("a");
+                        link.download = filename + ".zip";
+                        link.href = window.URL.createObjectURL(blob);
+                        link.click();
+                    }
+                }
+            }
             req.send(); // Download
         }
 
