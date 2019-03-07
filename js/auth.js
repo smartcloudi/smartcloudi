@@ -352,6 +352,41 @@ function logout() {
   redirect("/portal/login.html");
 }
 
+function forgotPassword(username) {
+  var poolData = {
+    UserPoolId: cognitoUserPoolId,
+    ClientId: cognitoClientId
+  };
+
+  var userPool = new AmazonCognitoIdentity.CognitoUserPool(poolData);
+
+  var userData = {
+    Username: username,
+    Pool: userPool
+  };
+
+  var cognitoUser = new AmazonCognitoIdentity.CognitoUser(userData);
+
+  cognitoUser.forgotPassword({
+    onSuccess: function (result) {
+      showMessage("Password changed successfully!");
+      setTimeout(() => {
+        redirect("/portal/login.html");
+      }, 2000);
+    },
+    onFailure: function (err) {
+      console.error(err);
+      alert(err.message);
+    },
+    //Optional automatic callback
+    inputVerificationCode: function (data) {
+      var verificationCode = prompt('We have sent you a new verification code by email. Please input it here:', '');
+      var newPassword = prompt('Enter new password ', '');
+      cognitoUser.confirmPassword(verificationCode, newPassword, this);
+    }
+  });
+}
+
 function redirect(page) {
   $(location).attr("href", page);
 }
