@@ -78,24 +78,24 @@
                                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
                             </div>
                             <div class="modal-body">
-                                <form>
+                                <form id="new-request">
                                     <div>
                                         <div class="form-group">
                                             <label for="name">Name</label>
-                                            <input type="text" class="form-control" id="name" placeholder="Enter a name for your request">
+                                            <input type="text" class="form-control" id="name" name="name" required placeholder="Enter a name for your request">
                                         </div>
                                         <div class="form-group">
                                             <label for="clientId">Client Id</label>
-                                            <input type="text" class="form-control" id="clientId" placeholder="PureCloud OAuth Client Id" />
+                                            <input type="text" class="form-control" id="clientId" name="clientId" required placeholder="PureCloud OAuth Client Id" />
                                         </div>
                                         <div class="form-group">
                                             <label for="clientSecret">Client Secret</label>
-                                            <input type="password" class="form-control" id="clientSecret" autocomplete="client-secret" placeholder="PureCloud OAuth Client Secret" />
+                                            <input type="password" class="form-control" id="clientSecret" name="clientSecret" required autocomplete="client-secret" placeholder="PureCloud OAuth Client Secret" />
                                         </div>
                                         <div class="form-group">
                                             <label class="control-label">Environment</label>
                                             <small class="form-control-feedback m-l-10 text-muted">(Select your PureCloud Organization Environment)</small>
-                                            <select class="form-control custom-select" id="environment">
+                                            <select class="form-control custom-select" id="environment" name="environment" required>
                                                 <option value="mypurecloud.com">mypurecloud.com</option>
                                                 <option value="mypurecloud.com.au">mypurecloud.com.au</option>
                                                 <option value="mypurecloud.de">mypurecloud.de</option>
@@ -106,9 +106,9 @@
                                         <hr>
                                         <div class="form-group row">
                                             <div class="col-6">
-                                                <label>Statistics</label>
+                                                <label>Statistics to include</label>
                                                 <div class="input-group">
-                                                    <input type="checkbox" class="check" id="conversationDetail">
+                                                    <input type="checkbox" class="check" id="conversationDetail" name="statistics">
                                                     <span class="mytooltip tooltip-effect-5">
                                                         <label for="conversationDetail" class="tooltip-item">Conversations Detail</label>
                                                         <span class="tooltip-content">
@@ -117,7 +117,7 @@
                                                     </span>
                                                 </div>
                                                 <div class="input-group">
-                                                    <input type="checkbox" class="check" id="conversationAggregate">
+                                                    <input type="checkbox" class="check" id="conversationAggregate" name="statistics">
                                                     <span class="mytooltip tooltip-effect-5">
                                                         <label for="conversationAggregate" class="tooltip-item">Conversation Aggregate</label>
                                                         <span class="tooltip-content">
@@ -127,7 +127,7 @@
                                                     </span>
                                                 </div>
                                                 <div class="input-group">
-                                                    <input type="checkbox" class="check" id="userStatusAggregate">
+                                                    <input type="checkbox" class="check" id="userStatusAggregate" name="statistics">
                                                     <span class="mytooltip tooltip-effect-5">
                                                         <label for="userStatusAggregate" class="tooltip-item">User Status Aggregate</label>
                                                         <span class="tooltip-content">
@@ -138,9 +138,9 @@
                                                 </div>
                                             </div>
                                             <div class="col-6">
-                                                <div id="perioddiv" class="form-group mt-3">
+                                                <div id="perioddiv" class="form-group">
                                                     <label class="control-label">Period</label>
-                                                    <select class="form-control custom-select" id="timespan">
+                                                    <select class="form-control custom-select" id="timespan" name="timespan" required>
                                                         <option value="days" selected>Previous Day</option>
                                                         <option value="weeks">Previous Week</option>
                                                         <option value="months">Previous Month</option>
@@ -151,7 +151,7 @@
                                         <hr>
                                         <div class="form-group">
                                             <div class="input-group">
-                                                <input type="checkbox" class="check" id="recurrence">
+                                                <input type="checkbox" class="check" id="recurrence" name="recurrence">
                                                 <span class="mytooltip tooltip-effect-5">
                                                     <label for="recurrence" class="tooltip-item">Recurrence</label>
                                                     <span class="tooltip-content">
@@ -161,7 +161,7 @@
                                                 </span>
                                             </div>
                                             <div id="cronuidiv">
-                                                Every <span id="cronui"></span>
+                                                Every <span id="cronui" name="cronui"></span>
                                                 (Please use server time. Current time: <span id="currentTime"></span>)
                                             </div>
                                         </div>
@@ -169,6 +169,9 @@
                                 </form>
                             </div>
                             <div class="modal-footer">
+                                <div id="error" class="text-danger">
+                                    <span></span>
+                                </div>
                                 <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
                                 <button type="button" class="btn btn-info" id="testconnection">Test Connection</button>
                                 <button type="button" disabled id="close" class="btn btn-primary waves-effect"></button>
@@ -276,6 +279,9 @@
     <script src="../js/jquery.toast.min.js"></script>
     <script src="../js/sweetalert.min.js"></script>
 
+    <script src="../js/jquery.validate.min.js"></script>
+    <script src="../js/additional-methods.min.js"></script>
+
     <script src="../js/moment.min.js"></script>
     <script src="../js/later.min.js"></script>
     <script src="../js/prettycron.js"></script>
@@ -298,6 +304,48 @@
         $("#leftsidebar").load("leftsidebar.html");
         $("#rightsidebar").load("rightsidebar.html");
         $("#footer").load("footer.html");
+
+        // Form validation
+        var validator = $("#new-request").validate({
+            rules: {
+                //At least one of the statistics must be checked
+                statistics: {
+                    required: true
+                }
+            },
+            onfocusout: false,
+            onkeyup: false,
+            errorClass: "alert alert-danger",
+            errorPlacement: function (error, element) {
+                error.insertBefore(element.parent().children("br"));
+                // if (element[0].name == "statistics") {
+                //     element.parent("div").parent("div").addClass("text text-danger");
+                // } else {
+                //     element.parent("div").addClass("text text-danger");
+                // }
+            },
+            invalidHandler: function (event, validator) {
+                // 'this' refers to the form
+                var errors = validator.numberOfInvalids();
+                if (errors) {
+                    showMessage("Missing fields", true);
+                }
+            },
+            highlight: function (element) {
+                if ($(element) && $(element)[0].name == "statistics") {
+                    $(element).parent().parent().addClass("border border-danger");
+                } else {
+                    $(element).addClass("border border-danger");
+                }
+            },
+            unhighlight: function (element) {
+                if ($(element) && $(element)[0].name == "statistics") {
+                    $(element).parent().parent().removeClass("border border-danger");
+                } else {
+                    $(element).removeClass("border border-danger");
+                }
+            }
+        });
 
         isLoggedIn();
 
@@ -343,8 +391,13 @@
             $("#settings #cronuidiv").fadeTo("slow", 0.4);
             $("#settings #cronuidiv").css("pointer-events", "none");
             $("#settings #close").text('Create');
+            validator.resetForm();
             $("#settings #close").unbind().click(function () {
                 console.log('Submitting request...');
+
+                if (!$("#new-request").valid()) {
+                    return;
+                }
 
                 var data = {
                     "name": $("#settings #name").val(),
@@ -405,7 +458,7 @@
                         case 201:
                             console.log('Request submitted', data);
                             $("#settings").modal('toggle');
-                            showMessage(`'${data.name}' submitted`);
+                            showMessage('Request submitted');
                             loadRequests(showJobs, showCronJobs);
                             break;
                         default:
