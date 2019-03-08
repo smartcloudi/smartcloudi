@@ -13,6 +13,8 @@
   <!-- Loading Bootstrap -->
   <link href="css/bootstrap.min.css" rel="stylesheet">
 
+  <link href="css/intlTelInput.css" rel="stylesheet">
+
   <!-- Loading Template CSS -->
   <link href="css/style.css" rel="stylesheet">
   <link href="css/animate.css" rel="stylesheet">
@@ -153,12 +155,19 @@
 
                 <input class="register-input white-input" required="" name="register_email" id="register_email" placeholder="Email Adress*" type="email">
 
-                <input class="register-input white-input" required="" name="register_phone" id="register_phone" placeholder="Phone Number*" type="tel">
-
+                <!-- <input class="register-input white-input" required="" name="register_phone" id="register_phone" placeholder="Phone Number*" type="tel"> -->
+                <input type="tel" id="register_phone" name="register_phone" required class="form-control">
+                <hr />
                 <input class="register-input white-input" required="" name="register_password" id="register_password" placeholder="Password*" type="password">
 
                 <input class="register-input white-input" required="" name="register_confirmpassword" id="register_confirmpassword" placeholder="Confirm Password*" type="password">
+                <p>
+                  <small class="text-muted">Password must contain at least 8 characters, 1 number and 1 special character</small>
+                </p>
 
+                <div id="error" class="text-danger">
+                  <span></span>
+                </div>
                 <input value="Go to Portal" class="register-submit" type="submit">
 
               </form>
@@ -1557,9 +1566,12 @@
   <script src="js/jquery.scrollTo-min.js"></script>
   <script src="js/jquery.magnific-popup.min.js"></script>
   <script src="js/jquery.nav.js"></script>
+  <script src="js/jquery.validate.min.js"></script>
+  <script src="js/additional-methods.min.js"></script>
   <script src="js/wow.js"></script>
   <script src="js/plugins.js"></script>
   <script src="js/custom.js"></script>
+  <script src="js/intlTelInput.js"></script>
 
   <script src="js/aws-sdk.min.js"></script>
   <script src="js/amazon-cognito-auth.min.js"></script>
@@ -1569,10 +1581,75 @@
 
   <script>
 
-    // Sign up new user
-    $("#register-form").on("submit", function (e) {
-      e.preventDefault();
-      registerUser($("#register_name").val(), $("#register_email").val(), $("#register_phone").val(), $("#register_password").val());
+    // Init phone number input
+    var input = document.querySelector("#register_phone");
+    var iti = window.intlTelInput(input, {
+      preferredCountries: ["pl", "fr", "gb"],
+      separateDialCode: true,
+      utilsScript: "js/utils.js"
+    });
+
+    $(document).ready(function () {
+
+      $.validator.addMethod("Uppercase", function (value, element) {
+        return this.optional(element) || /[A-Z]/.test(value);
+      }, "Enter at least one Capital letter");
+      $.validator.addMethod("LowerCase", function (value, element) {
+        return this.optional(element) || /[a-z]/.test(value);
+      }, "Enter at least one Small letter");
+      $.validator.addMethod("Digit", function (value, element) {
+        return this.optional(element) || /[0-9]/.test(value);
+      }, "Enter at least one Number");
+      $.validator.addMethod("Special_char", function (value, element) {
+        return this.optional(element) || /[{}|~`"'[\]$&+,:;=?@#|'<>.^*()%!-]/.test(value);
+      }, "Enter at least one Special Character");
+
+      // Add register form requirements
+      $("#register-form").validate({
+        rules: {
+          register_password: {
+            minlength: 8,
+            Digit: true,
+            Special_char: true
+          },
+          register_confirmpassword: {
+            equalTo: "#register_password"
+          }
+        },
+        messages: {
+          "register_password": {
+            passwordValidation: "8 characters and at least one special character and one number are required",
+            required: "Please enter valid password"
+          }
+        },
+        showErrors: function (errorMap, errorList) {
+          // Do nothing here
+        },
+        onfocusout: false,
+        onkeyup: false,
+        errorClass: "alert alert-danger",
+        errorPlacement: function (error, element) {
+          return false;
+        },
+        success: function (e) {
+          $("#error").hide();
+          e.remove();
+        },
+        invalidHandler: function (event, validator) {
+          // 'this' refers to the form
+          var errors = validator.numberOfInvalids();
+          if (errors) {
+            var message = 'Please populate all fields to get an access';
+            $("#error span").html(message);
+            $("#error").show();
+          } else {
+            $("#error").hide();
+          }
+        },
+        submitHandler: function (form) {
+          registerUser($("#register_name").val(), $("#register_email").val(), iti.getNumber(intlTelInputUtils.numberFormat.E164), $("#register_password").val());
+        }
+      });
     });
 
     // Verify confirmation code

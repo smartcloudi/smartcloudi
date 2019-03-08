@@ -132,7 +132,6 @@ function confirmUser(username, password, verificationCode) {
     if (result === "SUCCESS") {
       // Login user
       console.log("username:", cognitoUser.getUsername())
-      console.log("password:", password);
       loginUser(cognitoUser.getUsername(), password, "/portal");
     } else {
       alert("Code verification failed");
@@ -168,7 +167,6 @@ function signIn(username, password, redirectUrl) {
 
   console.log("signIn called");
   console.log("username:", username);
-  console.log("password:", password);
 
   $("#loginerror").html("");
   $("#loginerror").hide();
