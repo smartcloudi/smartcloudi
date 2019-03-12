@@ -376,9 +376,9 @@
         function resetModal() {
             $("#settings #title").html("New Request");
             $("#settings #name").val("");
-            $("#settings #clientId").val("a3f41e28-da17-4f23-aff7-140ced056039"); //TODO FOR TESTS ONLY!
-            $("#settings #clientSecret").val("SJ3oDumdnrBzvDgZ-dbthJSC9WDh0ZvXGB-UQtevGe4"); //TODO FOR TESTS ONLY!
-            $("#settings #environment").val("mypurecloud.ie");
+            $("#settings #clientId").val("");
+            $("#settings #clientSecret").val("");
+            $("#settings #environment").val("mypurecloud.com");
             $("#settings #conversationDetail").prop("checked", false);
             $("#settings #conversationAggregate").prop("checked", false);
             $("#settings #userStatusAggregate").prop("checked", false);
@@ -434,14 +434,11 @@
                     ]
                 };
 
-                console.log(data);
+                apiPath = apiPathCloudAnalyticsJobs;
 
                 if ($("#settings #recurrence").prop("checked")) {
-                    apiPath = apiPathCloudAnalyticsJobs;
                     data.period = $("#settings #timespan").val();
                     data.schedule = cron_ui.currentValue; //TODO Convert to UTC
-                } else {
-                    apiPath = apiPathCloudAnalyticsJobs;
                 }
 
                 $.ajax({
@@ -695,14 +692,22 @@
                     cron_ui.setCronString(schedule);
                 }
                 $("#settings #close").text('Save');
+                validator.resetForm();
                 $("#settings #close").unbind().click(function () {
                     console.log('Saving request...');
+
+                    if (!$("#new-request").valid()) {
+                        return;
+                    }
+
                     var data = {
                         "name": $("#settings #name").val(),
-                        "image": "compliance/pcsd-cloud",
-                        "cronJob": $("#settings #recurrence").prop("checked"),
-                        "period": $("#settings #timespan").val(),
+                        "image": "compliance/purecloud-analytics-downloader",
                         "input": [
+                            {
+                                "name": "environment",
+                                "value": $("#settings #environment").val()
+                            },
                             {
                                 "name": "clientId",
                                 "value": $("#settings #clientId").val()
@@ -712,8 +717,12 @@
                                 "value": $("#settings #clientSecret").val()
                             },
                             {
-                                "name": "environment",
-                                "value": $("#settings #environment").val()
+                                "name": "analyticsIntervalStart",
+                                "value": calculateAnalyticsIntervals().analyticsIntervalStart
+                            },
+                            {
+                                "name": "analyticsIntervalStop",
+                                "value": calculateAnalyticsIntervals().analyticsIntervalStop
                             },
                             {
                                 "name": "doConversationDetail",
@@ -726,25 +735,18 @@
                             {
                                 "name": "doUserStatusAggregate",
                                 "value": $("#settings #userStatusAggregate").is(":checked") ? "1" : "0"
-                            },
-                            {
-                                "name": "analyticsIntervalStart",
-                                "value": calculateAnalyticsIntervals().analyticsIntervalStart
-                            },
-                            {
-                                "name": "analyticsIntervalStop",
-                                "value": calculateAnalyticsIntervals().analyticsIntervalStop
                             }
                         ]
                     };
 
-                    if ($("#settings #recurrence").prop("checked")) {
-                        apiPath = apiPathCloudAnalyticsJobs;
-                        data.schedule = cron_ui.currentValue;
-                    } else {
+                    apiPath = apiPathCloudAnalyticsJobs;
 
-                        apiPath = apiPathCloudAnalyticsJobs;
+                    if ($("#settings #recurrence").prop("checked")) {
+                        data.schedule = cron_ui.currentValue;
                     }
+
+                    console.log('path:', apiPath + "/" + id);
+                    console.log('data:', data);
 
                     $.ajax({
                         url: apiPath + "/" + id,
@@ -752,14 +754,21 @@
                         method: "PATCH",
                         data: data
                     }).done((data, textStatus, jqXHR) => {
-                        if (jqXHR.status == 200) {
-                            console.log(`Request ${data.id} saved`);
-                            $("#settings").modal('toggle');
-                            showMessage(`'${data.name}' saved`);
-                            loadRequests();
-                            return;
+                        switch (jqXHR.status) {
+                            case 200:
+                                console.log('Request saved');
+                                $("#settings").modal('toggle');
+                                showMessage('Request saved');
+                                loadRequests();
+                                break;
+                            default:
+                                console.error(jqXHR);
+                                break;
                         }
-                    }).fail(handleQueryError);
+                    }).fail((error) => {
+                        console.error(error);
+                        showMessage(error.responseText, true);
+                    });
                 });
             });
 
