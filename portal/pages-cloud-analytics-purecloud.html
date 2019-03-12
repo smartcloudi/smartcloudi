@@ -439,6 +439,9 @@
                 if ($("#settings #recurrence").prop("checked")) {
                     data.period = $("#settings #timespan").val();
                     data.schedule = cron_ui.currentValue; //TODO Convert to UTC
+                    data.cronJob = true;
+                } else {
+                    data.cronJob = false;
                 }
 
                 $.ajax({
@@ -682,6 +685,7 @@
                 $("#settings #conversationAggregate").prop("checked", doConversationAggregate == "1");
                 $("#settings #userStatusAggregate").prop("checked", doUserStatusAggregate == "1");
                 $("#settings #timespan").val(timespan || "days");
+                console.log("recurrence:", recurrence);
                 $("#settings #recurrence").prop("checked", recurrence);
                 if (recurrence) {
                     // Enable cron divs
