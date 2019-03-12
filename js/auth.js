@@ -400,7 +400,7 @@ function getAccessToken(cognitoUser) {
     if (cognitoUser != null) {
       return cognitoUser.getSession(function (err, result) {
         if (result) {
-          console.log('getAccessToken: You are logged in.');
+          console.log('getAccessToken: logged in.');
 
           // Add the User's Id Token to the Cognito credentials login map.
           AWS.config.credentials = new AWS.CognitoIdentityCredentials({
