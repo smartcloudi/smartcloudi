@@ -10,6 +10,7 @@ var cognitoIdentityPoolId = "eu-west-1:72f9916c-eb9a-4ff2-9c0a-9c0fe19e6745";
 var cognitoUserPoolId = "eu-west-1_8d92gzCo4";
 var cognitoClientId = "7sn1nlqferjdvjl0ufurg0dga4";
 
+var accessToken = undefined;
 var cognitoUser = getUser();
 
 //#region Query Errors
@@ -283,8 +284,7 @@ function loginUser(username, password, redirectUrl) {
 
   cognitoUser.authenticateUser(authenticationDetails, {
     onSuccess: function (result) {
-      var accessToken = result.getAccessToken().getJwtToken();
-      console.log("Access token:", accessToken);
+      accessToken = result.getAccessToken().getJwtToken();
       if (redirectUrl) {
         redirect(redirectUrl);
       }
@@ -336,6 +336,12 @@ function getUser() {
   var userPool = new AmazonCognitoIdentity.CognitoUserPool(data);
   cognitoUser = userPool.getCurrentUser();
   console.log("cognito user:", cognitoUser);
+  getAccessToken(cognitoUser).then((retrievedAccessToken) => {
+    //console.log("Access token:", retrievedAccessToken);
+    accessToken = retrievedAccessToken;
+  }).catch((error) => {
+    console.error("Error while retrieving access token:", error);
+  });
   return cognitoUser;
 }
 
@@ -387,4 +393,32 @@ function forgotPassword(username) {
 
 function redirect(page) {
   $(location).attr("href", page);
+}
+
+function getAccessToken(cognitoUser) {
+  return new Promise((resolve, reject) => {
+    if (cognitoUser != null) {
+      return cognitoUser.getSession(function (err, result) {
+        if (result) {
+          console.log('getAccessToken: You are logged in.');
+
+          // Add the User's Id Token to the Cognito credentials login map.
+          AWS.config.credentials = new AWS.CognitoIdentityCredentials({
+            IdentityPoolId: cognitoIdentityPoolId,
+            Logins: {
+              [`cognito-idp.${cognitoRegion}.amazonaws.com/${cognitoUserPoolId}`]: result.getIdToken().getJwtToken()
+            }
+          });
+          //console.log("Access Token is:", result.getAccessToken().getJwtToken());
+          resolve(result.getAccessToken().getJwtToken());
+          return;
+        }
+      });
+    }
+    reject();
+  });
+}
+
+function setRequiredHeaders(xhr) {
+  xhr.setRequestHeader("accesstoken", accessToken); // Get from local storage
 }
