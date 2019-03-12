@@ -346,7 +346,7 @@
         isLoggedIn();
 
         var apiPathCloudAnalyticsJobs = `https://cloud-analytics.herokuapp.com/api/v1/users/${cognitoUser.username}/jobs`;
-        var apiPathPureCloudConnector = "https://cloud-analytics.herokuapp.com/api/v1/purecloud";
+        var apiPathPureCloudConnector = `https://cloud-analytics.herokuapp.com/api/v1/users/${cognitoUser.username}/purecloud`;
 
         //#region Cron UI
 
@@ -448,6 +448,7 @@
                     url: apiPath,
                     dataType: "json",
                     method: "POST",
+                    beforeSend: setRequiredHeaders,
                     data: data
                 }).done((data, textStatus, jqXHR) => {
                     switch (jqXHR.status) {
@@ -478,17 +479,12 @@
 
         $("#testconnection").on("click", () => {
             // Call API to test PureCloud connection
+            console.log("url:")
             $.ajax({
                 url: `${apiPathPureCloudConnector}/login`,
                 dataType: "json",
                 method: "POST",
-                beforeSend: function (xhr) {
-                    xhr.setRequestHeader("Authorization", getCookie("Authorization"));
-                    xhr.setRequestHeader("comply-username", getCookie("comply-username"));
-                    xhr.setRequestHeader("comply-groups", getCookie("comply-groups"));
-                    xhr.setRequestHeader("comply-organization", getCookie("comply-organization"));
-                    xhr.setRequestHeader("comply-orgId", getCookie("comply-orgId"));
-                },
+                beforeSend: setRequiredHeaders,
                 data: {
                     "clientId": $("#settings #clientId").val(),
                     "clientSecret": $("#settings #clientSecret").val(),
@@ -512,6 +508,7 @@
                 }
             }).fail((error) => {
                 console.error(error);
+                showMessage("Failed to connect with PureCloud. Check your credentials?", true);
             });
         });
 
@@ -656,6 +653,7 @@
                         $.ajax({
                             url: `${apiPathCloudAnalyticsJobs}/${encodeURI(id)}`,
                             dataType: "json",
+                            beforeSend: setRequiredHeaders,
                             method: "DELETE",
                         }).done((data, textStatus, jqXHR) => {
                             if (jqXHR.status == 204) {
@@ -685,7 +683,6 @@
                 $("#settings #conversationAggregate").prop("checked", doConversationAggregate == "1");
                 $("#settings #userStatusAggregate").prop("checked", doUserStatusAggregate == "1");
                 $("#settings #timespan").val(timespan || "days");
-                console.log("recurrence:", recurrence);
                 $("#settings #recurrence").prop("checked", recurrence);
                 if (recurrence) {
                     // Enable cron divs
@@ -756,6 +753,7 @@
                         url: apiPath + "/" + id,
                         dataType: "json",
                         method: "PATCH",
+                        beforeSend: setRequiredHeaders,
                         data: data
                     }).done((data, textStatus, jqXHR) => {
                         switch (jqXHR.status) {
@@ -852,6 +850,7 @@
             $.ajax({
                 url: apiPathCloudAnalyticsJobs,
                 dataType: "json",
+                beforeSend: setRequiredHeaders,
             }).done((data, textStatus, jqXHR) => {
                 switch (jqXHR.status) {
                     case 200:
@@ -916,6 +915,7 @@
                 }
             }).fail(function (error) {
                 console.error(error);
+                showMessage("An error occurred while retrieving requests", true);
             });
         }
 
