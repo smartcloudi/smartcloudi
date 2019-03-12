@@ -801,9 +801,10 @@
             if (results && results.length > 0) {
                 $.each(results, (i, result) => {
                     var collapseBody = $("<div />", { id: "collapse_" + id, class: "collapse", "data-parent": "#accordion" }).appendTo(cardDiv);
-                    var cardBodyDiv = $("<div />", { class: "card-body" }).appendTo(collapseBody);
-                    var subCardBodyDiv = $("<div />", { class: "card b-all shadow-none" }).appendTo(cardBodyDiv)
-                    var inboxDiv = $("<div />", { class: "inbox-center table-responsive" }).appendTo(subCardBodyDiv);
+                    //var cardBodyDiv = $("<div />", { class: "card-body" }).appendTo(collapseBody);
+                    //var subCardBodyDiv = $("<div />", { class: "card b-all shadow-none" }).appendTo(cardBodyDiv)
+                    //var inboxDiv = $("<div />", { class: "inbox-center table-responsive" }).appendTo(subCardBodyDiv);
+                    var inboxDiv = $("<div />", { class: "inbox-center table-responsive" }).appendTo(collapseBody);
                     var table = $("<table />", { class: "table table-hover no-wrap" }).appendTo(inboxDiv);
                     var tableBody = $("<tbody />").appendTo(table);
 
