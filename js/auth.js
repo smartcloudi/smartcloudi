@@ -335,13 +335,15 @@ function getUser() {
 
   var userPool = new AmazonCognitoIdentity.CognitoUserPool(data);
   cognitoUser = userPool.getCurrentUser();
-  console.log("cognito user:", cognitoUser);
-  getAccessToken(cognitoUser).then((retrievedAccessToken) => {
-    //console.log("Access token:", retrievedAccessToken);
-    accessToken = retrievedAccessToken;
-  }).catch((error) => {
-    console.error("No access token found:", error);
-  });
+  //console.log("cognito user:", cognitoUser);
+  if (cognitoUser) {
+    getAccessToken(cognitoUser).then((retrievedAccessToken) => {
+      //console.log("Access token:", retrievedAccessToken);
+      accessToken = retrievedAccessToken;
+    }).catch((error) => {
+      console.error("No access token found:", error);
+    });
+  }
   return cognitoUser;
 }
 
