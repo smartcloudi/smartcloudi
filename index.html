@@ -166,7 +166,7 @@
                 </p>
 
                 <small>
-                  <input type="checkbox" id="privacypolicy">
+                  <input type="checkbox" id="privacypolicy" name="privacypolicy">
                   <label for="privacypolicy">I have reviewed the <a href="privacypolicy.pdf" target="_blank">Privacy Policy</a></label>
                 </small>
                 <hr />
@@ -719,14 +719,20 @@
             Digit: true,
             Special_char: true
           },
+          privacypolicy: {
+            required: true,
+          },
           register_confirmpassword: {
             equalTo: "#register_password"
           }
         },
         messages: {
-          "register_password": {
+          register_password: {
             passwordValidation: "8 characters and at least one special character and one number are required",
             required: "Please enter valid password"
+          },
+          privacypolicy: {
+            required: "You must agree to the Privacy Policy"
           }
         },
         showErrors: function (errorMap, errorList) {
@@ -746,7 +752,7 @@
           // 'this' refers to the form
           var errors = validator.numberOfInvalids();
           if (errors) {
-            var message = 'Please populate all fields to get an access';
+            var message = 'Please populate all fields to get an access and agress to the Privacy Policy';
             $("#error span").html(message);
             $("#error").show();
           } else {
