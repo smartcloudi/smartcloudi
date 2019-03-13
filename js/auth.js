@@ -340,7 +340,7 @@ function getUser() {
     //console.log("Access token:", retrievedAccessToken);
     accessToken = retrievedAccessToken;
   }).catch((error) => {
-    console.error("Error while retrieving access token:", error);
+    console.error("No access token found:", error);
   });
   return cognitoUser;
 }
@@ -354,6 +354,24 @@ function logout() {
   cognitoUser.signOut();
   AWS.config.credentials.clearCachedId(); // Clears the cached Cognito ID associated with the currently configured identity pool ID
   redirect("/portal/login.html");
+}
+
+function deleteAccount() {
+  if (confirm("Are you sure you want to delete your account? This cannot be undone", "No")) {
+    if (!cognitoUser) {
+      getUser();
+    }
+    console.log("cognitoUser to delete:", cognitoUser);
+    cognitoUser.deleteUser((err, result) => {
+      if (err) {
+        console.error(err.message);
+        //logout();
+        return;
+      }
+      console.log("call result:", result);
+      logout();
+    });
+  }
 }
 
 function forgotPassword(username) {
