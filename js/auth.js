@@ -440,5 +440,5 @@ function getAccessToken(cognitoUser) {
 }
 
 function setRequiredHeaders(xhr) {
-  xhr.setRequestHeader("accesstoken", accessToken); // Get from local storage
+  xhr.setRequestHeader("accesstoken", accessToken);
 }
