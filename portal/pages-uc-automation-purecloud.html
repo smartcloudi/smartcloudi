@@ -25,7 +25,7 @@
     <link href="css/uc-automation-purecloud.css" rel="stylesheet">
 </head>
 
-<body class="skin-blue fixed-layout">
+<body class="skin-purple-dark fixed-layout">
     <!-- ============================================================== -->
     <!-- Preloader - style you can find in spinners.css -->
     <!-- ============================================================== -->
@@ -400,7 +400,7 @@
         <!-- footer -->
         <!-- ============================================================== -->
         <footer class="footer">
-            © 2018 Eliteadmin by themedesigner.in
+            © 2019 SmartCloudi
         </footer>
         <!-- ============================================================== -->
         <!-- End footer -->
@@ -431,9 +431,10 @@
     <script src="js/notifications.js"></script>
     <script src="js/cookies.js"></script>
 
-    <script src="js/aws-sdk.min.js"></script>
-    <script src="js/amazon-cognito-auth.min.js"></script>
-    <script src="js/amazon-cognito-identity.min.js"></script>
+    <script src="../js/aws-sdk.min.js"></script>
+    <script src="../js/amazon-cognito-auth.min.js"></script>
+    <script src="../js/amazon-cognito-identity.min.js"></script>
+    <script src="../js/auth.js"></script>
 
     <script src="js/papaparse.min.js"></script>
     <script src="js/jquery.smartWizard.min.js"></script>
@@ -446,42 +447,11 @@
         $("#rightsidebar").load("rightsidebar.html");
         $("#footer").load("footer.html");
 
-        // Is user authenticated?
-        var data = {
-            UserPoolId: "eu-west-1_8d92gzCo4",
-            ClientId: "7sn1nlqferjdvjl0ufurg0dga4"
-        };
-        var userPool = new AmazonCognitoIdentity.CognitoUserPool(data);
-        var cognitoUser = userPool.getCurrentUser();
+        isLoggedIn();
 
-        if (cognitoUser != null) {
-            cognitoUser.getSession(function (err, session) {
-                if (err) {
-                    alert(err);
-                    return;
-                }
+        var apiPath = `https://purecloud-uc-automation.herokuapp.com/api/v1/users/${cognitoUser.username}`;
 
-                if (!session.isValid()) {
-                    $(location).attr("href", "/portal/login.html");
-                    return;
-                }
-
-                AWS.config.credentials = new AWS.CognitoIdentityCredentials({
-                    IdentityPoolId: "eu-west-1:72f9916c-eb9a-4ff2-9c0a-9c0fe19e6745",
-                    Logins: {
-                        "cognito-idp.eu-west-1.amazonaws.com/eu-west-1_8d92gzCo4": session.getIdToken().getJwtToken()
-                    }
-                });
-
-                console.log("User session is valid");
-
-            });
-        } else {
-            $(location).attr("href", "/portal/login.html");
-        }
-
-        // Initi csv upload and smartWizard
-
+        // Init csv upload and smartWizard
         $(document).ready(function () {
             // Basic
             $('#csvUpload').dropify({
@@ -528,7 +498,6 @@
 
         });
 
-        var apiPath = "https://blooming-woodland-18540.herokuapp.com/api/v1/connector-purecloud";
         var token, users;
         var queuesCreated = 0, queuesExisted = 0, skillsCreated = 0, skillsExisted = 0, usersCreated = 0, usersExisted = 0;
 
@@ -546,7 +515,7 @@
                 url: `${apiPath}/login`,
                 dataType: "json",
                 method: "POST",
-                // beforeSend: setRequiredHeaders,
+                beforeSend: setRequiredHeaders,
                 data: {
                     "clientId": $("#clientId").val(),
                     "clientSecret": $("#clientSecret").val(),
@@ -559,6 +528,7 @@
                             if (data.token) {
                                 token = data.token;
                                 showMessage("Connection Succeeded!");
+                                console.log("PureCloud token:", token);
                                 $('#smartwizard').smartWizard("next");
                                 // $("#configuration").show("slow");
                                 // $("#flowsDiv").show("slow");
@@ -589,16 +559,15 @@
                     $("#testconnection").removeClass("btn-success");
                     $("#testconnection").addClass("btn-info");
                 }
-            })
-                .fail((jqXHR, textStatus, errorThrown) => {
-                    showMessage("Connection failed", true);
-                    //$("#configuration").hide("slow");
-                    //$("#flowsDiv").hide("slow");
-                    //$("#connectionHeaderDiv").removeClass("bg-success");
-                    //$("#connectionHeaderDiv").addClass("bg-info");
-                    $("#testconnection").removeClass("btn-success");
-                    $("#testconnection").addClass("btn-info");
-                });
+            }).fail((jqXHR, textStatus, errorThrown) => {
+                showMessage("Connection failed", true);
+                //$("#configuration").hide("slow");
+                //$("#flowsDiv").hide("slow");
+                //$("#connectionHeaderDiv").removeClass("bg-success");
+                //$("#connectionHeaderDiv").addClass("bg-info");
+                $("#testconnection").removeClass("btn-success");
+                $("#testconnection").addClass("btn-info");
+            });
         });
 
         //#endregion
@@ -798,7 +767,7 @@
                     url: `${apiPath}/queues/environment/${env}/token/${token}`,
                     dataType: "json",
                     method: "GET",
-                    // beforeSend: setRequiredHeaders
+                    beforeSend: setRequiredHeaders
                 })
                     .done((data, textStatus, jqXHR) => {
                         switch (jqXHR.status) {
@@ -817,6 +786,7 @@
         }
 
         function getQueue(name) {
+            console.log("Cognito Access Token:", accessToken);
             return new Promise((resolve, reject) => {
                 var env = $("#environment").val();
                 console.log(`Get queue ${name} with env ${env} and token ${token}`);
@@ -824,19 +794,25 @@
                     url: `${apiPath}/queues/${name}/environment/${env}/token/${token}`,
                     dataType: "json",
                     method: "GET",
-                    // beforeSend: setRequiredHeaders
+                    beforeSend: setRequiredHeaders
                 })
                     .done((data, textStatus, jqXHR) => {
+                        console.log("data:", data);
+                        console.log("textStatus:", textStatus);
+                        console.log("jqXHR:", jqXHR);
                         switch (jqXHR.status) {
                             case 200:
                                 resolve(data);
                                 break;
                             default:
+                                showMessage(textStatus, true);
                                 reject(jqXHR.status);
                                 break;
                         }
                     })
                     .fail((error) => {
+                        console.error(error);
+                        showMessage(error, true);
                         reject(error);
                     });
             });
@@ -863,7 +839,7 @@
                         url: `${apiPath}/queues`,
                         dataType: "json",
                         method: "POST",
-                        // beforeSend: setRequiredHeaders,
+                        beforeSend: setRequiredHeaders,
                         data: {
                             "env": $("#environment").val(),
                             "token": token,
@@ -904,7 +880,7 @@
                     url: `${apiPath}/queues/users`,
                     dataType: "json",
                     method: "POST",
-                    // beforeSend: setRequiredHeaders,
+                    beforeSend: setRequiredHeaders,
                     data: {
                         "env": $("#environment").val(),
                         "token": token,
@@ -942,7 +918,7 @@
                     url: `${apiPath}/skills/environment/${env}/token/${token}`,
                     dataType: "json",
                     method: "GET",
-                    // beforeSend: setRequiredHeaders
+                    beforeSend: setRequiredHeaders
                 })
                     .done((data, textStatus, jqXHR) => {
                         switch (jqXHR.status) {
@@ -968,7 +944,7 @@
                     url: `${apiPath}/skills/${name}/environment/${env}/token/${token}`,
                     dataType: "json",
                     method: "GET",
-                    // beforeSend: setRequiredHeaders
+                    beforeSend: setRequiredHeaders
                 })
                     .done((data, textStatus, jqXHR) => {
                         switch (jqXHR.status) {
@@ -1007,7 +983,7 @@
                         url: `${apiPath}/skills`,
                         dataType: "json",
                         method: "POST",
-                        // beforeSend: setRequiredHeaders,
+                        beforeSend: setRequiredHeaders,
                         data: {
                             "env": $("#environment").val(),
                             "token": token,
@@ -1048,7 +1024,7 @@
                     url: `${apiPath}/skills/users`,
                     dataType: "json",
                     method: "POST",
-                    // beforeSend: setRequiredHeaders,
+                    beforeSend: setRequiredHeaders,
                     data: {
                         "env": $("#environment").val(),
                         "token": token,
@@ -1086,7 +1062,7 @@
                     url: `${apiPath}/users/${name}/environment/${env}/token/${token}`,
                     dataType: "json",
                     method: "GET",
-                    // beforeSend: setRequiredHeaders
+                    beforeSend: setRequiredHeaders
                 })
                     .done((data, textStatus, jqXHR) => {
                         switch (jqXHR.status) {
@@ -1126,7 +1102,7 @@
                             url: `${apiPath}/users`,
                             dataType: "json",
                             method: "POST",
-                            // beforeSend: setRequiredHeaders,
+                            beforeSend: setRequiredHeaders,
                             data: {
                                 "env": $("#environment").val(),
                                 "token": token,
@@ -1192,7 +1168,7 @@
                     url: `${apiPath}/flows`,
                     dataType: "json",
                     method: "POST",
-                    // beforeSend: setRequiredHeaders,
+                    beforeSend: setRequiredHeaders,
                     data: {
                         "env": $("#environment").val(),
                         "token": token,
@@ -1297,7 +1273,7 @@
                     url: `${apiPath}/flowTemplates`,
                     dataType: "json",
                     method: "GET",
-                    // beforeSend: setRequiredHeaders
+                    beforeSend: setRequiredHeaders
                 })
                     .done((data, textStatus, jqXHR) => {
                         switch (jqXHR.status) {
@@ -1327,7 +1303,7 @@
                     url: `${apiPath}/prompts/environment/${env}/token/${token}`,
                     dataType: "json",
                     method: "GET",
-                    // beforeSend: setRequiredHeaders
+                    beforeSend: setRequiredHeaders
                 })
                     .done((data, textStatus, jqXHR) => {
                         switch (jqXHR.status) {
