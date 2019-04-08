@@ -1,0 +1,861 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <!-- Tell the browser to be responsive to screen width -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <!-- Favicon icon -->
+    <link rel="icon" type="image/ico" sizes="16x16" href="../images/favicon.ico">
+    <title>Smart Cloudi - Chatbot Hub</title>
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-136094582-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+
+        gtag('config', 'UA-136094582-1');
+    </script>
+    <!-- Custom CSS -->
+    <link href="css/style.min.css" rel="stylesheet">
+    <link href="../css/stylish-tooltip.css" rel="stylesheet">
+    <link href="../css/switchery.css" rel="stylesheet" />
+    <link href="../css/jquery-ui.min.css" rel="stylesheet" />
+    <link href="../css/jquery.toast.min.css" rel="stylesheet">
+    <link href="../css/perfect-scrollbar.css">
+    <!-- page css -->
+    <link href="css/inbox.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/pages-chatbot-hub.css">
+</head>
+
+<body class="skin-purple-dark fixed-layout">
+    <!-- ============================================================== -->
+    <!-- Preloader - style you can find in spinners.css -->
+    <!-- ============================================================== -->
+    <div class="preloader">
+        <div class="loader">
+            <div class="loader__figure"></div>
+            <p class="loader__label">Smart Cloudi</p>
+        </div>
+    </div>
+    <!-- ============================================================== -->
+    <!-- Main wrapper - style you can find in pages.scss -->
+    <!-- ============================================================== -->
+    <div id="main-wrapper">
+        <div id="topbar"></div>
+        <div id="leftsidebar"></div>
+        <!-- ============================================================== -->
+        <!-- Page wrapper  -->
+        <!-- ============================================================== -->
+        <div class="page-wrapper">
+            <!-- ============================================================== -->
+            <!-- Container fluid  -->
+            <!-- ============================================================== -->
+            <div class="container-fluid">
+                <!-- ============================================================== -->
+                <!-- Bread crumb and right sidebar toggle -->
+                <!-- ============================================================== -->
+                <div class="row page-titles">
+                    <div class="col-md-5 align-self-center">
+                        <h4 class="text-themecolor">Chatbot Hub</h4>
+                    </div>
+                    <div class="col-md-7 align-self-center text-right">
+                        <div class="d-flex justify-content-end align-items-center">
+                            <ol class="breadcrumb">
+                                <li class="breadcrumb-item"><a href="index.html">Home</a></li>
+                                <li class="breadcrumb-item active">Chatbot Hub</li>
+                            </ol>
+                            <button type="button" data-toggle="modal" data-target="#settings" class="btn btn-info d-none d-lg-block m-l-15"><i class="fa fa-plus-circle"></i> Create New</button>
+                        </div>
+                    </div>
+                </div>
+                <!-- ============================================================== -->
+                <!-- End Bread crumb and right sidebar toggle -->
+                <!-- ============================================================== -->
+            </div>
+            <!-- Settings Modal -->
+            <div id="settings" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="settingsLabel" aria-hidden="true" style="display: none;">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h4 class="modal-title" id="title"></h4>
+                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                        </div>
+                        <div class="modal-body">
+                            <form id="new-request">
+                                <div>
+                                    <div class="form-group">
+                                        <label for="name">Name</label>
+                                        <input type="text" class="form-control" id="name" name="name" required placeholder="Enter a name for your configuration">
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Inputs</label>
+                                        <div class="btn-group" role="group">
+                                            <button type="button" data-toggle="modal" data-target="#facebookmessenger" class="btn btn-info d-none d-lg-block ml-2"><i class="fab fa-1x fa-facebook-messenger" title="Facebook Messenger"></i> Facebook Messenger <i class="fa fa-plus-circle"></i></button>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Outputs</label>
+                                        <div class="btn-group" role="group">
+                                            <button type="button" data-toggle="modal" data-target="#azurebot" class="btn btn-info d-none d-lg-block ml-2">Azure Bot <i class="fa fa-plus-circle"></i></button>
+                                            <button type="button" data-toggle="modal" data-target="#ibmwatson" class="btn btn-info d-none d-lg-block ml-2">IBM Watson <i class="fa fa-plus-circle"></i></button>
+                                            <button type="button" data-toggle="modal" data-target="#purecloud" class="btn btn-info d-none d-lg-block ml-2">Genesys PureCloud <i class="fa fa-plus-circle"></i></button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                            <div id="error" class="text-danger">
+                                <span></span>
+                            </div>
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                            <button type="button" disabled id="close" class="btn btn-primary waves-effect"></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- End Settings Modal -->
+
+            <!-- ============================================================== -->
+            <!-- Start Page Content -->
+            <!-- ============================================================== -->
+            <!-- Alert -->
+            <div class="alert alert-info alert-dismissible fade show" role="alert">
+                Thank you for using our Chatbot Hub. Click on the <strong>Create New</strong> button on the top-right to get started.
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <!-- ============================================================== -->
+            <!-- End Page Content -->
+            <!-- ============================================================== -->
+            <!-- ============================================================== -->
+            <!-- Right sidebar -->
+            <!-- ============================================================== -->
+            <div id="rightsidebar"></div>
+            <!-- ============================================================== -->
+            <!-- End Right sidebar -->
+            <!-- ============================================================== -->
+        </div>
+        <!-- ============================================================== -->
+        <!-- End Container fluid  -->
+        <!-- ============================================================== -->
+    </div>
+    <!-- ============================================================== -->
+    <!-- End Page wrapper  -->
+    <!-- ============================================================== -->
+    <div id="footer"></div>
+    </div>
+    <!-- ============================================================== -->
+    <!-- End Wrapper -->
+    <!-- ============================================================== -->
+    <!-- ============================================================== -->
+    <!-- All Jquery -->
+    <!-- ============================================================== -->
+    <script src="../js/jquery-3.3.1.min.js"></script>
+    <script src="../js/popper.min.js"></script>
+    <script src="../js/bootstrap.min.js"></script>
+
+    <script src="../js/perfect-scrollbar.min.js"></script>
+    <script src="../js/perfect-scrollbar.jquery.js"></script>
+
+    <script src="../js/jquery-ui.min.js"></script>
+
+    <script src="../js/waves.js"></script>
+    <script src="../js/sidebarmenu.js"></script>
+
+    <script src="../js/jquery.magnific-popup.min.js"></script>
+    <script src="../js/jquery.nav.js"></script>
+
+    <script src="../js/jquery.toast.min.js"></script>
+    <script src="../js/sweetalert.min.js"></script>
+
+    <script src="../js/jquery.validate.min.js"></script>
+    <script src="../js/additional-methods.min.js"></script>
+
+    <script src="../js/moment.min.js"></script>
+    <script src="../js/later.min.js"></script>
+    <script src="../js/prettycron.js"></script>
+    <script src="../js/cron-ui.min.js"></script>
+
+    <!-- Page scripts -->
+    <script src="../js/custom.min.js"></script>
+    <script src="js/notifications.js"></script>
+    <script src="js/cookies.js"></script>
+
+    <script src="../js/aws-sdk.min.js"></script>
+    <script src="../js/amazon-cognito-auth.min.js"></script>
+    <script src="../js/amazon-cognito-identity.min.js"></script>
+    <script src="../js/auth.js"></script>
+
+    <script>
+
+        // Import Bars
+        $("#topbar").load("topbar.html");
+        $("#leftsidebar").load("leftsidebar.html");
+        $("#rightsidebar").load("rightsidebar.html");
+        $("#footer").load("footer.html");
+
+        // Form validation
+        var validator = $("#new-request").validate({
+            rules: {
+                //At least one of the statistics must be checked
+                statistics: {
+                    required: true
+                }
+            },
+            onfocusout: false,
+            onkeyup: false,
+            errorClass: "alert alert-danger",
+            errorPlacement: function (error, element) {
+                error.insertBefore(element.parent().children("br"));
+            },
+            invalidHandler: function (event, validator) {
+                // 'this' refers to the form
+                var errors = validator.numberOfInvalids();
+                if (errors) {
+                    showMessage("Missing fields", true);
+                }
+            },
+            highlight: function (element) {
+                if ($(element) && $(element)[0].name == "statistics") {
+                    $(element).parent().parent().addClass("border border-danger");
+                } else {
+                    $(element).addClass("border border-danger");
+                }
+            },
+            unhighlight: function (element) {
+                if ($(element) && $(element)[0].name == "statistics") {
+                    $(element).parent().parent().removeClass("border border-danger");
+                } else {
+                    $(element).removeClass("border border-danger");
+                }
+            }
+        });
+
+        isLoggedIn();
+
+        var apiPathCloudAnalyticsJobs = `https://cloud-analytics.herokuapp.com/api/v1/users/${cognitoUser.username}/jobs`;
+        var apiPathPureCloudConnector = `https://cloud-analytics.herokuapp.com/api/v1/users/${cognitoUser.username}/purecloud`;
+
+        //#region Modals
+
+        function resetModal() {
+            $("#settings #title").html("New Chatbot");
+            $("#settings #name").val("");
+            $("#settings #clientId").val("");
+            $("#settings #clientSecret").val("");
+            $("#settings #environment").val("mypurecloud.com");
+            $("#settings #conversationDetail").prop("checked", false);
+            $("#settings #conversationAggregate").prop("checked", false);
+            $("#settings #userStatusAggregate").prop("checked", false);
+            $("#settings #recurrence").prop("checked", false);
+            $("#settings #timespan").val("days");
+            $("#settings #cronuidiv").fadeTo("slow", 0.4);
+            $("#settings #cronuidiv").css("pointer-events", "none");
+            $("#settings #close").text('Create');
+            validator.resetForm();
+            $("#settings #close").unbind().click(function () {
+                console.log('Submitting request...');
+
+                if (!$("#new-request").valid()) {
+                    return;
+                }
+
+                var data = {
+                    "name": $("#settings #name").val(),
+                    "image": "compliance/purecloud-analytics-downloader",
+                    "input": [
+                        {
+                            "name": "environment",
+                            "value": $("#settings #environment").val()
+                        },
+                        {
+                            "name": "clientId",
+                            "value": $("#settings #clientId").val()
+                        },
+                        {
+                            "name": "clientSecret",
+                            "value": $("#settings #clientSecret").val()
+                        },
+                        {
+                            "name": "analyticsIntervalStart",
+                            "value": calculateAnalyticsIntervals().analyticsIntervalStart
+                        },
+                        {
+                            "name": "analyticsIntervalStop",
+                            "value": calculateAnalyticsIntervals().analyticsIntervalStop
+                        },
+                        {
+                            "name": "doConversationDetail",
+                            "value": $("#settings #conversationDetail").is(":checked") ? "1" : "0"
+                        },
+                        {
+                            "name": "doConversationAggregate",
+                            "value": $("#settings #conversationAggregate").is(":checked") ? "1" : "0"
+                        },
+                        {
+                            "name": "doUserStatusAggregate",
+                            "value": $("#settings #userStatusAggregate").is(":checked") ? "1" : "0"
+                        }
+                    ]
+                };
+
+                apiPath = apiPathCloudAnalyticsJobs;
+
+                if ($("#settings #recurrence").prop("checked")) {
+                    data.period = $("#settings #timespan").val();
+                    data.schedule = cron_ui.currentValue; //TODO Convert to UTC
+                    data.cronJob = true;
+                } else {
+                    data.cronJob = false;
+                }
+
+                $.ajax({
+                    url: apiPath,
+                    dataType: "json",
+                    method: "POST",
+                    beforeSend: setRequiredHeaders,
+                    data: data
+                }).done((data, textStatus, jqXHR) => {
+                    switch (jqXHR.status) {
+                        case 201:
+                            console.log('Request submitted', data);
+                            $("#settings").modal('toggle');
+                            showMessage('Request submitted');
+                            loadRequests(showJobs, showCronJobs);
+                            break;
+                        default:
+                            break;
+                    }
+                }).fail((error) => {
+                    console.error(error);
+                    showMessage(error.responseText);
+                });
+            });
+        }
+
+        // Clear modal when hidden
+        $("#settings").on("hidden.bs.modal", function () {
+            resetModal();
+        });
+
+        setInterval(() => {
+            $("#currentTime").text(moment.utc().format("HH:mm:ss"))
+        }, 1000);
+
+        $("#testconnection").on("click", () => {
+            // Call API to test PureCloud connection
+            console.log("url:")
+            $.ajax({
+                url: `${apiPathPureCloudConnector}/login`,
+                dataType: "json",
+                method: "POST",
+                beforeSend: setRequiredHeaders,
+                data: {
+                    "clientId": $("#settings #clientId").val(),
+                    "clientSecret": $("#settings #clientSecret").val(),
+                    "env": $("#settings #environment").val(),
+                }
+            }).done((data, textStatus, jqXHR) => {
+                switch (jqXHR.status) {
+                    case 200:
+                        if (data) {
+                            showMessage("Connection Succeeded!");
+                            $("#close").prop('disabled', false);
+                        } else {
+                            showMessage("Connection failed", true);
+                            $("#close").prop('disabled', true);
+                        }
+                        break;
+                    default:
+                        showMessage("Connection failed", true);
+                        $("#close").prop('disabled', true);
+                        break;
+                }
+            }).fail((error) => {
+                console.error(error);
+                showMessage("Failed to connect with PureCloud. Check your credentials?", true);
+            });
+        });
+
+        //#endregion Modals
+
+        // Refresh button
+        $("#refresh").on("click", () => {
+            loadRequests(showJobs, showCronJobs);
+        });
+
+        //#region Left pane buttons
+
+        var showJobs = true;
+        var showCronJobs = true;
+
+        $("#showAll").on("click", () => {
+            showJobs = true;
+            showCronJobs = true;
+            loadRequests(showJobs, showCronJobs)
+        });
+        $("#showJobs").on("click", () => {
+            showJobs = true;
+            showCronJobs = false;
+            loadRequests(showJobs, showCronJobs)
+        });
+        $("#showCronJobs").on("click", () => {
+            showJobs = false;
+            showCronJobs = true;
+            loadRequests(showJobs, showCronJobs)
+        });
+
+        //#endregion
+
+        // Create a new request
+        function createRequest(id, inProgress, recurrence, name, image, cronJob, timespan, schedule, clientId, clientSecret, environment, doConversationDetail, doConversationAggregate, doUserStatusAggregate, analyticsIntervalStart, analyticsIntervalStop, results, updatedAt = "05:30 AM") {
+
+            // Add card to accordion
+            var cardDiv = $("<div />", { class: "card border shadow" });
+
+            //#region Border color
+
+            if (inProgress) {
+                cardDiv.addClass("border-warning");
+            } else if (results.length > 0) {
+                // Last result is successful?
+                if (results[results.length - 1].result) {
+                    cardDiv.addClass("border-success");
+                }
+            } else {
+                cardDiv.addClass("border-default");
+            }
+
+            //#endregion
+
+            //#region Header
+
+            var cardHeader = $("<div />", { class: "card-header" }).appendTo(cardDiv);
+
+            var headerContent = $("<a />", { class: "card-link", "data-toggle": "collapse", href: "#collapse_" + id }).appendTo(cardHeader);
+
+            //#region Job icon
+
+            var iconSection;
+            if (recurrence) {
+                iconSection = $("<i />", { class: "fas fa-redo" }).appendTo(headerContent);
+            } else {
+                iconSection = $("<i />", { class: "far fa-clock" }).appendTo(headerContent);
+            }
+
+            // Set color
+            if (inProgress) {
+                iconSection.addClass("text-warning");
+            } else if (results.length > 0) {
+                // Last result is successful?
+                if (results[results.length - 1].result) {
+                    iconSection.addClass("text-success");
+                }
+            } else {
+                iconSection.addClass("text-default");
+            }
+
+            //#endregion
+
+            //#region Job name
+
+            var jobNameSpan = $("<span />", { class: "text-dark" }).html("&nbsp; &nbsp;" + name).appendTo(headerContent);
+
+            // Badge with number of files available
+            var numberOfFilesString = "", numberOfFilesTextColor = "";
+            if (results) {
+                if (results.length == 0) {
+                    numberOfFilesString = "No files available yet";
+                    numberOfFilesClass = "label-warning";
+                    numberOfFilesTextColor = "text-dark";
+                } else if (results.length == 1) {
+                    numberOfFilesString = "1 file available";
+                    numberOfFilesClass = "label-success";
+                } else {
+                    numberOfFilesString = `${results.length} files available`;
+                    numberOfFilesClass = "label-success";
+                }
+            }
+            $("<span />", { class: `label ${numberOfFilesClass} ${numberOfFilesTextColor} shadow-sm ml-2` }).html(numberOfFilesString).appendTo(headerContent);
+
+            //#endregion
+
+            //#region Tags
+
+            var tagsSpan = $("<span />", { class: "ml-2" }).appendTo(headerContent);
+
+            if (doConversationDetail == "1") {
+                tagsSpan.append($("<span />", { class: "label label-info m-r-10" }).html("Conversation Detail"));
+            }
+            if (doConversationAggregate == "1") {
+                tagsSpan.append($("<span />", { class: "label label-info m-r-10" }).html("Conversation Aggregates"));
+            }
+            if (doUserStatusAggregate == "1") {
+                tagsSpan.append($("<span />", { class: "label label-info m-r-10" }).html("User Aggregates"));
+            }
+
+            //#endregion
+
+            //#region Delete Icon
+
+            var deleteIcon = $("<i />", { class: "far fa-lg fa-trash-alt text-danger float-right ml-2 pt-1" }).appendTo(headerContent);
+            deleteIcon.on("click", function () {
+                swal({
+                    title: "Are you sure?",
+                    text: "You will not be able to recover this request! All associated files will also be deleted",
+                    icon: "warning",
+                    buttons: {
+                        cancel: true,
+                        confirm: {
+                            visible: true,
+                            text: "Yes, delete it!",
+                            closeModal: true
+                        }
+                    },
+                    dangerMode: true
+                }).then((willDelete) => {
+                    if (willDelete) {
+                        $.ajax({
+                            url: `${apiPathCloudAnalyticsJobs}/${encodeURI(id)}`,
+                            dataType: "json",
+                            beforeSend: setRequiredHeaders,
+                            method: "DELETE",
+                        }).done((data, textStatus, jqXHR) => {
+                            if (jqXHR.status == 204) {
+                                console.log('Request deleted');
+                                showMessage(`'${name}' deleted`);
+                                loadRequests();
+                                return;
+                            }
+                        }).fail(handleQueryError);
+                    }
+                });
+            });
+
+            //#endregion
+
+            //#region Edit Icon
+
+            var editIcon = $("<i />", { class: "fas fa-lg fa-edit text-dark float-right ml-2 pt-1", "data-toggle": "modal", "data-target": "#settings", style: "cursor:pointer" }).appendTo(headerContent);
+            editIcon.on("click", function (e) {
+                console.log("Editing request...");
+                $("#settings #title").html(name);
+                $("#settings #name").val(name);
+                $("#settings #clientId").val(clientId);
+                $("#settings #clientSecret").val(clientSecret);
+                $("#settings #environment").val(environment);
+                $("#settings #conversationDetail").prop("checked", doConversationDetail == "1");
+                $("#settings #conversationAggregate").prop("checked", doConversationAggregate == "1");
+                $("#settings #userStatusAggregate").prop("checked", doUserStatusAggregate == "1");
+                $("#settings #timespan").val(timespan || "days");
+                $("#settings #recurrence").prop("checked", recurrence);
+                if (recurrence) {
+                    // Enable cron divs
+                    $("#cronuidiv").fadeTo("slow", 1);
+                    $("#cronuidiv").css("pointer-events", "auto");
+                }
+                if (schedule) {
+                    cron_ui.setCronString(schedule);
+                }
+                $("#settings #close").text('Save');
+                validator.resetForm();
+                $("#settings #close").unbind().click(function () {
+                    console.log('Saving request...');
+
+                    if (!$("#new-request").valid()) {
+                        return;
+                    }
+
+                    var data = {
+                        "name": $("#settings #name").val(),
+                        "image": "compliance/purecloud-analytics-downloader",
+                        "input": [
+                            {
+                                "name": "environment",
+                                "value": $("#settings #environment").val()
+                            },
+                            {
+                                "name": "clientId",
+                                "value": $("#settings #clientId").val()
+                            },
+                            {
+                                "name": "clientSecret",
+                                "value": $("#settings #clientSecret").val()
+                            },
+                            {
+                                "name": "analyticsIntervalStart",
+                                "value": calculateAnalyticsIntervals().analyticsIntervalStart
+                            },
+                            {
+                                "name": "analyticsIntervalStop",
+                                "value": calculateAnalyticsIntervals().analyticsIntervalStop
+                            },
+                            {
+                                "name": "doConversationDetail",
+                                "value": $("#settings #conversationDetail").is(":checked") ? "1" : "0"
+                            },
+                            {
+                                "name": "doConversationAggregate",
+                                "value": $("#settings #conversationAggregate").is(":checked") ? "1" : "0"
+                            },
+                            {
+                                "name": "doUserStatusAggregate",
+                                "value": $("#settings #userStatusAggregate").is(":checked") ? "1" : "0"
+                            }
+                        ]
+                    };
+
+                    apiPath = apiPathCloudAnalyticsJobs;
+
+                    if ($("#settings #recurrence").prop("checked")) {
+                        data.schedule = cron_ui.currentValue;
+                    }
+
+                    console.log('path:', apiPath + "/" + id);
+                    console.log('data:', data);
+
+                    $.ajax({
+                        url: apiPath + "/" + id,
+                        dataType: "json",
+                        method: "PATCH",
+                        beforeSend: setRequiredHeaders,
+                        data: data
+                    }).done((data, textStatus, jqXHR) => {
+                        switch (jqXHR.status) {
+                            case 200:
+                                console.log('Request saved');
+                                $("#settings").modal('toggle');
+                                showMessage('Request saved');
+                                loadRequests();
+                                break;
+                            default:
+                                console.error(jqXHR);
+                                break;
+                        }
+                    }).fail((error) => {
+                        console.error(error);
+                        showMessage(error.responseText, true);
+                    });
+                });
+            });
+
+            //#endregion
+
+            //#region Last Updated
+
+            var lastUpdatedDiv = $("<div />", { class: "float-right text-dark ml-2" }).appendTo(headerContent);
+            var updatedSection = $("<i />", { class: "fas fa-calendar-alt" }).appendTo(lastUpdatedDiv);
+            lastUpdatedDiv.append(` ${moment(updatedAt).fromNow()}`);
+
+            //#endregion
+
+            //#region Schedule
+
+            if (schedule) {
+                var scheduleDiv = $("<div />", { class: "float-right text-dark" }).appendTo(headerContent);
+                var scheduleSection = $("<i />", { class: "fas fa-clock" }).appendTo(scheduleDiv);
+                scheduleDiv.append(` ${prettyCron.toString(schedule)}`);
+            }
+
+            //#endregion
+
+            //#endregion Header
+
+            //#region Body
+
+            if (results && results.length > 0) {
+                $.each(results, (i, result) => {
+                    var collapseBody = $("<div />", { id: "collapse_" + id, class: "collapse", "data-parent": "#accordion" }).appendTo(cardDiv);
+                    //var cardBodyDiv = $("<div />", { class: "card-body" }).appendTo(collapseBody);
+                    //var subCardBodyDiv = $("<div />", { class: "card b-all shadow-none" }).appendTo(cardBodyDiv)
+                    //var inboxDiv = $("<div />", { class: "inbox-center table-responsive" }).appendTo(subCardBodyDiv);
+                    var inboxDiv = $("<div />", { class: "inbox-center table-responsive" }).appendTo(collapseBody);
+                    var table = $("<table />", { class: "table table-hover no-wrap" }).appendTo(inboxDiv);
+                    var tableBody = $("<tbody />").appendTo(table);
+
+                    var tableRow = $("<tr />", { class: "unread" }).appendTo(tableBody);
+
+                    // Download section
+                    var downloadTd = $("<td />", { class: "hidden-xs-down", style: "cursor:pointer" }).appendTo(tableRow);
+                    downloadTd.append($("<i />", { class: "fas fa-download" }));
+                    downloadTd.append(" Download");
+                    downloadTd.on("click", () => {
+                        if (result.outputPath) {
+                            pushFile(id, result.outputPath);
+                        }
+                    });
+
+                    // Id (for troubleshooting)
+                    var idTd = $("<td />", { class: "hidden-xs-down" }).appendTo(tableRow);
+                    idTd.append($("<small />", { class: "text-muted" }).text(`(${result.outputPath ? result.outputPath : "No file"})`));
+
+                    // Time section
+                    var timeSection = $("<td />", { class: "hidden-xs-down" }).appendTo(tableRow);
+                    timeSection.append($("<i />", { class: "fas fa-calendar-alt" }));
+                    timeSection.append(` ${moment.utc(result.timestamp).fromNow()}`);
+
+                    // Set color
+                    if (result.outputPath) {
+                        timeSection.addClass("text-success");
+                    }
+                });
+            }
+
+            //#endregion
+
+            return cardDiv;
+        }
+
+        // Load requests via API call
+        function loadRequests(showJobs = true, showCronjobs = true) {
+
+            // Remove any existing cards
+            $("#accordion").empty();
+
+            console.log("Getting all requests...");
+
+            // Call API
+            $.ajax({
+                url: apiPathCloudAnalyticsJobs,
+                dataType: "json",
+                beforeSend: setRequiredHeaders,
+            }).done((data, textStatus, jqXHR) => {
+                switch (jqXHR.status) {
+                    case 200:
+                        let requests = data;
+                        console.log('requests:', requests);
+                        requests.forEach(currentRequest => {
+
+                            if ((currentRequest.cronJob && showCronjobs) || (!currentRequest.cronJob && showJobs)) {
+
+                                let clientId = searchByName(currentRequest.input, "name", "clientId")
+                                let clientIdValue = clientId ? clientId.value : "";
+
+                                let clientSecret = searchByName(currentRequest.input, "name", "clientSecret")
+                                let clientSecretValue = clientSecret ? clientSecret.value : "";
+
+                                let environment = searchByName(currentRequest.input, "name", "environment")
+                                let environmentValue = environment ? environment.value : "";
+
+                                let doConversationDetails = searchByName(currentRequest.input, "name", "doConversationDetail")
+                                let doConversationDetailsValue = doConversationDetails ? doConversationDetails.value : "0";
+
+                                let doConversationAggregates = searchByName(currentRequest.input, "name", "doConversationAggregate")
+                                let doConversationAggregatesValue = doConversationAggregates ? doConversationAggregates.value : "0";
+
+                                let doUserStatusAggregates = searchByName(currentRequest.input, "name", "doUserStatusAggregate")
+                                let doUserStatusAggregatesValue = doUserStatusAggregates ? doUserStatusAggregates.value : "0";
+
+                                let analyticsIntervalStart = searchByName(currentRequest.input, "name", "analyticsIntervalStart")
+                                let analyticsIntervalStartValue = analyticsIntervalStart ? analyticsIntervalStart.value : "";
+
+                                let analyticsIntervalStop = searchByName(currentRequest.input, "name", "analyticsIntervalStop")
+                                let analyticsIntervalStopValue = analyticsIntervalStop ? analyticsIntervalStop.value : "";
+
+                                // Add item
+                                $("#accordion").append(createRequest(
+                                    currentRequest.id,
+                                    currentRequest.inProgress,
+                                    currentRequest.cronJob,
+                                    currentRequest.name,
+                                    currentRequest.image,
+                                    currentRequest.cronJob,
+                                    currentRequest.period,
+                                    currentRequest.schedule,
+                                    clientIdValue,
+                                    clientSecretValue,
+                                    environmentValue,
+                                    doConversationDetailsValue,
+                                    doConversationAggregatesValue,
+                                    doUserStatusAggregatesValue,
+                                    analyticsIntervalStartValue,
+                                    analyticsIntervalStopValue,
+                                    currentRequest.results,
+                                    currentRequest.updatedAt
+                                )
+                                );
+                            }
+                        });
+                        break;
+                    default:
+                        console.error("Unknown status code: " + jqXHR.status);
+                        break;
+                }
+            }).fail(function (error) {
+                console.error(error);
+                showMessage("An error occurred while retrieving requests", true);
+            });
+        }
+
+        function searchByName(array, keyName, searchCriteria) {
+            return array.find((element) => { return element[keyName] == searchCriteria; });
+        }
+
+        function pushFile(jobId, filename) {
+            var req = new XMLHttpRequest();
+            req.open("GET", `${apiPathCloudAnalyticsJobs}/${jobId}/download/${filename}`, true);
+            req.responseType = "blob";
+            req.onreadystatechange = function () {
+                if (req.readyState == 4) {
+                    if (req.status == 404) {
+                        console.log("file missing");
+                        showMessage("File does not exist", true);
+                    }
+                    else {
+                        // Wohoo, all is fine, push file by creating a fake link and clicking it
+                        var blob = req.response;
+                        var link = document.createElement("a");
+                        link.download = filename + ".zip";
+                        link.href = window.URL.createObjectURL(blob);
+                        link.click();
+                    }
+                }
+            }
+            req.send(); // Download
+        }
+
+        function calculateAnalyticsIntervals() {
+
+            var analyticsIntervalStart, analyticsIntervalStop;
+
+            switch ($("#settings #timespan").val()) {
+                case "days":
+                    analyticsIntervalStart = moment().subtract(1, "days").format("YYYY-MM-DD");
+                    analyticsIntervalStop = moment().subtract(1, "days").format("YYYY-MM-DD");
+                    break;
+                case "weeks":
+                    analyticsIntervalStart = moment().subtract(1, "weeks").startOf("isoWeek").format("YYYY-MM-DD");
+                    analyticsIntervalStop = moment().subtract(1, "weeks").endOf("isoWeek").format("YYYY-MM-DD");
+                    break;
+                case "months":
+                    analyticsIntervalStart = moment().subtract(1, 'months').date(1).format("YYYY-MM-DD");
+                    analyticsIntervalStop = moment().subtract(1, 'months').endOf("month").format("YYYY-MM-DD");
+                    break;
+                default:
+                    break;
+            }
+
+            console.log("Analytics Interval Start:", analyticsIntervalStart);
+            console.log("Analytics Interval Stop:", analyticsIntervalStop);
+
+
+            return {
+                "analyticsIntervalStart": analyticsIntervalStart,
+                "analyticsIntervalStop": analyticsIntervalStop
+            }
+        }
+
+        loadRequests();
+        resetModal();
+
+    </script>
+</body>
+
+</html>
