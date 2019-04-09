@@ -95,16 +95,29 @@
                                     <div class="form-group">
                                         <label>Inputs</label>
                                         <div class="btn-group" role="group">
+                                            <button type="button" data-toggle="modal" data-target="#web" class="btn btn-info d-none d-lg-block ml-2"><i class="fas fa-1x fa-globe" title="Web"></i> Web <i class="fa fa-plus-circle"></i></button>
                                             <button type="button" data-toggle="modal" data-target="#facebookmessenger" class="btn btn-info d-none d-lg-block ml-2"><i class="fab fa-1x fa-facebook-messenger" title="Facebook Messenger"></i> Facebook Messenger <i class="fa fa-plus-circle"></i></button>
+                                            <button type="button" data-toggle="modal" data-target="#skype" class="btn btn-info d-none d-lg-block ml-2"><i class="fab fa-1x fa-skype" title="Skype"></i> Skype <i class="fa fa-plus-circle"></i></button>
                                         </div>
                                     </div>
                                     <div class="form-group">
                                         <label>Outputs</label>
                                         <div class="btn-group" role="group">
-                                            <button type="button" data-toggle="modal" data-target="#azurebot" class="btn btn-info d-none d-lg-block ml-2">Azure Bot <i class="fa fa-plus-circle"></i></button>
-                                            <button type="button" data-toggle="modal" data-target="#ibmwatson" class="btn btn-info d-none d-lg-block ml-2">IBM Watson <i class="fa fa-plus-circle"></i></button>
-                                            <button type="button" data-toggle="modal" data-target="#purecloud" class="btn btn-info d-none d-lg-block ml-2">Genesys PureCloud <i class="fa fa-plus-circle"></i></button>
+                                            <button type="button" data-toggle="modal" data-target="#azurebot" class="btn btn-dark d-none d-lg-block ml-2">Azure Bot <i class="fa fa-plus-circle"></i></button>
+                                            <button type="button" data-toggle="modal" data-target="#genesyspurecloud" class="btn btn-dark d-none d-lg-block ml-2">Genesys PureCloud <i class="fa fa-plus-circle"></i></button>
+                                            <button type="button" data-toggle="modal" data-target="#googledialogflow" class="btn btn-dark d-none d-lg-block ml-2">Google DialogFlow <i class="fa fa-plus-circle"></i></button>
+                                            <button type="button" data-toggle="modal" data-target="#ibmwatson" class="btn btn-dark d-none d-lg-block ml-2">IBM Watson <i class="fa fa-plus-circle"></i></button>
                                         </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Primary Output Channel: </label>
+                                        <select>
+                                            <option value=""></option>
+                                            <option value="azurebot">Azure Bot</option>
+                                            <option value="genesyspurecloud">Genesys PureCloud</option>
+                                            <option value="googledialogflow">Google DialogFlow</option>
+                                            <option value="ibmwatson">IBM Watson</option>
+                                        </select>
                                     </div>
                                 </div>
                             </form>
