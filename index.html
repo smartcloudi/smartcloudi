@@ -21,7 +21,8 @@
   <link href="css/style-magnific-popup.css" rel="stylesheet">
 
   <!-- Awesome Fonts -->
-  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css"
+    integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
 
   <!-- Fonts -->
   <link href="https://fonts.googleapis.com/css?family=Dosis:500,600" rel="stylesheet">
@@ -98,7 +99,8 @@
           <!--end logo -->
 
           <!--begin navbar-toggler -->
-          <button class="navbar-toggler collapsed" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+          <button class="navbar-toggler collapsed" type="button" data-toggle="collapse" data-target="#navbarCollapse"
+            aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"><i class="fas fa-bars"></i></span>
           </button>
           <!--end navbar-toggler -->
@@ -125,7 +127,7 @@
 
               <li><a href="#contact">Contact</a></li>
 
-              <li class="discover-link"><a href="/portal/pages-cloud-analytics-purecloud.html" class="external discover-btn">Sign In</a></li>
+              <li class="discover-link"><a href="./portal/index.html" class="external discover-btn">Sign In</a></li>
 
             </ul>
             <!--end navbar-nav -->
@@ -181,10 +183,12 @@
         <!--end col-md-7-->
 
         <!--begin col-md-5-->
-        <div class="col-md-5 wow bounceIn" data-wow-delay="0.5s" style="visibility: visible; animation-delay: 0.5s; animation-name: bounceIn;">
+        <div class="col-md-5 wow bounceIn" data-wow-delay="0.5s"
+          style="visibility: visible; animation-delay: 0.5s; animation-name: bounceIn;">
 
           <!--begin register-form-wrapper-->
-          <div class="register-form-wrapper wow bounceIn" data-wow-delay="0.5s" style="visibility: visible; animation-delay: 0.5s; animation-name: bounceIn;">
+          <div class="register-form-wrapper wow bounceIn" data-wow-delay="0.5s"
+            style="visibility: visible; animation-delay: 0.5s; animation-name: bounceIn;">
 
             <h3>Get Access</h3>
 
@@ -192,29 +196,36 @@
             <div>
 
               <!--begin success message -->
-              <p class="register_success_box" style="display:none;">We received your message and you'll hear from us soon. Thank You!</p>
+              <p class="register_success_box" style="display:none;">We received your message and you'll hear from us
+                soon. Thank You!</p>
               <!--end success message -->
 
               <!--begin register form -->
               <form id="register-form" class="register-form register">
 
-                <input class="register-input white-input" required="" name="register_name" id="register_name" placeholder="Full Name*" type="text">
+                <input class="register-input white-input" required="" name="register_name" id="register_name"
+                  placeholder="Full Name*" type="text">
 
-                <input class="register-input white-input" required="" name="register_email" id="register_email" placeholder="Email Adress*" type="email">
+                <input class="register-input white-input" required="" name="register_email" id="register_email"
+                  placeholder="Email Adress*" type="email">
 
                 <!-- <input class="register-input white-input" required="" name="register_phone" id="register_phone" placeholder="Phone Number*" type="tel"> -->
                 <input type="tel" id="register_phone" name="register_phone" required class="form-control">
                 <hr />
-                <input class="register-input white-input" required="" name="register_password" id="register_password" placeholder="Password*" type="password">
+                <input class="register-input white-input" required="" name="register_password" id="register_password"
+                  placeholder="Password*" type="password">
 
-                <input class="register-input white-input" required="" name="register_confirmpassword" id="register_confirmpassword" placeholder="Confirm Password*" type="password">
+                <input class="register-input white-input" required="" name="register_confirmpassword"
+                  id="register_confirmpassword" placeholder="Confirm Password*" type="password">
                 <p>
-                  <small class="text-muted">Password must contain at least 8 characters, 1 number and 1 special character</small>
+                  <small class="text-muted">Password must contain at least 8 characters, 1 number and 1 special
+                    character</small>
                 </p>
 
                 <small>
                   <input type="checkbox" id="privacypolicy" name="privacypolicy">
-                  <label for="privacypolicy">I have reviewed the <a href="privacypolicy.pdf" target="_blank">Privacy Policy</a></label>
+                  <label for="privacypolicy">I have reviewed the <a href="privacypolicy.pdf" target="_blank">Privacy
+                      Policy</a></label>
                 </small>
                 <hr />
                 <div id="error" class="text-danger">
@@ -244,7 +255,8 @@
   <!--end home section -->
 
   <!--Modal: Code Verification -->
-  <div class="modal fade" id="modalCodeVerification" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal fade" id="modalCodeVerification" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+    aria-hidden="true">
     <div class="modal-dialog cascading-modal modal-dialog-centered modal-avatar modal-sm" role="document">
       <!--Content-->
       <div class="modal-content">
@@ -257,13 +269,16 @@
         <div class="modal-body text-center mb-1">
 
           <div class="md-form ml-0 mr-0">
-            <label data-error="wrong" data-success="right" for="verificationcode" class="ml-0">Please enter the code you have received by email</label>
+            <label data-error="wrong" data-success="right" for="verificationcode" class="ml-0">Please enter the code you
+              have received by email</label>
             <input type="text" id="verificationcode" class="form-control form-control-sm validate ml-0">
           </div>
 
           <div class="text-center mt-4">
-            <button class="btn btn-warning mt-1" id="resendcode">Resend Code <i class="fas fa-sign-in ml-1"></i></button>
-            <button class="btn btn-primary mt-1" id="verifycode">Verify Code <i class="fas fa-sign-in ml-1"></i></button>
+            <button class="btn btn-warning mt-1" id="resendcode">Resend Code <i
+                class="fas fa-sign-in ml-1"></i></button>
+            <button class="btn btn-primary mt-1" id="verifycode">Verify Code <i
+                class="fas fa-sign-in ml-1"></i></button>
           </div>
         </div>
 
@@ -506,7 +521,8 @@
 
               <div class="card-header" id="headingOne">
                 <h5 class="mb-0">
-                  <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                  <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapseOne"
+                    aria-expanded="true" aria-controls="collapseOne">
                     What data can you collect?
                   </button>
                 </h5>
@@ -514,7 +530,9 @@
 
               <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordionFAQ">
                 <div class="card-body">
-                  We export raw data. Everything exposed via the <a href="https://developer.mypurecloud.com/api/rest/v2/analytics/overview.html" target="_blank">Analytics API</a> can be downloaded.
+                  We export raw data. Everything exposed via the <a
+                    href="https://developer.mypurecloud.com/api/rest/v2/analytics/overview.html"
+                    target="_blank">Analytics API</a> can be downloaded.
                 </div>
               </div>
 
@@ -526,7 +544,8 @@
 
               <div class="card-header" id="headingTwo">
                 <h5 class="mb-0">
-                  <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                  <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapseTwo"
+                    aria-expanded="false" aria-controls="collapseTwo">
                     How long do you keep the data?
                   </button>
                 </h5>
@@ -546,7 +565,8 @@
 
               <div class="card-header" id="headingThree">
                 <h5 class="mb-0">
-                  <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                  <button class="btn btn-link collapsed" type="button" data-toggle="collapse"
+                    data-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
                     For free, really?
                   </button>
                 </h5>
@@ -566,7 +586,8 @@
 
               <div class="card-header" id="headingFour">
                 <h5 class="mb-0">
-                  <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapseFour" aria-expanded="false" aria-controls="collapseFour">
+                  <button class="btn btn-link collapsed" type="button" data-toggle="collapse"
+                    data-target="#collapseFour" aria-expanded="false" aria-controls="collapseFour">
                     How do I get started?
                   </button>
                 </h5>
@@ -628,13 +649,16 @@
               <p>Developer</p>
             </div>
 
-            <p>Daniel has developed the backend for SmartCloudi and continues to provide new services during his leasure time.</p>
+            <p>Daniel has developed the backend for SmartCloudi and continues to provide new services during his leasure
+              time.</p>
 
             <ul class="team-icon">
 
-              <li><a href="https://twitter.com/DanielSzlaski" target="_blank" class="twitter"><i class="fab fa-twitter"></i></a></li>
+              <li><a href="https://twitter.com/DanielSzlaski" target="_blank" class="twitter"><i
+                    class="fab fa-twitter"></i></a></li>
 
-              <li><a href="https://www.linkedin.com/in/daniel-szlaski-84186298/" target="_blank" class="facebook"><i class="fab fa-linkedin-in"></i></a></li>
+              <li><a href="https://www.linkedin.com/in/daniel-szlaski-84186298/" target="_blank" class="facebook"><i
+                    class="fab fa-linkedin-in"></i></a></li>
 
             </ul>
 
@@ -666,13 +690,16 @@
 
           <h4>How to find us</h4>
 
-          <iframe class="contact-maps" src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d2433.997335762698!2d21.1595729!3d52.4067245!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x471ec443a9e61d01%3A0x1d2c480cf746bbea!2sRumiankowa+6%2C+05-250+Cegielnia%2C+Pologne!5e0!3m2!1sfr!2sfr!4v1552294977124" width="600" height="270" style="border:0" allowfullscreen></iframe>
+          <iframe class="contact-maps"
+            src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d2433.997335762698!2d21.1595729!3d52.4067245!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x471ec443a9e61d01%3A0x1d2c480cf746bbea!2sRumiankowa+6%2C+05-250+Cegielnia%2C+Pologne!5e0!3m2!1sfr!2sfr!4v1552294977124"
+            width="600" height="270" style="border:0" allowfullscreen></iframe>
 
           <h5>Head Office</h5>
 
           <p class="contact-info"><i class="fas fa-map-marker-alt"></i> Rumiankowa 6, 05-250 Radzymin, Poland</p>
 
-          <p class="contact-info"><i class="fas fa-envelope"></i> <a href="mailto:smartclouditeam@gmail.com">smartclouditeam@gmail.com</a></p>
+          <p class="contact-info"><i class="fas fa-envelope"></i> <a
+              href="mailto:smartclouditeam@gmail.com">smartclouditeam@gmail.com</a></p>
 
         </div>
         <!--end col-md-6 -->

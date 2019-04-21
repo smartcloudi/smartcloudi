@@ -133,7 +133,7 @@ function confirmUser(username, password, verificationCode) {
     if (result === "SUCCESS") {
       // Login user
       console.log("username:", cognitoUser.getUsername())
-      loginUser(cognitoUser.getUsername(), password, "/portal");
+      loginUser(cognitoUser.getUsername(), password, "./index.html");
     } else {
       alert("Code verification failed");
     }
@@ -214,7 +214,7 @@ function signIn(username, password, redirectUrl) {
           console.error(error);
         } else {
           console.log('Successfully logged!');
-          $(location).attr("href", "/portal");
+          $(location).attr("href", "./index.html");
         }
       });
     },
@@ -317,13 +317,13 @@ function isLoggedIn() {
 
       if (!session.isValid()) {
         console.log("User session is not valid. Redirecting to login page.");
-        redirect("/portal/login.html");
+        redirect("./login.html");
         return;
       }
       console.log("User session is valid");
     });
   } else {
-    redirect("/portal/login.html");
+    redirect("./login.html");
   }
 }
 
@@ -355,7 +355,7 @@ function logout() {
   console.log("cognitoUser:", cognitoUser);
   cognitoUser.signOut();
   AWS.config.credentials.clearCachedId(); // Clears the cached Cognito ID associated with the currently configured identity pool ID
-  redirect("/portal/login.html");
+  redirect("./login.html");
 }
 
 function deleteAccount() {
@@ -395,7 +395,7 @@ function forgotPassword(username) {
     onSuccess: function (result) {
       showMessage("Password changed successfully!");
       setTimeout(() => {
-        redirect("/portal/login.html");
+        redirect("./login.html");
       }, 2000);
     },
     onFailure: function (err) {
