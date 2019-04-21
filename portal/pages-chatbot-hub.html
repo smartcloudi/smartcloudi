@@ -69,7 +69,9 @@
                                 <li class="breadcrumb-item"><a href="index.html">Home</a></li>
                                 <li class="breadcrumb-item active">Chatbot Hub</li>
                             </ol>
-                            <button type="button" data-toggle="modal" data-target="#settings" class="btn btn-info d-none d-lg-block m-l-15"><i class="fa fa-plus-circle"></i> Create New</button>
+                            <button type="button" data-toggle="modal" data-target="#settings"
+                                class="btn btn-info d-none d-lg-block m-l-15"><i class="fa fa-plus-circle"></i> Create
+                                New</button>
                         </div>
                     </div>
                 </div>
@@ -78,7 +80,8 @@
                 <!-- ============================================================== -->
             </div>
             <!-- Settings Modal -->
-            <div id="settings" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="settingsLabel" aria-hidden="true" style="display: none;">
+            <div id="settings" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="settingsLabel"
+                aria-hidden="true" style="display: none;">
                 <div class="modal-dialog modal-lg">
                     <div class="modal-content">
                         <div class="modal-header">
@@ -90,28 +93,53 @@
                                 <div>
                                     <div class="form-group">
                                         <label for="name">Name</label>
-                                        <input type="text" class="form-control" id="name" name="name" required placeholder="Enter a name for your configuration">
+                                        <input type="text" class="form-control" id="name" name="name" required
+                                            placeholder="Enter a name for your configuration">
                                     </div>
                                     <div class="form-group">
                                         <label>Inputs</label>
                                         <div class="btn-group" role="group">
-                                            <button type="button" data-toggle="modal" data-target="#web" class="btn btn-info d-none d-lg-block ml-2"><i class="fas fa-1x fa-globe" title="Web"></i> Web <i class="fa fa-plus-circle"></i></button>
-                                            <button type="button" data-toggle="modal" data-target="#facebookmessenger" class="btn btn-info d-none d-lg-block ml-2"><i class="fab fa-1x fa-facebook-messenger" title="Facebook Messenger"></i> Facebook Messenger <i class="fa fa-plus-circle"></i></button>
-                                            <button type="button" data-toggle="modal" data-target="#skype" class="btn btn-info d-none d-lg-block ml-2"><i class="fab fa-1x fa-skype" title="Skype"></i> Skype <i class="fa fa-plus-circle"></i></button>
+                                            <button type="button" data-toggle="modal" data-target="#web"
+                                                class="btn btn-default d-none d-lg-block ml-2"><i
+                                                    class="fas fa-1x fa-globe" title="Web"></i> Web <i
+                                                    class="fas fa-plus-circle"></i></button>
+                                            <button type="button" data-toggle="modal" data-target="#facebookmessenger"
+                                                class="btn btn-default d-none d-lg-block ml-2"><i
+                                                    class="fab fa-1x fa-facebook-messenger"
+                                                    title="Facebook Messenger"></i> Facebook Messenger <i
+                                                    class="fas fa-plus-circle"></i></button>
+                                            <button type="button" data-toggle="modal" data-target="#skype"
+                                                class="btn btn-default d-none d-lg-block ml-2"><i
+                                                    class="fab fa-1x fa-skype" title="Skype"></i> Skype <i
+                                                    class="fas fa-plus-circle"></i></button>
                                         </div>
                                     </div>
                                     <div class="form-group">
                                         <label>Outputs</label>
                                         <div class="btn-group" role="group">
-                                            <button type="button" data-toggle="modal" data-target="#azurebot" class="btn btn-dark d-none d-lg-block ml-2">Azure Bot <i class="fa fa-plus-circle"></i></button>
-                                            <button type="button" data-toggle="modal" data-target="#genesyspurecloud" class="btn btn-dark d-none d-lg-block ml-2">Genesys PureCloud <i class="fa fa-plus-circle"></i></button>
-                                            <button type="button" data-toggle="modal" data-target="#googledialogflow" class="btn btn-dark d-none d-lg-block ml-2">Google DialogFlow <i class="fa fa-plus-circle"></i></button>
-                                            <button type="button" data-toggle="modal" data-target="#ibmwatson" class="btn btn-dark d-none d-lg-block ml-2">IBM Watson <i class="fa fa-plus-circle"></i></button>
+                                            <button type="button" id="azurebotchannel" data-toggle="modal"
+                                                data-target="#azurebot"
+                                                class="btn btn-default d-none d-lg-block ml-2">Azure Bot <i
+                                                    id="azurebotchannelsign" class="fas fa-plus-circle"></i></button>
+                                            <button type="button" id="genesyspurecloudchannel" data-toggle="modal"
+                                                data-target="#genesyspurecloud"
+                                                class="btn btn-default d-none d-lg-block ml-2">Genesys PureCloud <i
+                                                    id="genesyspurecloudchannelsign"
+                                                    class="fas fa-plus-circle"></i></button>
+                                            <button type="button" id="googledialogflowchannel" data-toggle="modal"
+                                                data-target="#googledialogflow"
+                                                class="btn btn-default d-none d-lg-block ml-2">Google DialogFlow <i
+                                                    id="googledialogflowchannelsign"
+                                                    class="fas fa-plus-circle"></i></button>
+                                            <button type="button" id="ibmwatsonchannel" data-toggle="modal"
+                                                data-target="#ibmwatson"
+                                                class="btn btn-default d-none d-lg-block ml-2">IBM Watson <i
+                                                    id="ibmwatsonchannelsign" class="fas fa-plus-circle"></i></button>
                                         </div>
                                     </div>
                                     <div class="form-group">
                                         <label>Primary Output Channel: </label>
-                                        <select>
+                                        <select id="primaryOutput">
                                             <option value=""></option>
                                             <option value="azurebot">Azure Bot</option>
                                             <option value="genesyspurecloud">Genesys PureCloud</option>
@@ -127,22 +155,155 @@
                                 <span></span>
                             </div>
                             <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-                            <button type="button" disabled id="close" class="btn btn-primary waves-effect"></button>
+                            <button type="button" id="close" class="btn btn-primary waves-effect"></button>
                         </div>
                     </div>
                 </div>
             </div>
             <!-- End Settings Modal -->
 
+            <!-- PureCloud Modal -->
+            <div id="genesyspurecloud" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="pureCloudLabel"
+                aria-hidden="true" style="display: none;">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h4 class="modal-title" id="title">Genesys PureCloud</h4>
+                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                        </div>
+                        <div class="modal-body">
+                            <form id="new-request-genesyspurecloud">
+                                <div>
+                                    <div class="form-group">
+                                        <label for="pureCloudClientId">Client Id</label>
+                                        <input type="text" class="form-control" id="pureCloudClientId"
+                                            name="pureCloudClientId" required placeholder="Enter your OAuth Client Id">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="pureCloudClientSecret">Client Secret</label>
+                                        <input type="password" class="form-control" id="pureCloudClientSecret"
+                                            name="pureCloudClientSecret" required
+                                            placeholder="Enter your OAuth Client Secret">
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Environment: </label>
+                                        <select id="pureCloudEnvironment">
+                                            <option value=""></option>
+                                            <option value="mypurecloud.com">mypurecloud.com (Americas)</option>
+                                            <option value="mypurecloud.com.au">mypurecloud.com.au (Australia/New
+                                                Zealand)</option>
+                                            <option value="mypurecloud.de">mypurecloud.de (EU/Frankfurt)</option>
+                                            <option value="mypurecloud.ie">mypurecloud.ie (EU/Ireland)</option>
+                                            <option value="mypurecloud.jp">mypurecloud.jp (Japan)</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                            <div id="error" class="text-danger">
+                                <span></span>
+                            </div>
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                            <button type="button" id="close" class="btn btn-primary waves-effect">Save</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- End PureCloud Modal -->
+
+            <!-- IBM Watson Modal -->
+            <div id="ibmwatson" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="ibmWatsonLabel"
+                aria-hidden="true" style="display: none;">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h4 class="modal-title" id="title">IBM Watson</h4>
+                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                        </div>
+                        <div class="modal-body">
+                            <form id="new-request-ibmwatson">
+                                <div>
+                                    <div class="form-group">
+                                        <label for="ibmWatsonApiKey">API Key</label>
+                                        <input type="text" class="form-control" id="ibmWatsonApiKey"
+                                            name="ibmWatsonApiKey" required placeholder="Enter your API Key">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="ibmWatsonUrl">URL</label>
+                                        <input type="text" class="form-control" id="ibmWatsonUrl" name="ibmWatsonUrl"
+                                            required placeholder="Enter your URL">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="ibmWatsonWorkspaceId">Workspace Id</label>
+                                        <input type="text" class="form-control" id="ibmWatsonWorkspaceId"
+                                            name="ibmWatsonWorkspaceId" required placeholder="Enter your Workspace Id">
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                            <div id="error" class="text-danger">
+                                <span></span>
+                            </div>
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                            <button type="button" id="close" class="btn btn-primary waves-effect">Save</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- End IBM Watson Modal -->
+
             <!-- ============================================================== -->
             <!-- Start Page Content -->
             <!-- ============================================================== -->
             <!-- Alert -->
             <div class="alert alert-info alert-dismissible fade show" role="alert">
-                Thank you for using our Chatbot Hub. Click on the <strong>Create New</strong> button on the top-right to get started.
+                Thank you for using our Chatbot Hub. Click on the <strong>Create New</strong> button on the top-right to
+                get started.
                 <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
+            </div>
+            <!-- Page Content -->
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="card">
+                        <div class="row">
+                            <div class="col-lg-3 col-md-4">
+                                <div class="card-body inbox-panel">
+                                    <ul class="list-group list-group-full">
+                                        <li class="list-group-item active"> <a href="javascript:void(0)" id="showAll"><i
+                                                    class="fas fa-folder"></i> All </a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="col-lg-9 col-md-8 bg-light border-left">
+                                <div class="card-body">
+                                    <button type="button" id="refresh" class="btn btn-secondary mr-2 shadow-sm"><i
+                                            class="fas fa-sync-alt"></i></button>
+                                </div>
+
+                                <div class="container">
+                                    <div id="accordion">
+                                        <!-- This is where requests will be added dynamically -->
+                                    </div>
+                                </div>
+
+                                <div class="card-body p-t-0">
+                                    <div class="card b-all shadow-none">
+                                        <div class="inbox-center table-responsive">
+                                            <table class="table table-hover no-wrap">
+                                                <tbody id="requests">
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
             <!-- ============================================================== -->
             <!-- End Page Content -->
@@ -214,11 +375,16 @@
         $("#rightsidebar").load("rightsidebar.html");
         $("#footer").load("footer.html");
 
-        // Form validation
+        // Configuration objects
+        var channels = {};
+        var genesysPureCloudConfiguration = {};
+        var ibmWatsonConfiguration = {};
+
+        //#region Form validation
+
         var validator = $("#new-request").validate({
             rules: {
-                //At least one of the statistics must be checked
-                statistics: {
+                name: {
                     required: true
                 }
             },
@@ -234,45 +400,76 @@
                 if (errors) {
                     showMessage("Missing fields", true);
                 }
-            },
-            highlight: function (element) {
-                if ($(element) && $(element)[0].name == "statistics") {
-                    $(element).parent().parent().addClass("border border-danger");
-                } else {
-                    $(element).addClass("border border-danger");
+            }
+        });
+
+        var genesysPureCloudValidator = $("#new-request-genesyspurecloud").validate({
+            rules: {
+                pureCloudClientId: {
+                    required: true
+                },
+                pureCloudClientSecret: {
+                    required: true
+                },
+                pureCloudEnvironment: {
+                    required: true
                 }
             },
-            unhighlight: function (element) {
-                if ($(element) && $(element)[0].name == "statistics") {
-                    $(element).parent().parent().removeClass("border border-danger");
-                } else {
-                    $(element).removeClass("border border-danger");
+            onfocusout: false,
+            onkeyup: false,
+            errorClass: "alert alert-danger",
+            errorPlacement: function (error, element) {
+                error.insertBefore(element.parent().children("br"));
+            },
+            invalidHandler: function (event, validator) {
+                // 'this' refers to the form
+                var errors = validator.numberOfInvalids();
+                if (errors) {
+                    showMessage("Missing fields", true);
                 }
             }
         });
 
+        var ibmWatsonValidator = $("#new-request-ibmwatson").validate({
+            rules: {
+                ibmWatsonApiKey: {
+                    required: true
+                },
+                ibmWatsonUrl: {
+                    required: true
+                },
+                ibmWatsonWorkspaceId: {
+                    required: true
+                }
+            },
+            onfocusout: false,
+            onkeyup: false,
+            errorClass: "alert alert-danger",
+            errorPlacement: function (error, element) {
+                error.insertBefore(element.parent().children("br"));
+            },
+            invalidHandler: function (event, validator) {
+                // 'this' refers to the form
+                var errors = validator.numberOfInvalids();
+                if (errors) {
+                    showMessage("Missing fields", true);
+                }
+            }
+        });
+
+        //#endregion Form validation
+
         isLoggedIn();
 
-        var apiPathCloudAnalyticsJobs = `https://cloud-analytics.herokuapp.com/api/v1/users/${cognitoUser.username}/jobs`;
-        var apiPathPureCloudConnector = `https://cloud-analytics.herokuapp.com/api/v1/users/${cognitoUser.username}/purecloud`;
+        var apiPathBotHub = `https://purecloud-bot-hub.herokuapp.com/api/v1/users/${cognitoUser.username}`;
 
         //#region Modals
 
-        function resetModal() {
+        function resetSettingsModal() {
             $("#settings #title").html("New Chatbot");
             $("#settings #name").val("");
-            $("#settings #clientId").val("");
-            $("#settings #clientSecret").val("");
-            $("#settings #environment").val("mypurecloud.com");
-            $("#settings #conversationDetail").prop("checked", false);
-            $("#settings #conversationAggregate").prop("checked", false);
-            $("#settings #userStatusAggregate").prop("checked", false);
-            $("#settings #recurrence").prop("checked", false);
-            $("#settings #timespan").val("days");
-            $("#settings #cronuidiv").fadeTo("slow", 0.4);
-            $("#settings #cronuidiv").css("pointer-events", "none");
+            $("#settings #primaryOutput").val("");
             $("#settings #close").text('Create');
-            validator.resetForm();
             $("#settings #close").unbind().click(function () {
                 console.log('Submitting request...');
 
@@ -281,56 +478,28 @@
                 }
 
                 var data = {
+                    "originId": "?",
                     "name": $("#settings #name").val(),
-                    "image": "compliance/purecloud-analytics-downloader",
-                    "input": [
-                        {
-                            "name": "environment",
-                            "value": $("#settings #environment").val()
-                        },
-                        {
-                            "name": "clientId",
-                            "value": $("#settings #clientId").val()
-                        },
-                        {
-                            "name": "clientSecret",
-                            "value": $("#settings #clientSecret").val()
-                        },
-                        {
-                            "name": "analyticsIntervalStart",
-                            "value": calculateAnalyticsIntervals().analyticsIntervalStart
-                        },
-                        {
-                            "name": "analyticsIntervalStop",
-                            "value": calculateAnalyticsIntervals().analyticsIntervalStop
-                        },
-                        {
-                            "name": "doConversationDetail",
-                            "value": $("#settings #conversationDetail").is(":checked") ? "1" : "0"
-                        },
-                        {
-                            "name": "doConversationAggregate",
-                            "value": $("#settings #conversationAggregate").is(":checked") ? "1" : "0"
-                        },
-                        {
-                            "name": "doUserStatusAggregate",
-                            "value": $("#settings #userStatusAggregate").is(":checked") ? "1" : "0"
+                    "config": {
+                        "origin": "messenger",
+                        "primaryRoute": $("#settings #primaryOutput").val(),
+                        "channels": {
+                            "purecloud": {
+                                "clientId": "1231231223",
+                                "clientSecret": "xxxxxx",
+                                "env": "mypurecloud.ie"
+                            },
+                            "watson": {
+                                "apiKey": "abc",
+                                "url": "",
+                                "workspaceId": ""
+                            }
                         }
-                    ]
+                    }
                 };
 
-                apiPath = apiPathCloudAnalyticsJobs;
-
-                if ($("#settings #recurrence").prop("checked")) {
-                    data.period = $("#settings #timespan").val();
-                    data.schedule = cron_ui.currentValue; //TODO Convert to UTC
-                    data.cronJob = true;
-                } else {
-                    data.cronJob = false;
-                }
-
                 $.ajax({
-                    url: apiPath,
+                    url: `${apiPathBotHub}/configurationobjects`,
                     dataType: "json",
                     method: "POST",
                     beforeSend: setRequiredHeaders,
@@ -353,55 +522,57 @@
             });
         }
 
+        function resetGenesysPureCloudModal() {
+            $("#genesyspurecloud #pureCloudClientId").val("");
+            $("#genesyspurecloud #pureCloudClientSecret").val("");
+            $("#genesyspurecloud #pureCloudEnvironment").val("");
+            $("#genesyspurecloud #close").unbind().click(function () {
+                if (!$("#new-request-genesyspurecloud").valid()) {
+                    return;
+                }
+                genesysPureCloudConfiguration.clientId = $("#genesyspurecloud #pureCloudClientId").val();
+                genesysPureCloudConfiguration.clientSecret = $("#genesyspurecloud #pureCloudClientSecret").val();
+                genesysPureCloudConfiguration.env = $("#genesyspurecloud #pureCloudEnvironment").val();
+                channels.purecloud = genesysPureCloudConfiguration;
+                console.log("Channels: ", channels);
+                $("#genesyspurecloudchannel").removeClass("btn-default").addClass("btn-success");
+                $("#genesyspurecloudchannelsign").removeClass("fa-plus-circle").addClass("fa-check-circle");
+                $("#genesyspurecloud").modal("toggle");
+            });
+        }
+
+        function resetIbmWatsonModal() {
+            $("#ibmwatson #ibmWatsonApiKey").val("");
+            $("#ibmwatson #ibmWatsonUrl").val("");
+            $("#ibmwatson #ibmWatsonWorkspaceId").val("");
+            $("#ibmwatson #close").unbind().click(function () {
+                if (!$("#new-request-ibmwatson").valid()) {
+                    return;
+                }
+                ibmWatsonConfiguration.apiKey = $("#ibmwatson #ibmWatsonApiKey").val();
+                ibmWatsonConfiguration.url = $("#ibmwatson #ibmWatsonUrl").val();
+                ibmWatsonConfiguration.workspaceId = $("#ibmwatson #ibmWatsonWorkspaceId").val();
+                channels.ibmwatson = ibmWatsonConfiguration;
+                console.log("Channels: ", channels);
+                $("#ibmwatsonchannel").removeClass("btn-default").addClass("btn-success");
+                $("#ibmwatsonchannelsign").removeClass("fa-plus-circle").addClass("fa-check-circle");
+                $("#ibmwatson").modal("toggle");
+            });
+        }
+
         // Clear modal when hidden
         $("#settings").on("hidden.bs.modal", function () {
-            resetModal();
+            resetSettingsModal();
         });
-
-        setInterval(() => {
-            $("#currentTime").text(moment.utc().format("HH:mm:ss"))
-        }, 1000);
-
-        $("#testconnection").on("click", () => {
-            // Call API to test PureCloud connection
-            console.log("url:")
-            $.ajax({
-                url: `${apiPathPureCloudConnector}/login`,
-                dataType: "json",
-                method: "POST",
-                beforeSend: setRequiredHeaders,
-                data: {
-                    "clientId": $("#settings #clientId").val(),
-                    "clientSecret": $("#settings #clientSecret").val(),
-                    "env": $("#settings #environment").val(),
-                }
-            }).done((data, textStatus, jqXHR) => {
-                switch (jqXHR.status) {
-                    case 200:
-                        if (data) {
-                            showMessage("Connection Succeeded!");
-                            $("#close").prop('disabled', false);
-                        } else {
-                            showMessage("Connection failed", true);
-                            $("#close").prop('disabled', true);
-                        }
-                        break;
-                    default:
-                        showMessage("Connection failed", true);
-                        $("#close").prop('disabled', true);
-                        break;
-                }
-            }).fail((error) => {
-                console.error(error);
-                showMessage("Failed to connect with PureCloud. Check your credentials?", true);
-            });
-        });
+        // $("#genesyspurecloud").on("hidden.bs.modal", function () {
+        //     resetGenesysPureCloudModal();
+        // });
 
         //#endregion Modals
 
         // Refresh button
         $("#refresh").on("click", () => {
-            loadRequests(showJobs, showCronJobs);
+            loadRequests();
         });
 
         //#region Left pane buttons
@@ -428,25 +599,10 @@
         //#endregion
 
         // Create a new request
-        function createRequest(id, inProgress, recurrence, name, image, cronJob, timespan, schedule, clientId, clientSecret, environment, doConversationDetail, doConversationAggregate, doUserStatusAggregate, analyticsIntervalStart, analyticsIntervalStop, results, updatedAt = "05:30 AM") {
+        function createRequest(id, originId, userId, name, config, createdAt, updatedAt) {
 
             // Add card to accordion
             var cardDiv = $("<div />", { class: "card border shadow" });
-
-            //#region Border color
-
-            if (inProgress) {
-                cardDiv.addClass("border-warning");
-            } else if (results.length > 0) {
-                // Last result is successful?
-                if (results[results.length - 1].result) {
-                    cardDiv.addClass("border-success");
-                }
-            } else {
-                cardDiv.addClass("border-default");
-            }
-
-            //#endregion
 
             //#region Header
 
@@ -454,65 +610,9 @@
 
             var headerContent = $("<a />", { class: "card-link", "data-toggle": "collapse", href: "#collapse_" + id }).appendTo(cardHeader);
 
-            //#region Job icon
-
-            var iconSection;
-            if (recurrence) {
-                iconSection = $("<i />", { class: "fas fa-redo" }).appendTo(headerContent);
-            } else {
-                iconSection = $("<i />", { class: "far fa-clock" }).appendTo(headerContent);
-            }
-
-            // Set color
-            if (inProgress) {
-                iconSection.addClass("text-warning");
-            } else if (results.length > 0) {
-                // Last result is successful?
-                if (results[results.length - 1].result) {
-                    iconSection.addClass("text-success");
-                }
-            } else {
-                iconSection.addClass("text-default");
-            }
-
-            //#endregion
-
             //#region Job name
 
             var jobNameSpan = $("<span />", { class: "text-dark" }).html("&nbsp; &nbsp;" + name).appendTo(headerContent);
-
-            // Badge with number of files available
-            var numberOfFilesString = "", numberOfFilesTextColor = "";
-            if (results) {
-                if (results.length == 0) {
-                    numberOfFilesString = "No files available yet";
-                    numberOfFilesClass = "label-warning";
-                    numberOfFilesTextColor = "text-dark";
-                } else if (results.length == 1) {
-                    numberOfFilesString = "1 file available";
-                    numberOfFilesClass = "label-success";
-                } else {
-                    numberOfFilesString = `${results.length} files available`;
-                    numberOfFilesClass = "label-success";
-                }
-            }
-            $("<span />", { class: `label ${numberOfFilesClass} ${numberOfFilesTextColor} shadow-sm ml-2` }).html(numberOfFilesString).appendTo(headerContent);
-
-            //#endregion
-
-            //#region Tags
-
-            var tagsSpan = $("<span />", { class: "ml-2" }).appendTo(headerContent);
-
-            if (doConversationDetail == "1") {
-                tagsSpan.append($("<span />", { class: "label label-info m-r-10" }).html("Conversation Detail"));
-            }
-            if (doConversationAggregate == "1") {
-                tagsSpan.append($("<span />", { class: "label label-info m-r-10" }).html("Conversation Aggregates"));
-            }
-            if (doUserStatusAggregate == "1") {
-                tagsSpan.append($("<span />", { class: "label label-info m-r-10" }).html("User Aggregates"));
-            }
 
             //#endregion
 
@@ -522,7 +622,7 @@
             deleteIcon.on("click", function () {
                 swal({
                     title: "Are you sure?",
-                    text: "You will not be able to recover this request! All associated files will also be deleted",
+                    text: "You will not be able to recover this configuration!",
                     icon: "warning",
                     buttons: {
                         cancel: true,
@@ -536,7 +636,7 @@
                 }).then((willDelete) => {
                     if (willDelete) {
                         $.ajax({
-                            url: `${apiPathCloudAnalyticsJobs}/${encodeURI(id)}`,
+                            url: `${apiPathBotHub}/configurationobjects/${encodeURI(id)}`,
                             dataType: "json",
                             beforeSend: setRequiredHeaders,
                             method: "DELETE",
@@ -561,22 +661,6 @@
                 console.log("Editing request...");
                 $("#settings #title").html(name);
                 $("#settings #name").val(name);
-                $("#settings #clientId").val(clientId);
-                $("#settings #clientSecret").val(clientSecret);
-                $("#settings #environment").val(environment);
-                $("#settings #conversationDetail").prop("checked", doConversationDetail == "1");
-                $("#settings #conversationAggregate").prop("checked", doConversationAggregate == "1");
-                $("#settings #userStatusAggregate").prop("checked", doUserStatusAggregate == "1");
-                $("#settings #timespan").val(timespan || "days");
-                $("#settings #recurrence").prop("checked", recurrence);
-                if (recurrence) {
-                    // Enable cron divs
-                    $("#cronuidiv").fadeTo("slow", 1);
-                    $("#cronuidiv").css("pointer-events", "auto");
-                }
-                if (schedule) {
-                    cron_ui.setCronString(schedule);
-                }
                 $("#settings #close").text('Save');
                 validator.resetForm();
                 $("#settings #close").unbind().click(function () {
@@ -586,6 +670,7 @@
                         return;
                     }
 
+                    //TODO UPDATE THIS
                     var data = {
                         "name": $("#settings #name").val(),
                         "image": "compliance/purecloud-analytics-downloader",
@@ -669,57 +754,9 @@
 
             //#endregion
 
-            //#region Schedule
-
-            if (schedule) {
-                var scheduleDiv = $("<div />", { class: "float-right text-dark" }).appendTo(headerContent);
-                var scheduleSection = $("<i />", { class: "fas fa-clock" }).appendTo(scheduleDiv);
-                scheduleDiv.append(` ${prettyCron.toString(schedule)}`);
-            }
-
-            //#endregion
-
             //#endregion Header
 
             //#region Body
-
-            if (results && results.length > 0) {
-                $.each(results, (i, result) => {
-                    var collapseBody = $("<div />", { id: "collapse_" + id, class: "collapse", "data-parent": "#accordion" }).appendTo(cardDiv);
-                    //var cardBodyDiv = $("<div />", { class: "card-body" }).appendTo(collapseBody);
-                    //var subCardBodyDiv = $("<div />", { class: "card b-all shadow-none" }).appendTo(cardBodyDiv)
-                    //var inboxDiv = $("<div />", { class: "inbox-center table-responsive" }).appendTo(subCardBodyDiv);
-                    var inboxDiv = $("<div />", { class: "inbox-center table-responsive" }).appendTo(collapseBody);
-                    var table = $("<table />", { class: "table table-hover no-wrap" }).appendTo(inboxDiv);
-                    var tableBody = $("<tbody />").appendTo(table);
-
-                    var tableRow = $("<tr />", { class: "unread" }).appendTo(tableBody);
-
-                    // Download section
-                    var downloadTd = $("<td />", { class: "hidden-xs-down", style: "cursor:pointer" }).appendTo(tableRow);
-                    downloadTd.append($("<i />", { class: "fas fa-download" }));
-                    downloadTd.append(" Download");
-                    downloadTd.on("click", () => {
-                        if (result.outputPath) {
-                            pushFile(id, result.outputPath);
-                        }
-                    });
-
-                    // Id (for troubleshooting)
-                    var idTd = $("<td />", { class: "hidden-xs-down" }).appendTo(tableRow);
-                    idTd.append($("<small />", { class: "text-muted" }).text(`(${result.outputPath ? result.outputPath : "No file"})`));
-
-                    // Time section
-                    var timeSection = $("<td />", { class: "hidden-xs-down" }).appendTo(tableRow);
-                    timeSection.append($("<i />", { class: "fas fa-calendar-alt" }));
-                    timeSection.append(` ${moment.utc(result.timestamp).fromNow()}`);
-
-                    // Set color
-                    if (result.outputPath) {
-                        timeSection.addClass("text-success");
-                    }
-                });
-            }
 
             //#endregion
 
@@ -727,7 +764,7 @@
         }
 
         // Load requests via API call
-        function loadRequests(showJobs = true, showCronjobs = true) {
+        function loadRequests() {
 
             // Remove any existing cards
             $("#accordion").empty();
@@ -736,7 +773,7 @@
 
             // Call API
             $.ajax({
-                url: apiPathCloudAnalyticsJobs,
+                url: `${apiPathBotHub}/configurationobjects`,
                 dataType: "json",
                 beforeSend: setRequiredHeaders,
             }).done((data, textStatus, jqXHR) => {
@@ -745,56 +782,19 @@
                         let requests = data;
                         console.log('requests:', requests);
                         requests.forEach(currentRequest => {
+                            console.log('Current request:', currentRequest);
 
-                            if ((currentRequest.cronJob && showCronjobs) || (!currentRequest.cronJob && showJobs)) {
-
-                                let clientId = searchByName(currentRequest.input, "name", "clientId")
-                                let clientIdValue = clientId ? clientId.value : "";
-
-                                let clientSecret = searchByName(currentRequest.input, "name", "clientSecret")
-                                let clientSecretValue = clientSecret ? clientSecret.value : "";
-
-                                let environment = searchByName(currentRequest.input, "name", "environment")
-                                let environmentValue = environment ? environment.value : "";
-
-                                let doConversationDetails = searchByName(currentRequest.input, "name", "doConversationDetail")
-                                let doConversationDetailsValue = doConversationDetails ? doConversationDetails.value : "0";
-
-                                let doConversationAggregates = searchByName(currentRequest.input, "name", "doConversationAggregate")
-                                let doConversationAggregatesValue = doConversationAggregates ? doConversationAggregates.value : "0";
-
-                                let doUserStatusAggregates = searchByName(currentRequest.input, "name", "doUserStatusAggregate")
-                                let doUserStatusAggregatesValue = doUserStatusAggregates ? doUserStatusAggregates.value : "0";
-
-                                let analyticsIntervalStart = searchByName(currentRequest.input, "name", "analyticsIntervalStart")
-                                let analyticsIntervalStartValue = analyticsIntervalStart ? analyticsIntervalStart.value : "";
-
-                                let analyticsIntervalStop = searchByName(currentRequest.input, "name", "analyticsIntervalStop")
-                                let analyticsIntervalStopValue = analyticsIntervalStop ? analyticsIntervalStop.value : "";
-
-                                // Add item
-                                $("#accordion").append(createRequest(
-                                    currentRequest.id,
-                                    currentRequest.inProgress,
-                                    currentRequest.cronJob,
-                                    currentRequest.name,
-                                    currentRequest.image,
-                                    currentRequest.cronJob,
-                                    currentRequest.period,
-                                    currentRequest.schedule,
-                                    clientIdValue,
-                                    clientSecretValue,
-                                    environmentValue,
-                                    doConversationDetailsValue,
-                                    doConversationAggregatesValue,
-                                    doUserStatusAggregatesValue,
-                                    analyticsIntervalStartValue,
-                                    analyticsIntervalStopValue,
-                                    currentRequest.results,
-                                    currentRequest.updatedAt
-                                )
-                                );
-                            }
+                            // Add item
+                            $("#accordion").append(createRequest(
+                                currentRequest._id,
+                                currentRequest.originId,
+                                currentRequest.userId,
+                                currentRequest.name,
+                                currentRequest.config,
+                                currentRequest.createdAt,
+                                currentRequest.updatedAt
+                            )
+                            );
                         });
                         break;
                     default:
@@ -807,66 +807,10 @@
             });
         }
 
-        function searchByName(array, keyName, searchCriteria) {
-            return array.find((element) => { return element[keyName] == searchCriteria; });
-        }
-
-        function pushFile(jobId, filename) {
-            var req = new XMLHttpRequest();
-            req.open("GET", `${apiPathCloudAnalyticsJobs}/${jobId}/download/${filename}`, true);
-            req.responseType = "blob";
-            req.onreadystatechange = function () {
-                if (req.readyState == 4) {
-                    if (req.status == 404) {
-                        console.log("file missing");
-                        showMessage("File does not exist", true);
-                    }
-                    else {
-                        // Wohoo, all is fine, push file by creating a fake link and clicking it
-                        var blob = req.response;
-                        var link = document.createElement("a");
-                        link.download = filename + ".zip";
-                        link.href = window.URL.createObjectURL(blob);
-                        link.click();
-                    }
-                }
-            }
-            req.send(); // Download
-        }
-
-        function calculateAnalyticsIntervals() {
-
-            var analyticsIntervalStart, analyticsIntervalStop;
-
-            switch ($("#settings #timespan").val()) {
-                case "days":
-                    analyticsIntervalStart = moment().subtract(1, "days").format("YYYY-MM-DD");
-                    analyticsIntervalStop = moment().subtract(1, "days").format("YYYY-MM-DD");
-                    break;
-                case "weeks":
-                    analyticsIntervalStart = moment().subtract(1, "weeks").startOf("isoWeek").format("YYYY-MM-DD");
-                    analyticsIntervalStop = moment().subtract(1, "weeks").endOf("isoWeek").format("YYYY-MM-DD");
-                    break;
-                case "months":
-                    analyticsIntervalStart = moment().subtract(1, 'months').date(1).format("YYYY-MM-DD");
-                    analyticsIntervalStop = moment().subtract(1, 'months').endOf("month").format("YYYY-MM-DD");
-                    break;
-                default:
-                    break;
-            }
-
-            console.log("Analytics Interval Start:", analyticsIntervalStart);
-            console.log("Analytics Interval Stop:", analyticsIntervalStop);
-
-
-            return {
-                "analyticsIntervalStart": analyticsIntervalStart,
-                "analyticsIntervalStop": analyticsIntervalStop
-            }
-        }
-
         loadRequests();
-        resetModal();
+        resetSettingsModal();
+        resetGenesysPureCloudModal();
+        resetIbmWatsonModal();
 
     </script>
 </body>
