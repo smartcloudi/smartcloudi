@@ -69,8 +69,7 @@
                                 <li class="breadcrumb-item"><a href="index.html">Home</a></li>
                                 <li class="breadcrumb-item active">Chatbot Hub</li>
                             </ol>
-                            <button type="button" data-toggle="modal" data-target="#settings"
-                                class="btn btn-info d-none d-lg-block m-l-15"><i class="fa fa-plus-circle"></i> Create
+                            <button type="button" data-toggle="modal" data-target="#settings" class="btn btn-info d-none d-lg-block m-l-15"><i class="fa fa-plus-circle"></i> Create
                                 New</button>
                         </div>
                     </div>
@@ -80,66 +79,54 @@
                 <!-- ============================================================== -->
             </div>
             <!-- Settings Modal -->
-            <div id="settings" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="settingsLabel"
-                aria-hidden="true" style="display: none;">
-                <div class="modal-dialog modal-lg">
+            <div id="settings" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="settingsLabel" aria-hidden="true" style="display: none;">
+                <div class="modal-dialog modal-lg modal-dialog-centered">
                     <div class="modal-content">
                         <div class="modal-header">
                             <h4 class="modal-title" id="title"></h4>
                             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
                         </div>
                         <div class="modal-body">
+                            <p class="text-center">Add channels, bots and (optionally) operators to your chatbot hub</p>
+                            <p class="text-center">Select the primary bot to use for new conversations</p>
+                            <hr />
                             <form id="new-request">
                                 <div>
                                     <div class="form-group">
                                         <label for="name">Name</label>
-                                        <input type="text" class="form-control" id="name" name="name" required
-                                            placeholder="Enter a name for your configuration">
+                                        <input type="text" class="form-control" id="name" name="name" required placeholder="Enter a name for your chatbot configuration">
                                     </div>
-                                    <div class="form-group">
-                                        <label>Inputs</label>
+                                    <div class="form-group" id="channels" name="channels">
+                                        <label class="col-2 text-right">Channels</label>
                                         <div class="btn-group" role="group">
-                                            <button type="button" data-toggle="modal" data-target="#web"
-                                                class="btn btn-default d-none d-lg-block ml-2"><i
-                                                    class="fas fa-1x fa-globe" title="Web"></i> Web <i
-                                                    class="fas fa-plus-circle"></i></button>
-                                            <button type="button" data-toggle="modal" data-target="#facebookmessenger"
-                                                class="btn btn-default d-none d-lg-block ml-2"><i
-                                                    class="fab fa-1x fa-facebook-messenger"
-                                                    title="Facebook Messenger"></i> Facebook Messenger <i
-                                                    class="fas fa-plus-circle"></i></button>
-                                            <button type="button" data-toggle="modal" data-target="#skype"
-                                                class="btn btn-default d-none d-lg-block ml-2"><i
-                                                    class="fab fa-1x fa-skype" title="Skype"></i> Skype <i
-                                                    class="fas fa-plus-circle"></i></button>
+                                            <button type="button" data-toggle="modal" data-target="#web" class="btn btn-default d-none d-lg-block ml-2"><i class="fas fa-1x fa-globe" title="Web"></i> Web <i class="fas fa-plus-circle"></i></button>
+                                            <button type="button" id="facebookmessengerchannel" data-toggle="modal" data-target="#facebookmessenger" class="btn btn-default d-none d-lg-block ml-2"><i class="fab fa-1x fa-facebook-messenger" style="color: #0078ff" title="Facebook Messenger"></i> Facebook Messenger <i id="facebookmessengerchannelsign" class="fas fa-plus-circle"></i></button>
+                                            <button type="button" id="facebookmessengerchannelreset" class="btn btn-small bg-danger"><i class="fas fa-times text-white"></i> </button>
+                                            <button type="button" id="skypechannel" data-toggle="modal" data-target="#skype" class="btn btn-default d-none d-lg-block ml-2"><i class="fab fa-1x fa-skype" style="color: #00aff0" title="Skype"></i> Skype <i class="fas fa-plus-circle"></i></button>
+                                            <button type="button" id="skypechannelreset" class="btn btn-small bg-danger"><i class="fas fa-times text-white"></i> </button>
+                                        </div>
+                                    </div>
+                                    <div class="form-group" id="bots" name="bots">
+                                        <label class="col-2 text-right">Bots</label>
+                                        <div class="btn-group" role="group">
+                                            <button type="button" id="azurebotchannel" data-toggle="modal" data-target="#azurebot" class="btn btn-default d-none d-lg-block ml-2">Azure Bot <i id="azurebotchannelsign" class="fas fa-plus-circle"></i></button>
+                                            <button type="button" id="azurebotchannelreset" class="btn btn-small bg-danger"><i class="fas fa-times text-white"></i> </button>
+                                            <button type="button" id="googledialogflowchannel" data-toggle="modal" data-target="#googledialogflow" class="btn btn-default d-none d-lg-block ml-2">Google DialogFlow <i id="googledialogflowchannelsign" class="fas fa-plus-circle"></i></button>
+                                            <button type="button" id="googledialogflowchannelreset" class="btn btn-small bg-danger"><i class="fas fa-times text-white"></i> </button>
+                                            <button type="button" id="ibmwatsonchannel" data-toggle="modal" data-target="#ibmwatson" class="btn btn-default d-none d-lg-block ml-2">IBM Watson <i id="ibmwatsonchannelsign" class="fas fa-plus-circle"></i></button>
+                                            <button type="button" id="ibmwatsonchannelreset" class="btn btn-small bg-danger"><i class="fas fa-times text-white"></i> </button>
+                                        </div>
+                                    </div>
+                                    <div class="form-group" id="operators" name="operators">
+                                        <label class="col-2 text-right">Operators</label>
+                                        <div class="btn-group" role="group">
+                                            <button type="button" id="genesyspurecloudchannel" data-toggle="modal" data-target="#genesyspurecloud" class="btn btn-default d-none d-lg-block ml-2">Genesys PureCloud <i id="genesyspurecloudchannelsign" class="fas fa-plus-circle"></i></button>
+                                            <button type="button" id="genesyspurecloudchannelreset" class="btn btn-small bg-danger"><i class="fas fa-times text-white"></i> </button>
                                         </div>
                                     </div>
                                     <div class="form-group">
-                                        <label>Outputs</label>
-                                        <div class="btn-group" role="group">
-                                            <button type="button" id="azurebotchannel" data-toggle="modal"
-                                                data-target="#azurebot"
-                                                class="btn btn-default d-none d-lg-block ml-2">Azure Bot <i
-                                                    id="azurebotchannelsign" class="fas fa-plus-circle"></i></button>
-                                            <button type="button" id="genesyspurecloudchannel" data-toggle="modal"
-                                                data-target="#genesyspurecloud"
-                                                class="btn btn-default d-none d-lg-block ml-2">Genesys PureCloud <i
-                                                    id="genesyspurecloudchannelsign"
-                                                    class="fas fa-plus-circle"></i></button>
-                                            <button type="button" id="googledialogflowchannel" data-toggle="modal"
-                                                data-target="#googledialogflow"
-                                                class="btn btn-default d-none d-lg-block ml-2">Google DialogFlow <i
-                                                    id="googledialogflowchannelsign"
-                                                    class="fas fa-plus-circle"></i></button>
-                                            <button type="button" id="ibmwatsonchannel" data-toggle="modal"
-                                                data-target="#ibmwatson"
-                                                class="btn btn-default d-none d-lg-block ml-2">IBM Watson <i
-                                                    id="ibmwatsonchannelsign" class="fas fa-plus-circle"></i></button>
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
-                                        <label>Primary Output Channel: </label>
-                                        <select id="primaryOutput">
+                                        <label class="col-2 text-right">Primary Bot: </label>
+                                        <select id="primaryOutput" name="primaryOutput">
                                             <option value=""></option>
                                             <option value="azurebot">Azure Bot</option>
                                             <option value="genesyspurecloud">Genesys PureCloud</option>
@@ -162,40 +149,26 @@
             </div>
             <!-- End Settings Modal -->
 
-            <!-- PureCloud Modal -->
-            <div id="genesyspurecloud" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="pureCloudLabel"
-                aria-hidden="true" style="display: none;">
-                <div class="modal-dialog modal-lg">
+            <!-- Facebook Messenger Modal -->
+            <div id="facebookmessenger" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="facebookMessengerLabel" aria-hidden="true" style="display: none;">
+                <div class="modal-dialog modal-lg modal-dialog-centered">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h4 class="modal-title" id="title">Genesys PureCloud</h4>
+                            <h4 class="modal-title" id="title">Facebook Messenger</h4>
                             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
                         </div>
                         <div class="modal-body">
-                            <form id="new-request-genesyspurecloud">
+                            <form id="new-request-facebookmessenger">
                                 <div>
                                     <div class="form-group">
-                                        <label for="pureCloudClientId">Client Id</label>
-                                        <input type="text" class="form-control" id="pureCloudClientId"
-                                            name="pureCloudClientId" required placeholder="Enter your OAuth Client Id">
+                                        <label for="facebookMessengerPageAccessToken">Page Access Token</label>
+                                        <small class="text-info"> Get it from <a href="https://developers.facebook.com" target="_blank">developers.facebook.com</a>, under Messenger/Settings </small>
+                                        <input type="text" class="form-control" id="facebookMessengerPageAccessToken" name="facebookMessengerPageAccessToken" required placeholder="Enter your Page Access Token">
                                     </div>
                                     <div class="form-group">
-                                        <label for="pureCloudClientSecret">Client Secret</label>
-                                        <input type="password" class="form-control" id="pureCloudClientSecret"
-                                            name="pureCloudClientSecret" required
-                                            placeholder="Enter your OAuth Client Secret">
-                                    </div>
-                                    <div class="form-group">
-                                        <label>Environment: </label>
-                                        <select id="pureCloudEnvironment">
-                                            <option value=""></option>
-                                            <option value="mypurecloud.com">mypurecloud.com (Americas)</option>
-                                            <option value="mypurecloud.com.au">mypurecloud.com.au (Australia/New
-                                                Zealand)</option>
-                                            <option value="mypurecloud.de">mypurecloud.de (EU/Frankfurt)</option>
-                                            <option value="mypurecloud.ie">mypurecloud.ie (EU/Ireland)</option>
-                                            <option value="mypurecloud.jp">mypurecloud.jp (Japan)</option>
-                                        </select>
+                                        <label for="facebookMessengerPageId">Page Id</label>
+                                        <small class="text-info"> Get it from your page under "About" or from your page URL</small>
+                                        <input type="text" class="form-control" id="facebookMessengerPageId" name="facebookMessengerPageId" required placeholder="Enter your Page Id (e.g. 1203344329828483)">
                                     </div>
                                 </div>
                             </form>
@@ -210,12 +183,123 @@
                     </div>
                 </div>
             </div>
-            <!-- End PureCloud Modal -->
+            <!-- End Facebook Messenger Modal -->
+
+            <!-- Skype Modal -->
+            <div id="skype" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="SkypeLabel" aria-hidden="true" style="display: none;">
+                <div class="modal-dialog modal-lg modal-dialog-centered">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h4 class="modal-title" id="title">Skype</h4>
+                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                        </div>
+                        <div class="modal-body">
+                            <form id="new-request-skype">
+                                <div>
+                                    <div class="form-group">
+                                        <label for="skypePageAccessToken">Page Access Token</label>
+                                        <small class="text-info"> Get it from <a href="https://developers.facebook.com" target="_blank">developers.facebook.com</a>, under Messenger/Settings </small>
+                                        <input type="text" class="form-control" id="skypePageAccessToken" name="skypePageAccessToken" required placeholder="Enter your Page Access Token">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="skypePageId">Page Id</label>
+                                        <small class="text-info"> Get it from your page under "About" or from your page URL</small>
+                                        <input type="text" class="form-control" id="skypePageId" name="skypePageId" required placeholder="Enter your Page Id (e.g. 1203344329828483)">
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                            <div id="error" class="text-danger">
+                                <span></span>
+                            </div>
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                            <button type="button" id="close" class="btn btn-primary waves-effect">Save</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- End Skype Modal -->
+
+            <!-- Azure Bot Modal -->
+            <div id="azurebot" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="azurebotLabel" aria-hidden="true" style="display: none;">
+                <div class="modal-dialog modal-lg modal-dialog-centered">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h4 class="modal-title" id="title">IBM Watson</h4>
+                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                        </div>
+                        <div class="modal-body">
+                            <form id="new-request-azurebot">
+                                <div>
+                                    <div class="form-group">
+                                        <label for="azurebotApiKey">API Key</label>
+                                        <input type="text" class="form-control" id="azurebotApiKey" name="azurebotApiKey" required placeholder="Enter your API Key">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="azurebotUrl">URL</label>
+                                        <input type="text" class="form-control" id="azurebotUrl" name="azurebotUrl" required placeholder="Enter your URL">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="azurebotWorkspaceId">Workspace Id</label>
+                                        <input type="text" class="form-control" id="azurebotWorkspaceId" name="azurebotWorkspaceId" required placeholder="Enter your Workspace Id">
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                            <div id="error" class="text-danger">
+                                <span></span>
+                            </div>
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                            <button type="button" id="close" class="btn btn-primary waves-effect">Save</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- End Azure Bot Modal -->
+
+            <!-- Google Dialogflow Modal -->
+            <div id="googledialogflow" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="googledialogflowLabel" aria-hidden="true" style="display: none;">
+                <div class="modal-dialog modal-lg modal-dialog-centered">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h4 class="modal-title" id="title">IBM Watson</h4>
+                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                        </div>
+                        <div class="modal-body">
+                            <form id="new-request-googledialogflow">
+                                <div>
+                                    <div class="form-group">
+                                        <label for="googledialogflowApiKey">API Key</label>
+                                        <input type="text" class="form-control" id="googledialogflowApiKey" name="googledialogflowApiKey" required placeholder="Enter your API Key">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="googledialogflowUrl">URL</label>
+                                        <input type="text" class="form-control" id="googledialogflowUrl" name="googledialogflowUrl" required placeholder="Enter your URL">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="googledialogflowWorkspaceId">Workspace Id</label>
+                                        <input type="text" class="form-control" id="googledialogflowWorkspaceId" name="googledialogflowWorkspaceId" required placeholder="Enter your Workspace Id">
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                            <div id="error" class="text-danger">
+                                <span></span>
+                            </div>
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                            <button type="button" id="close" class="btn btn-primary waves-effect">Save</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- End Google Dialogflow Modal -->
 
             <!-- IBM Watson Modal -->
-            <div id="ibmwatson" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="ibmWatsonLabel"
-                aria-hidden="true" style="display: none;">
-                <div class="modal-dialog modal-lg">
+            <div id="ibmwatson" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="ibmWatsonLabel" aria-hidden="true" style="display: none;">
+                <div class="modal-dialog modal-lg modal-dialog-centered">
                     <div class="modal-content">
                         <div class="modal-header">
                             <h4 class="modal-title" id="title">IBM Watson</h4>
@@ -226,18 +310,15 @@
                                 <div>
                                     <div class="form-group">
                                         <label for="ibmWatsonApiKey">API Key</label>
-                                        <input type="text" class="form-control" id="ibmWatsonApiKey"
-                                            name="ibmWatsonApiKey" required placeholder="Enter your API Key">
+                                        <input type="text" class="form-control" id="ibmWatsonApiKey" name="ibmWatsonApiKey" required placeholder="Enter your API Key">
                                     </div>
                                     <div class="form-group">
                                         <label for="ibmWatsonUrl">URL</label>
-                                        <input type="text" class="form-control" id="ibmWatsonUrl" name="ibmWatsonUrl"
-                                            required placeholder="Enter your URL">
+                                        <input type="text" class="form-control" id="ibmWatsonUrl" name="ibmWatsonUrl" required placeholder="Enter your URL">
                                     </div>
                                     <div class="form-group">
                                         <label for="ibmWatsonWorkspaceId">Workspace Id</label>
-                                        <input type="text" class="form-control" id="ibmWatsonWorkspaceId"
-                                            name="ibmWatsonWorkspaceId" required placeholder="Enter your Workspace Id">
+                                        <input type="text" class="form-control" id="ibmWatsonWorkspaceId" name="ibmWatsonWorkspaceId" required placeholder="Enter your Workspace Id">
                                     </div>
                                 </div>
                             </form>
@@ -253,6 +334,56 @@
                 </div>
             </div>
             <!-- End IBM Watson Modal -->
+
+            <!-- PureCloud Modal -->
+            <div id="genesyspurecloud" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="pureCloudLabel" aria-hidden="true" style="display: none;">
+                <div class="modal-dialog modal-lg modal-dialog-centered">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h4 class="modal-title" id="title">Genesys PureCloud</h4>
+                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                        </div>
+                        <div class="modal-body">
+                            <form id="new-request-genesyspurecloud">
+                                <div>
+                                    <div class="form-group">
+                                        <label for="pureCloudOrganizationId">Organization Id</label>
+                                        <input type="text" class="form-control" id="pureCloudOrganizationId" name="pureCloudOrganizationId" required placeholder="Enter your Organization Id">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="pureCloudDeploymentId">Deployment Id</label>
+                                        <input type="text" class="form-control" id="pureCloudDeploymentId" name="pureCloudDeploymentId" required placeholder="Enter your Web Chat Deployment Id">
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Environment: </label>
+                                        <select id="pureCloudEnvironment">
+                                            <option value=""></option>
+                                            <option value="mypurecloud.com">mypurecloud.com (Americas)</option>
+                                            <option value="mypurecloud.com.au">mypurecloud.com.au (Australia/New
+                                                Zealand)</option>
+                                            <option value="mypurecloud.de">mypurecloud.de (EU/Frankfurt)</option>
+                                            <option value="mypurecloud.ie">mypurecloud.ie (EU/Ireland)</option>
+                                            <option value="mypurecloud.jp">mypurecloud.jp (Japan)</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="pureCloudQueueName">Queue Name</label>
+                                        <input type="text" class="form-control" id="pureCloudQueueName" name="pureCloudQueueName" required placeholder="Enter the name of the queue to send messages to">
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                            <div id="error" class="text-danger">
+                                <span></span>
+                            </div>
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                            <button type="button" id="close" class="btn btn-primary waves-effect">Save</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- End PureCloud Modal -->
 
             <!-- ============================================================== -->
             <!-- Start Page Content -->
@@ -273,15 +404,13 @@
                             <div class="col-lg-3 col-md-4">
                                 <div class="card-body inbox-panel">
                                     <ul class="list-group list-group-full">
-                                        <li class="list-group-item active"> <a href="javascript:void(0)" id="showAll"><i
-                                                    class="fas fa-folder"></i> All </a></li>
+                                        <li class="list-group-item active"> <a href="javascript:void(0)" id="showAll"><i class="fas fa-folder"></i> All </a></li>
                                     </ul>
                                 </div>
                             </div>
                             <div class="col-lg-9 col-md-8 bg-light border-left">
                                 <div class="card-body">
-                                    <button type="button" id="refresh" class="btn btn-secondary mr-2 shadow-sm"><i
-                                            class="fas fa-sync-alt"></i></button>
+                                    <button type="button" id="refresh" class="btn btn-secondary mr-2 shadow-sm"><i class="fas fa-sync-alt"></i></button>
                                 </div>
 
                                 <div class="container">
@@ -369,6 +498,10 @@
 
     <script>
 
+        isLoggedIn();
+
+        var apiPathBotHub = `https://purecloud-bot-hub.herokuapp.com/api/v1/users/${cognitoUser.username}`;
+
         // Import Bars
         $("#topbar").load("topbar.html");
         $("#leftsidebar").load("leftsidebar.html");
@@ -377,14 +510,54 @@
 
         // Configuration objects
         var channels = {};
-        var genesysPureCloudConfiguration = {};
+        var facebookMessengerConfiguration = {};
+        var skypeConfiguration = {};
+        var azureBotConfiguration = {};
+        var googleDialogflowConfiguration = {};
         var ibmWatsonConfiguration = {};
+        var genesysPureCloudConfiguration = {};
 
         //#region Form validation
 
         var validator = $("#new-request").validate({
             rules: {
                 name: {
+                    required: true
+                },
+                primaryOutput: {
+                    required: {
+                        depends: function (element) {
+                            return $("#primaryOutput").val() == "";
+                        }
+                    }
+                },
+                channels: {
+                    required: {
+                        depends: function (element) {
+                            console.log("Check:", channels.web || channels.messenger || channels.skype);
+                            return channels.web || channels.messenger || channels.skype;
+                        }
+                    }
+                }
+            },
+            onfocusout: false,
+            onkeyup: false,
+            errorClass: "text-danger",
+            invalidHandler: function (event, validator) {
+                // 'this' refers to the form
+                var errors = validator.numberOfInvalids();
+                if (errors) {
+                    showMessage("Missing fields", true);
+                }
+            }
+        });
+
+        var facebookMessengerValidator = $("#new-request-facebookmessenger").validate({
+            rules: {
+                facebookMessengerPageAccessToken: {
+                    required: true
+                },
+                facebookMessengerPageId: {
                     required: true
                 }
             },
@@ -403,15 +576,66 @@
             }
         });
 
-        var genesysPureCloudValidator = $("#new-request-genesyspurecloud").validate({
+        var skypeValidator = $("#new-request-skype").validate({
             rules: {
-                pureCloudClientId: {
+                skypePageAccessToken: {
                     required: true
                 },
-                pureCloudClientSecret: {
+                skypePageId: {
+                    required: true
+                }
+            },
+            onfocusout: false,
+            onkeyup: false,
+            errorClass: "alert alert-danger",
+            errorPlacement: function (error, element) {
+                error.insertBefore(element.parent().children("br"));
+            },
+            invalidHandler: function (event, validator) {
+                // 'this' refers to the form
+                var errors = validator.numberOfInvalids();
+                if (errors) {
+                    showMessage("Missing fields", true);
+                }
+            }
+        });
+
+        var azureBotValidator = $("#new-request-azurebot").validate({
+            rules: {
+                azurebotApiKey: {
                     required: true
                 },
-                pureCloudEnvironment: {
+                azurebotUrl: {
+                    required: true
+                },
+                azurebotWorkspaceId: {
+                    required: true
+                }
+            },
+            onfocusout: false,
+            onkeyup: false,
+            errorClass: "alert alert-danger",
+            errorPlacement: function (error, element) {
+                error.insertBefore(element.parent().children("br"));
+            },
+            invalidHandler: function (event, validator) {
+                // 'this' refers to the form
+                var errors = validator.numberOfInvalids();
+                if (errors) {
+                    showMessage("Missing fields", true);
+                }
+            }
+        });
+
+        var googleDialogflowValidator = $("#new-request-googledialogflow").validate({
+            rules: {
+                googledialogflowApiKey: {
+                    required: true
+                },
+                googledialogflowUrl: {
+                    required: true
+                },
+                googledialogflowWorkspaceId: {
                     required: true
                 }
             },
@@ -457,13 +681,48 @@
             }
         });
 
+        var genesysPureCloudValidator = $("#new-request-genesyspurecloud").validate({
+            rules: {
+                pureCloudOrganizationId: {
+                    required: true
+                },
+                pureCloudDeploymentId: {
+                    required: true
+                },
+                pureCloudEnvironment: {
+                    required: true
+                },
+                pureCloudQueueName: {
+                    required: true
+                }
+            },
+            onfocusout: false,
+            onkeyup: false,
+            errorClass: "alert alert-danger",
+            errorPlacement: function (error, element) {
+                error.insertBefore(element.parent().children("br"));
+            },
+            invalidHandler: function (event, validator) {
+                // 'this' refers to the form
+                var errors = validator.numberOfInvalids();
+                if (errors) {
+                    showMessage("Missing fields", true);
+                }
+            }
+        });
+
         //#endregion Form validation
 
-        isLoggedIn();
-
-        var apiPathBotHub = `https://purecloud-bot-hub.herokuapp.com/api/v1/users/${cognitoUser.username}`;
-
         //#region Modals
+
+        // Change background when opening modals
+        $(document).on('show.bs.modal', '.modal', function (event) {
+            var zIndex = 1040 + (10 * $('.modal:visible').length);
+            $(this).css('z-index', zIndex);
+            setTimeout(function () {
+                $('.modal-backdrop').not('.modal-stack').css('z-index', zIndex - 1).addClass('modal-stack');
+            }, 0);
+        });
 
         function resetSettingsModal() {
             $("#settings #title").html("New Chatbot");
@@ -477,26 +736,16 @@
                     return;
                 }
 
+                // Base data
                 var data = {
-                    "originId": "?",
                     "name": $("#settings #name").val(),
                     "config": {
-                        "origin": "messenger",
                         "primaryRoute": $("#settings #primaryOutput").val(),
-                        "channels": {
-                            "purecloud": {
-                                "clientId": "1231231223",
-                                "clientSecret": "xxxxxx",
-                                "env": "mypurecloud.ie"
-                            },
-                            "watson": {
-                                "apiKey": "abc",
-                                "url": "",
-                                "workspaceId": ""
-                            }
-                        }
+                        "channels": channels
                     }
                 };
+
+                console.log("data:", data);
 
                 $.ajax({
                     url: `${apiPathBotHub}/configurationobjects`,
@@ -510,7 +759,7 @@
                             console.log('Request submitted', data);
                             $("#settings").modal('toggle');
                             showMessage('Request submitted');
-                            loadRequests(showJobs, showCronJobs);
+                            loadRequests();
                             break;
                         default:
                             break;
@@ -522,22 +771,99 @@
             });
         }
 
-        function resetGenesysPureCloudModal() {
-            $("#genesyspurecloud #pureCloudClientId").val("");
-            $("#genesyspurecloud #pureCloudClientSecret").val("");
-            $("#genesyspurecloud #pureCloudEnvironment").val("");
-            $("#genesyspurecloud #close").unbind().click(function () {
-                if (!$("#new-request-genesyspurecloud").valid()) {
+        function resetFacebookMessengerModal() {
+            $("#facebookmessenger #facebookMessengerPageAccessToken").val("");
+            $("#facebookmessenger #facebookMessengerPageId").val("");
+            $("#facebookmessengerchannel").removeClass("btn-success").addClass("btn-default");
+            $("#facebookmessengerchannelsign").addClass("fa-plus-circle");
+            $("#facebookmessengerchannelreset").hide();
+            delete channels.messenger;
+            $("#facebookmessenger #close").unbind().click(function () {
+                if (!$("#new-request-facebookmessenger").valid()) {
                     return;
                 }
-                genesysPureCloudConfiguration.clientId = $("#genesyspurecloud #pureCloudClientId").val();
-                genesysPureCloudConfiguration.clientSecret = $("#genesyspurecloud #pureCloudClientSecret").val();
-                genesysPureCloudConfiguration.env = $("#genesyspurecloud #pureCloudEnvironment").val();
-                channels.purecloud = genesysPureCloudConfiguration;
+                facebookMessengerConfiguration.type = "input";
+                facebookMessengerConfiguration.pageAccessToken = $("#facebookmessenger #facebookMessengerPageAccessToken").val();
+                facebookMessengerConfiguration.id = $("#facebookmessenger #facebookMessengerPageId").val();
+                channels.messenger = facebookMessengerConfiguration;
                 console.log("Channels: ", channels);
-                $("#genesyspurecloudchannel").removeClass("btn-default").addClass("btn-success");
-                $("#genesyspurecloudchannelsign").removeClass("fa-plus-circle").addClass("fa-check-circle");
-                $("#genesyspurecloud").modal("toggle");
+                $("#facebookmessengerchannel").removeClass("btn-default").addClass("btn-success");
+                $("#facebookmessengerchannelsign").removeClass("fa-plus-circle");
+                $("#facebookmessengerchannelreset").show();
+                $("#facebookmessenger").modal("toggle");
+            });
+        }
+
+        function resetSkypeModal() {
+            $("#skype #skypePageAccessToken").val("");
+            $("#skype #skypePageId").val("");
+            $("#skypechannel").removeClass("btn-success").addClass("btn-default");
+            $("#skypechannelsign").addClass("fa-plus-circle");
+            $("#skypechannelreset").hide();
+            delete channels.skype;
+            $("#skype #close").unbind().click(function () {
+                if (!$("#new-request-skype").valid()) {
+                    return;
+                }
+                skypeConfiguration.type = "input";
+                skypeConfiguration.pageAccessToken = $("#skype #skypePageAccessToken").val();
+                skypeConfiguration.id = $("#skype #skypePageId").val();
+                channels.skype = skypeConfiguration;
+                console.log("Channels: ", channels);
+                $("#skypechannel").removeClass("btn-default").addClass("btn-success");
+                $("#skypechannelsign").removeClass("fa-plus-circle");
+                $("#skypechannelreset").show();
+                $("#skype").modal("toggle");
+            });
+        }
+
+        function resetAzureBotModal() {
+            $("#azurebot #azurebotApiKey").val("");
+            $("#azurebot #azurebotUrl").val("");
+            $("#azurebot #azurebotWorkspaceId").val("");
+            $("#azurebotchannel").removeClass("btn-success").addClass("btn-default");
+            $("#azurebotchannelsign").addClass("fa-plus-circle");
+            delete channels.azurebot;
+            $("#azurebotchannelreset").hide();
+            $("#azurebot #close").unbind().click(function () {
+                if (!$("#new-request-azurebot").valid()) {
+                    return;
+                }
+                azureBotConfiguration.type = "bot";
+                azureBotConfiguration.apiKey = $("#azurebot #azurebotApiKey").val();
+                azureBotConfiguration.url = $("#azurebot #azurebotUrl").val();
+                azureBotConfiguration.workspaceId = $("#ibmwatson #azurebotWorkspaceId").val();
+                channels.azurebot = azureBotConfiguration;
+                console.log("Channels: ", channels);
+                $("#azurebotchannel").removeClass("btn-default").addClass("btn-success");
+                $("#azurebotchannelsign").removeClass("fa-plus-circle");
+                $("#azurebotchannelreset").show();
+                $("#azurebot").modal("toggle");
+            });
+        }
+
+        function resetGoogleDialogflowModal() {
+            $("#googledialogflow #googledialogflowApiKey").val("");
+            $("#googledialogflow #googledialogflowUrl").val("");
+            $("#googledialogflow #googledialogflowWorkspaceId").val("");
+            $("#googledialogflowchannel").removeClass("btn-success").addClass("btn-default");
+            $("#googledialogflowchannelsign").addClass("fa-plus-circle");
+            $("#googledialogflowchannelreset").hide();
+            delete channels.googledialogflow;
+            $("#googledialogflow #close").unbind().click(function () {
+                if (!$("#new-request-googledialogflow").valid()) {
+                    return;
+                }
+                googleDialogflowConfiguration.type = "bot";
+                googleDialogflowConfiguration.apiKey = $("#googledialogflow #googledialogflowApiKey").val();
+                googleDialogflowConfiguration.url = $("#googledialogflow #googledialogflowUrl").val();
+                googleDialogflowConfiguration.workspaceId = $("#googledialogflow #googledialogflowWorkspaceId").val();
+                channels.googledialogflow = googleDialogflowConfiguration;
+                console.log("Channels: ", channels);
+                $("#googledialogflowchannel").removeClass("btn-default").addClass("btn-success");
+                $("#googledialogflowchannelsign").removeClass("fa-plus-circle");
+                $("#googledialogflowchannelreset").show();
+                $("#googledialogflow").modal("toggle");
             });
         }
 
@@ -545,28 +871,87 @@
             $("#ibmwatson #ibmWatsonApiKey").val("");
             $("#ibmwatson #ibmWatsonUrl").val("");
             $("#ibmwatson #ibmWatsonWorkspaceId").val("");
+            $("#ibmwatsonchannel").removeClass("btn-success").addClass("btn-default");
+            $("#ibmwatsonchannelsign").addClass("fa-plus-circle");
+            $("#ibmwatsonchannelreset").hide();
             $("#ibmwatson #close").unbind().click(function () {
                 if (!$("#new-request-ibmwatson").valid()) {
                     return;
                 }
+                ibmWatsonConfiguration.type = "bot";
                 ibmWatsonConfiguration.apiKey = $("#ibmwatson #ibmWatsonApiKey").val();
                 ibmWatsonConfiguration.url = $("#ibmwatson #ibmWatsonUrl").val();
                 ibmWatsonConfiguration.workspaceId = $("#ibmwatson #ibmWatsonWorkspaceId").val();
-                channels.ibmwatson = ibmWatsonConfiguration;
+                delete channels.ibmwatson;
                 console.log("Channels: ", channels);
                 $("#ibmwatsonchannel").removeClass("btn-default").addClass("btn-success");
-                $("#ibmwatsonchannelsign").removeClass("fa-plus-circle").addClass("fa-check-circle");
+                $("#ibmwatsonchannelsign").removeClass("fa-plus-circle");
+                $("#ibmwatsonchannelreset").show();
                 $("#ibmwatson").modal("toggle");
             });
         }
 
-        // Clear modal when hidden
+        function resetGenesysPureCloudModal() {
+            $("#genesyspurecloud #pureCloudOrganizationId").val("");
+            $("#genesyspurecloud #pureCloudDeploymentId").val("");
+            $("#genesyspurecloud #pureCloudEnvironment").val("");
+            $("#genesyspurecloud #pureCloudQueueName").val("");
+            $("#genesyspurecloudchannel").removeClass("btn-success").addClass("btn-default");
+            $("#genesyspurecloudchannelsign").addClass("fa-plus-circle");
+            $("#genesyspurecloudchannelreset").hide();
+            $("#genesyspurecloud #close").unbind().click(function () {
+                if (!$("#new-request-genesyspurecloud").valid()) {
+                    return;
+                }
+                genesysPureCloudConfiguration.type = "operator";
+                genesysPureCloudConfiguration.organizationId = $("#genesyspurecloud #pureCloudOrganizationId").val();
+                genesysPureCloudConfiguration.deploymentId = $("#genesyspurecloud #pureCloudDeploymentId").val();
+                genesysPureCloudConfiguration.env = $("#genesyspurecloud #pureCloudEnvironment").val();
+                genesysPureCloudConfiguration.queueName = $("#genesyspurecloud #pureCloudQueueName").val();
+                channels.purecloud = genesysPureCloudConfiguration;
+                console.log("Channels: ", channels);
+                $("#genesyspurecloudchannel").removeClass("btn-default").addClass("btn-success");
+                $("#genesyspurecloudchannelsign").removeClass("fa-plus-circle").addClass("fa-check-circle");
+                $("#genesyspurecloudchannelreset").show();
+                $("#genesyspurecloud").modal("toggle");
+            });
+        }
+
+        //#region Reset buttons
+
+        $("#facebookmessengerchannelreset").on('click', () => {
+            resetFacebookMessengerModal();
+        })
+
+        $("#azurebotchannelreset").on('click', () => {
+            resetAzureBotModal();
+        })
+
+        $("#googledialogflowchannelreset").on('click', () => {
+            resetGoogleDialogflowModal();
+        })
+
+        $("#ibmwatsonchannelreset").on('click', () => {
+            resetIbmWatsonModal();
+        })
+
+        $("#genesyspurecloudchannelreset").on('click', () => {
+            resetGenesysPureCloudModal();
+        })
+
+        // Clear settings modal when hidden
         $("#settings").on("hidden.bs.modal", function () {
             resetSettingsModal();
         });
-        // $("#genesyspurecloud").on("hidden.bs.modal", function () {
-        //     resetGenesysPureCloudModal();
-        // });
+
+        //#endregion Reset buttons
+
+        // Clear facebook messenger modal when hidden if data is invalid
+        $("#facebookmessenger").on("hidden.bs.modal", function () {
+            if (!$("#facebookmessenger #facebookMessengerPageAccessToken").val() || !$("#facebookmessenger #facebookMessengerPageId").val()) {
+                resetFacebookMessengerModal();
+            }
+        });
 
         //#endregion Modals
 
@@ -574,29 +959,6 @@
         $("#refresh").on("click", () => {
             loadRequests();
         });
-
-        //#region Left pane buttons
-
-        var showJobs = true;
-        var showCronJobs = true;
-
-        $("#showAll").on("click", () => {
-            showJobs = true;
-            showCronJobs = true;
-            loadRequests(showJobs, showCronJobs)
-        });
-        $("#showJobs").on("click", () => {
-            showJobs = true;
-            showCronJobs = false;
-            loadRequests(showJobs, showCronJobs)
-        });
-        $("#showCronJobs").on("click", () => {
-            showJobs = false;
-            showCronJobs = true;
-            loadRequests(showJobs, showCronJobs)
-        });
-
-        //#endregion
 
         // Create a new request
         function createRequest(id, originId, userId, name, config, createdAt, updatedAt) {
@@ -809,8 +1171,12 @@
 
         loadRequests();
         resetSettingsModal();
-        resetGenesysPureCloudModal();
+        resetFacebookMessengerModal();
+        resetSkypeModal();
+        resetAzureBotModal();
+        resetGoogleDialogflowModal();
         resetIbmWatsonModal();
+        resetGenesysPureCloudModal();
 
     </script>
 </body>
