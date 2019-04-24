@@ -729,6 +729,13 @@
             $("#settings #name").val("");
             $("#settings #primaryOutput").val("");
             $("#settings #close").text('Create');
+            channels = {};
+            resetFacebookMessengerModal();
+            resetSkypeModal();
+            resetAzureBotModal();
+            resetGoogleDialogflowModal();
+            resetIbmWatsonModal();
+            resetGenesysPureCloudModal();
             $("#settings #close").unbind().click(function () {
                 console.log('Submitting request...');
 
@@ -759,7 +766,7 @@
                             console.log('Request submitted', data);
                             $("#settings").modal('toggle');
                             showMessage('Request submitted');
-                            loadRequests();
+                            loadCards();
                             break;
                         default:
                             break;
@@ -884,7 +891,7 @@
                 ibmWatsonConfiguration.url = $("#ibmwatson #ibmWatsonUrl").val();
                 ibmWatsonConfiguration.workspaceId = $("#ibmwatson #ibmWatsonWorkspaceId").val();
                 channels.ibmwatson = ibmWatsonConfiguration;
-                console.log("Channels: ", channels);
+                console.log("Channels (w/ IBM Watson): ", channels);
                 $("#ibmwatsonchannel").removeClass("btn-default").addClass("btn-success");
                 $("#ibmwatsonchannelsign").removeClass("fa-plus-circle");
                 $("#ibmwatsonchannelreset").show();
@@ -925,6 +932,10 @@
             resetFacebookMessengerModal();
         })
 
+        $("#skypechannelreset").on('click', () => {
+            resetSkypeModal();
+        })
+
         $("#azurebotchannelreset").on('click', () => {
             resetAzureBotModal();
         })
@@ -948,6 +959,8 @@
 
         //#endregion Reset buttons
 
+        //#region Clear modals if invalid
+
         // Clear facebook messenger modal when hidden if data is invalid
         $("#facebookmessenger").on("hidden.bs.modal", function () {
             if (!$("#facebookmessenger #facebookMessengerPageAccessToken").val() || !$("#facebookmessenger #facebookMessengerPageId").val()) {
@@ -955,15 +968,52 @@
             }
         });
 
+        // Clear skype modal when hidden if data is invalid
+        $("#skype").on("hidden.bs.modal", function () {
+            if (!$("#skype #skypePageAccessToken").val() || !$("#skype #skypePageId").val()) {
+                resetSkypeModal();
+            }
+        });
+
+        // Clear azure bot modal when hidden if data is invalid
+        $("#azurebot").on("hidden.bs.modal", function () {
+            if (!$("#azurebot #azurebotApiKey").val() || !$("#azurebot #azurebotUrl").val() || !$("#azurebot #azurebotWorkspaceId").val()) {
+                resetAzureBotModal();
+            }
+        });
+
+        // Clear google dialogflow modal when hidden if data is invalid
+        $("#googledialogflow").on("hidden.bs.modal", function () {
+            if (!$("#googledialogflow #googledialogflowApiKey").val() || !$("#googledialogflow #googledialogflowUrl").val() || !$("#googledialogflow #googledialogflowWorkspaceId").val()) {
+                resetAzureBotModal();
+            }
+        });
+
+        // Clear google dialogflow modal when hidden if data is invalid
+        $("#ibmwatson").on("hidden.bs.modal", function () {
+            if (!$("#ibmwatson #ibmWatsonApiKey").val() || !$("#ibmwatson #ibmWatsonUrl").val() || !$("#ibmwatson #ibmWatsonWorkspaceId").val()) {
+                resetIbmWatsonModal();
+            }
+        });
+
+        // Clear genesys purecloud modal when hidden if data is invalid
+        $("#genesyspurecloud").on("hidden.bs.modal", function () {
+            if (!$("#genesyspurecloud #pureCloudOrganizationId").val() || !$("#genesyspurecloud #pureCloudDeploymentId").val() || !$("#genesyspurecloud #pureCloudEnvironment").val() || !$("#genesyspurecloud #pureCloudQueueName").val()) {
+                resetGenesysPureCloudModal();
+            }
+        });
+
+        //#endregion
+
         //#endregion Modals
 
         // Refresh button
         $("#refresh").on("click", () => {
-            loadRequests();
+            loadCards();
         });
 
         // Create a new request
-        function createRequest(id, originId, userId, name, config, createdAt, updatedAt) {
+        function addCard(id, userId, name, config, createdAt, updatedAt) {
 
             // Add card to accordion
             var cardDiv = $("<div />", { class: "card border shadow" });
@@ -1008,7 +1058,7 @@
                             if (jqXHR.status == 204) {
                                 console.log('Request deleted');
                                 showMessage(`'${name}' deleted`);
-                                loadRequests();
+                                loadCards();
                                 return;
                             }
                         }).fail(handleQueryError);
@@ -1022,9 +1072,77 @@
 
             var editIcon = $("<i />", { class: "fas fa-lg fa-edit text-dark float-right ml-2 pt-1", "data-toggle": "modal", "data-target": "#settings", style: "cursor:pointer" }).appendTo(headerContent);
             editIcon.on("click", function (e) {
-                console.log("Editing request...");
+                console.log("Editing request...", config);
                 $("#settings #title").html(name);
                 $("#settings #name").val(name);
+                $("#settings #primaryOutput").val(config.primaryRoute);
+
+                //Check every channel
+                if (config.channels.messenger) {
+                    console.log("Found a config for Facebook messenger");
+                    channels.messenger = config.channels.messenger;
+                    $("#facebookmessenger #facebookMessengerPageAccessToken").val(channels.messenger.pageAccessToken);
+                    $("#facebookmessenger #facebookMessengerPageId").val(channels.messenger.id);
+                    $("#facebookmessengerchannel").removeClass("btn-default").addClass("btn-success");
+                    $("#facebookmessengerchannelsign").removeClass("fa-plus-circle");
+                    $("#facebookmessengerchannelreset").show();
+                }
+
+                if (config.channels.skype) {
+                    console.log("Found a config for Skype");
+                    channels.skype = config.channels.skype;
+                    $("#skype #skypePageAccessToken").val(channels.skype.pageAccessToken);
+                    $("#skype #skypePageId").val(channels.skype.id);
+                    $("#skypechannel").removeClass("btn-default").addClass("btn-success");
+                    $("#skypechannelsign").removeClass("fa-plus-circle");
+                    $("#skypechannelreset").show();
+                }
+
+                if (config.channels.azurebot) {
+                    console.log("Found a config for Azure Bot");
+                    channels.azurebot = config.channels.azurebot;
+                    $("#azurebot #azurebotApiKey").val(channels.azurebot.apiKey);
+                    $("#azurebot #azurebotUrl").val(channels.azurebot.url);
+                    $("#azurebot #azurebotWorkspaceId").val(channels.azurebot.workspaceId);
+                    $("#azurebotchannel").removeClass("btn-default").addClass("btn-success");
+                    $("#azurebotchannelsign").removeClass("fa-plus-circle");
+                    $("#azurebotchannelreset").show();
+                }
+
+                if (config.channels.googledialogflow) {
+                    console.log("Found a config for Google Dialogflow");
+                    channels.googledialogflow = config.channels.googledialogflow;
+                    $("#googledialogflow #googledialogflowApiKey").val(channels.googledialogflow.apiKey);
+                    $("#googledialogflow #googledialogflowUrl").val(channels.googledialogflow.url);
+                    $("#googledialogflow #googledialogflowWorkspaceId").val(channels.googledialogflow.workspaceId);
+                    $("#googledialogflowchannel").removeClass("btn-default").addClass("btn-success");
+                    $("#googledialogflowchannelsign").removeClass("fa-plus-circle");
+                    $("#googledialogflowchannelreset").show();
+                }
+
+                if (config.channels.ibmwatson) {
+                    console.log("Found a config for IBM Watson");
+                    channels.ibmwatson = config.channels.ibmwatson;
+                    $("#ibmwatson #ibmWatsonApiKey").val(channels.ibmwatson.apiKey);
+                    $("#ibmwatson #ibmWatsonUrl").val(channels.ibmwatson.url);
+                    $("#ibmwatson #ibmWatsonWorkspaceId").val(channels.ibmwatson.workspaceId);
+                    $("#ibmwatsonchannel").removeClass("btn-default").addClass("btn-success");
+                    $("#ibmwatsonchannelsign").removeClass("fa-plus-circle");
+                    $("#ibmwatsonchannelreset").show();
+                }
+
+                if (config.channels.purecloud) {
+                    console.log("Found a config for Genesys PureCloud");
+                    channels.purecloud = config.channels.purecloud;
+                    $("#genesyspurecloud #pureCloudOrganizationId").val(channels.purecloud.organizationId);
+                    $("#genesyspurecloud #pureCloudDeploymentId").val(channels.purecloud.deploymentId);
+                    $("#genesyspurecloud #pureCloudEnvironment").val(channels.purecloud.env);
+                    $("#genesyspurecloud #pureCloudQueueName").val(channels.purecloud.queueName);
+                    $("#genesyspurecloudchannel").removeClass("btn-default").addClass("btn-success");
+                    $("#genesyspurecloudchannelsign").removeClass("fa-plus-circle");
+                    $("#genesyspurecloudchannelreset").show();
+                }
+
                 $("#settings #close").text('Save');
                 validator.resetForm();
                 $("#settings #close").unbind().click(function () {
@@ -1034,57 +1152,19 @@
                         return;
                     }
 
-                    //TODO UPDATE THIS
+                    // Base data
                     var data = {
                         "name": $("#settings #name").val(),
-                        "image": "compliance/purecloud-analytics-downloader",
-                        "input": [
-                            {
-                                "name": "environment",
-                                "value": $("#settings #environment").val()
-                            },
-                            {
-                                "name": "clientId",
-                                "value": $("#settings #clientId").val()
-                            },
-                            {
-                                "name": "clientSecret",
-                                "value": $("#settings #clientSecret").val()
-                            },
-                            {
-                                "name": "analyticsIntervalStart",
-                                "value": calculateAnalyticsIntervals().analyticsIntervalStart
-                            },
-                            {
-                                "name": "analyticsIntervalStop",
-                                "value": calculateAnalyticsIntervals().analyticsIntervalStop
-                            },
-                            {
-                                "name": "doConversationDetail",
-                                "value": $("#settings #conversationDetail").is(":checked") ? "1" : "0"
-                            },
-                            {
-                                "name": "doConversationAggregate",
-                                "value": $("#settings #conversationAggregate").is(":checked") ? "1" : "0"
-                            },
-                            {
-                                "name": "doUserStatusAggregate",
-                                "value": $("#settings #userStatusAggregate").is(":checked") ? "1" : "0"
-                            }
-                        ]
+                        "config": {
+                            "primaryRoute": $("#settings #primaryOutput").val(),
+                            "channels": channels
+                        }
                     };
 
-                    apiPath = apiPathCloudAnalyticsJobs;
-
-                    if ($("#settings #recurrence").prop("checked")) {
-                        data.schedule = cron_ui.currentValue;
-                    }
-
-                    console.log('path:', apiPath + "/" + id);
-                    console.log('data:', data);
+                    console.log("data:", data);
 
                     $.ajax({
-                        url: apiPath + "/" + id,
+                        url: `${apiPathBotHub}/configurationobjects/${id}`,
                         dataType: "json",
                         method: "PATCH",
                         beforeSend: setRequiredHeaders,
@@ -1092,18 +1172,17 @@
                     }).done((data, textStatus, jqXHR) => {
                         switch (jqXHR.status) {
                             case 200:
-                                console.log('Request saved');
+                                console.log('Request submitted', data);
                                 $("#settings").modal('toggle');
-                                showMessage('Request saved');
-                                loadRequests();
+                                showMessage('Request submitted');
+                                loadCards();
                                 break;
                             default:
-                                console.error(jqXHR);
                                 break;
                         }
                     }).fail((error) => {
                         console.error(error);
-                        showMessage(error.responseText, true);
+                        showMessage(error.responseText);
                     });
                 });
             });
@@ -1128,7 +1207,7 @@
         }
 
         // Load requests via API call
-        function loadRequests() {
+        function loadCards() {
 
             // Remove any existing cards
             $("#accordion").empty();
@@ -1149,9 +1228,8 @@
                             console.log('Current request:', currentRequest);
 
                             // Add item
-                            $("#accordion").append(createRequest(
+                            $("#accordion").append(addCard(
                                 currentRequest._id,
-                                currentRequest.originId,
                                 currentRequest.userId,
                                 currentRequest.name,
                                 currentRequest.config,
@@ -1171,7 +1249,8 @@
             });
         }
 
-        loadRequests();
+        loadCards();
+
         resetSettingsModal();
         resetFacebookMessengerModal();
         resetSkypeModal();
