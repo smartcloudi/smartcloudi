@@ -874,6 +874,7 @@
             $("#ibmwatsonchannel").removeClass("btn-success").addClass("btn-default");
             $("#ibmwatsonchannelsign").addClass("fa-plus-circle");
             $("#ibmwatsonchannelreset").hide();
+            delete channels.ibmwatson;
             $("#ibmwatson #close").unbind().click(function () {
                 if (!$("#new-request-ibmwatson").valid()) {
                     return;
@@ -882,7 +883,7 @@
                 ibmWatsonConfiguration.apiKey = $("#ibmwatson #ibmWatsonApiKey").val();
                 ibmWatsonConfiguration.url = $("#ibmwatson #ibmWatsonUrl").val();
                 ibmWatsonConfiguration.workspaceId = $("#ibmwatson #ibmWatsonWorkspaceId").val();
-                delete channels.ibmwatson;
+                channels.ibmwatson = ibmWatsonConfiguration;
                 console.log("Channels: ", channels);
                 $("#ibmwatsonchannel").removeClass("btn-default").addClass("btn-success");
                 $("#ibmwatsonchannelsign").removeClass("fa-plus-circle");
@@ -898,6 +899,7 @@
             $("#genesyspurecloud #pureCloudQueueName").val("");
             $("#genesyspurecloudchannel").removeClass("btn-success").addClass("btn-default");
             $("#genesyspurecloudchannelsign").addClass("fa-plus-circle");
+            delete channels.purecloud;
             $("#genesyspurecloudchannelreset").hide();
             $("#genesyspurecloud #close").unbind().click(function () {
                 if (!$("#new-request-genesyspurecloud").valid()) {
