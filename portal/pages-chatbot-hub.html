@@ -226,23 +226,15 @@
                 <div class="modal-dialog modal-lg modal-dialog-centered">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h4 class="modal-title" id="title">IBM Watson</h4>
+                            <h4 class="modal-title" id="title">Azure Bot</h4>
                             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
                         </div>
                         <div class="modal-body">
                             <form id="new-request-azurebot">
                                 <div>
                                     <div class="form-group">
-                                        <label for="azurebotApiKey">API Key</label>
-                                        <input type="text" class="form-control" id="azurebotApiKey" name="azurebotApiKey" required placeholder="Enter your API Key">
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="azurebotUrl">URL</label>
-                                        <input type="text" class="form-control" id="azurebotUrl" name="azurebotUrl" required placeholder="Enter your URL">
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="azurebotWorkspaceId">Workspace Id</label>
-                                        <input type="text" class="form-control" id="azurebotWorkspaceId" name="azurebotWorkspaceId" required placeholder="Enter your Workspace Id">
+                                        <label for="azurebotApiKey">Secret Key</label>
+                                        <input type="text" class="form-control" id="azurebotApiKey" name="azurebotApiKey" required placeholder="Enter your Secret Key">
                                     </div>
                                 </div>
                             </form>
@@ -603,12 +595,6 @@
         var azureBotValidator = $("#new-request-azurebot").validate({
             rules: {
                 azurebotApiKey: {
-                    required: true
-                },
-                azurebotUrl: {
-                    required: true
-                },
-                azurebotWorkspaceId: {
                     required: true
                 }
             },
