@@ -824,8 +824,6 @@
                 }
                 azureBotConfiguration.type = "bot";
                 azureBotConfiguration.apiKey = $("#azurebot #azurebotApiKey").val();
-                azureBotConfiguration.url = $("#azurebot #azurebotUrl").val();
-                azureBotConfiguration.workspaceId = $("#ibmwatson #azurebotWorkspaceId").val();
                 channels.azurebot = azureBotConfiguration;
                 console.log("Channels: ", channels);
                 $("#azurebotchannel").removeClass("btn-default").addClass("btn-success");
@@ -963,7 +961,7 @@
 
         // Clear azure bot modal when hidden if data is invalid
         $("#azurebot").on("hidden.bs.modal", function () {
-            if (!$("#azurebot #azurebotApiKey").val() || !$("#azurebot #azurebotUrl").val() || !$("#azurebot #azurebotWorkspaceId").val()) {
+            if (!$("#azurebot #azurebotApiKey").val()) {
                 resetAzureBotModal();
             }
         });
@@ -1088,8 +1086,6 @@
                     console.log("Found a config for Azure Bot");
                     channels.azurebot = config.channels.azurebot;
                     $("#azurebot #azurebotApiKey").val(channels.azurebot.apiKey);
-                    $("#azurebot #azurebotUrl").val(channels.azurebot.url);
-                    $("#azurebot #azurebotWorkspaceId").val(channels.azurebot.workspaceId);
                     $("#azurebotchannel").removeClass("btn-default").addClass("btn-success");
                     $("#azurebotchannelsign").removeClass("fa-plus-circle");
                     $("#azurebotchannelreset").show();
