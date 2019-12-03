@@ -30,6 +30,7 @@
     <!-- page css -->
     <link href="css/inbox.css" rel="stylesheet">
     <link rel="stylesheet" href="css/pages-chatbot-hub.css">
+    <link rel="stylesheet" href="css/solarized-dark.css">
 </head>
 
 <body class="skin-purple-dark fixed-layout">
@@ -99,7 +100,8 @@
                                     <div class="form-group" id="channels" name="channels">
                                         <label class="col-2 text-right">Channels</label>
                                         <div class="btn-group" role="group">
-                                            <button type="button" data-toggle="modal" data-target="#web" class="btn btn-default d-none d-lg-block ml-2"><i class="fas fa-1x fa-globe" title="Web"></i> Web <i class="fas fa-plus-circle"></i></button>
+                                            <button type="button" id="webchannel" data-toggle="modal" data-target="#web" class="btn btn-default d-none d-lg-block ml-2"><i class="fas fa-1x fa-globe" title="Web"></i> Web <i class="fas fa-plus-circle"></i></button>
+                                            <button type="button" id="webchannelreset" class="btn btn-small bg-danger"><i class="fas fa-times text-white"></i> </button>
                                             <button type="button" id="facebookmessengerchannel" data-toggle="modal" data-target="#facebookmessenger" class="btn btn-default d-none d-lg-block ml-2"><i class="fab fa-1x fa-facebook-messenger" style="color: #0078ff" title="Facebook Messenger"></i> Facebook Messenger <i id="facebookmessengerchannelsign" class="fas fa-plus-circle"></i></button>
                                             <button type="button" id="facebookmessengerchannelreset" class="btn btn-small bg-danger"><i class="fas fa-times text-white"></i> </button>
                                             <button type="button" id="skypechannel" data-toggle="modal" data-target="#skype" class="btn btn-default d-none d-lg-block ml-2"><i class="fab fa-1x fa-skype" style="color: #00aff0" title="Skype"></i> Skype <i class="fas fa-plus-circle"></i></button>
@@ -148,6 +150,35 @@
                 </div>
             </div>
             <!-- End Settings Modal -->
+
+            <!-- Web Modal -->
+            <div id="web" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="webLabel" aria-hidden="true" style="display: none;">
+                <div class="modal-dialog modal-lg modal-dialog-centered">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h4 class="modal-title" id="title">Web</h4>
+                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                        </div>
+                        <div class="modal-body">
+                            <div>
+                                Insert this code on your web site
+                                <pre>
+                                    <code data-language="javascript" id="webCode">
+                                    </code>
+                                </pre>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <div id="error" class="text-danger">
+                                <span></span>
+                            </div>
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                            <button type="button" id="close" class="btn btn-primary waves-effect">Save</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- End Web Modal -->
 
             <!-- Facebook Messenger Modal -->
             <div id="facebookmessenger" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="facebookMessengerLabel" aria-hidden="true" style="display: none;">
@@ -488,6 +519,8 @@
     <script src="../js/amazon-cognito-identity.min.js"></script>
     <script src="../js/auth.js"></script>
 
+    <script src="js/rainbow-custom.min.js"></script>
+
     <script>
 
         isLoggedIn();
@@ -502,6 +535,8 @@
 
         // Configuration objects
         var channels = {};
+        var webConfiguration = {};
+        var webGuid = getGuid();
         var facebookMessengerConfiguration = {};
         var skypeConfiguration = {};
         var azureBotConfiguration = {};
@@ -699,6 +734,14 @@
 
         //#endregion Form validation
 
+        function S4() {
+            return (((1 + Math.random()) * 0x10000) | 0).toString(16).substring(1);
+        }
+
+        function getGuid() {
+            return (S4() + S4() + "-" + S4() + "-4" + S4().substr(0, 3) + "-" + S4() + "-" + S4() + S4() + S4()).toLowerCase();
+        }
+
         //#region Modals
 
         // Change background when opening modals
@@ -716,6 +759,7 @@
             $("#settings #primaryOutput").val("");
             $("#settings #close").text('Create');
             channels = {};
+            resetWebModal();
             resetFacebookMessengerModal();
             resetSkypeModal();
             resetAzureBotModal();
@@ -761,6 +805,26 @@
                     console.error(error);
                     showMessage(error.responseText);
                 });
+            });
+        }
+
+        function resetWebModal() {
+            webGuid = getGuid();
+            $("#web #webCode").text(`<div><iframe src="http://127.0.0.1:5500/smartcloudi.github.io/chatui/index.html?configId=${webGuid}" width="300px" height="474px" frameborder="0"></iframe></div>`);
+            // $("#web #webCode").text(`<script src="//smartcloudi.com/chat?configId=${webGuid}"></scr` + `ipt>`); //https://stackoverflow.com/a/1373122
+            $("#webchannel").removeClass("btn-success").addClass("btn-default");
+            $("#webchannelsign").addClass("fa-plus-circle");
+            $("#webchannelreset").hide();
+            delete channels.messenger;
+            $("#web #close").unbind().click(function () {
+                webConfiguration.type = "input";
+                webConfiguration.id = webGuid;
+                channels.web = webConfiguration;
+                console.log("Channels: ", channels);
+                $("#webchannel").removeClass("btn-default").addClass("btn-success");
+                $("#webchannelsign").removeClass("fa-plus-circle");
+                $("#webchannelreset").show();
+                $("#web").modal("toggle");
             });
         }
 
@@ -912,6 +976,10 @@
 
         //#region Reset buttons
 
+        $("#webchannelreset").on('click', () => {
+            resetWebModal();
+        })
+
         $("#facebookmessengerchannelreset").on('click', () => {
             resetFacebookMessengerModal();
         })
@@ -1062,6 +1130,16 @@
                 $("#settings #primaryOutput").val(config.primaryRoute);
 
                 //Check every channel
+                if (config.channels.web) {
+                    console.log("Found a config for web");
+                    channels.web = config.channels.web;
+                    webGuid = config.channels.web.id;
+                    $("#web #webCode").text(`<script src="//smartcloudi.com/chat?configId=${webGuid}"></scr` + `ipt>`); //https://stackoverflow.com/a/1373122
+                    $("#webchannel").removeClass("btn-default").addClass("btn-success");
+                    $("#webchannelsign").removeClass("fa-plus-circle");
+                    $("#webchannelreset").show();
+                }
+
                 if (config.channels.messenger) {
                     console.log("Found a config for Facebook messenger");
                     channels.messenger = config.channels.messenger;
@@ -1234,12 +1312,6 @@
         loadCards();
 
         resetSettingsModal();
-        resetFacebookMessengerModal();
-        resetSkypeModal();
-        resetAzureBotModal();
-        resetGoogleDialogflowModal();
-        resetIbmWatsonModal();
-        resetGenesysPureCloudModal();
 
     </script>
 </body>
